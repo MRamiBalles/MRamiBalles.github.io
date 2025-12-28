@@ -1,16 +1,16 @@
 # FAA - Relación 1: Conceptos Básicos y Notación Asintótica (Oficial UHU)
 
-## 🧠 Contexto Teórico (Dpto. Ingeniería de Sistemas y Automática)
-El análisis asintótico permite clasificar las funciones de tiempo de ejecución en conjuntos de funciones con un crecimiento similar.
+## 🧠 Apuntes de Supervivencia
+Para clasificar algoritmos en la UHU, olvidaos de los tiempos en segundos. Aquí mandan las cotas asintóticas. El truco es simplificar a lo bestia: quédate con el que más rápido suba y olvida las constantes.
 
-*   **Definición de $O(g(n))$**: Conjunto de funciones $f(n)$ tales que existen constantes $c > 0$ y $n_0 \ge 1$ con $f(n) \le c \cdot g(n)$ para toda $n \ge n_0$.
-*   **Definición de $\Omega(g(n))$**: Cota inferior. $f(n) \ge c \cdot g(n)$.
-*   **Definición de $\Theta(g(n))$**: Cota ajustada. Intersección de $O$ y $\Omega$.
+*   **¿Qué es O?**: Es ponerle un techo al algoritmo (peor caso).
+*   **Ranking de coste (de mejor a peor)**: 1 (constante) < log n < n < n log n < n² < 2^n < n!. Si tu algoritmo es n!, vete pidiendo cita para el examen de septiembre.
 
-## 📝 Ejercicios de la Relación
-1.  **Comparación por Límites**: Determina la relación asintótica entre $f(n) = n^2 \log n$ y $g(n) = n^3$.
-    *   *Resolución:* $\lim_{n \to \infty} \frac{n^2 \log n}{n^3} = \lim_{n \to \infty} \frac{\log n}{n} = 0$. Portanto, $f(n) = O(g(n))$ pero $f(n) \neq \Omega(g(n))$.
-2.  **Clasificación**: Ordena de menor a mayor coste: $2^n, n!, n^3, n \log n, 10^{10}, \log n$.
-    *   *Resolución:* $10^{10} \ll \log n \ll n \log n \ll n^3 \ll 2^n \ll n!$.
-3.  **Propiedades**: Demuestra que si $f(n) = O(g(n))$ y $g(n) = O(h(n))$, entonces $f(n) = O(h(n))$. (Transitividad).
-    *   *Resolución:* Por definición, $f(n) \le c_1 g(n)$ y $g(n) \le c_2 h(n)$. Sustituyendo, $f(n) \le (c_1 c_2) h(n)$. Se cumple con $c = c_1 c_2$.
+## 📝 Ejercicios para practicar
+1.  **Guerra de Límites**: ¿Quién gana entre $n^2 \log n$ y $n^3$?
+    *   *Resolución*: Hacemos el límite del cociente: $\lim \frac{n^2 \log n}{n^3} = \dots = \lim \frac{\log n}{n} = 0$.
+    *   *Directo*: Como el límite es cero, el de abajo es mucho más potente. Por tanto, $n^2 \log n = O(n^3)$. Ganamos.
+2.  **Ordenar funciones**: $2^n, n!, 1000n, n^2$.
+    *   *Ojo con esto*: El 1000n parece mucho, pero es lineal. El orden real es $1000n \ll n^2 \ll 2^n \ll n!$.
+3.  **Transitividad**: Si $f = O(g)$ y $g = O(h)$, entonces $f = O(h)$. 
+    *   *Lógica pura*: Si $f$ es más pequeño que $g$ y $g$ es más pequeño que $h$... pues $f$ es más pequeño que $h$. No hay más.
