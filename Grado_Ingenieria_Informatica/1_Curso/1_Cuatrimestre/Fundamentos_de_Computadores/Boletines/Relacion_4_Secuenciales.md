@@ -1,16 +1,39 @@
-# FC - Relación 4: Introducción a Circuitos Secuenciales (Oficial UHU)
+# Fundamentos de Computadores - Relación 4: Circuitos Secuenciales
 
-## 🧠 Contexto Teórico
-Circuitos con capacidad de almacenamiento (estado interno).
+A diferencia de los sistemas combinacionales, los circuitos secuenciales incorporan elementos de memoria, permitiendo que la salida dependa tanto de las entradas actuales como de la historia previa del sistema (estado interno).
 
-*   **Biestables (Flip-Flops)**: S-R, D (Data), J-K (Universal), T (Toggle).
-*   **Señal de Reloj (CLK)**: Sincroniza los cambios. Disparo por flanco.
-*   **Diagramas de Estado**: Representación de la lógica del sistema.
+## Fundamentación Teórica
 
-## 📝 Ejercicios de la Relación
-1.  **Tabla de Excitación JK**: Si el estado actual es $Q=0$ y queremos pasar a $Q=1$, ¿qué valores deben tener J y K?
-    *   *Resolución:* $J=1, K=X$ (indiferente, ya que tanto $1,0$ como $1,1$ llevan a 1).
-2.  **Análisis de Cronograma**: Dibuja la salida de un biestable D disparado por flanco de subida si D cambia de 0 a 1 justo antes del flanco.
-    *   *Resolución:* La salida $Q$ copiará el valor 1 en el momento del flanco y lo mantendrá hasta el siguiente.
-3.  **Contadores**: Diseña un contador módulo 3 (0, 1, 2, 0...) usando biestables tipo D.
-    *   *Resolución:* Necesitamos 2 biestables ($2^2 = 4 > 3$). Tabla de transición: $00 \to 01, 01 \to 10, 10 \to 00$.
+### Elementos de Memoria
+- **Biestables (Flip-Flops)**: Unidades básicas de almacenamiento sincronizadas por una señal de reloj ($CLK$).
+  - **Tipo D**: Almacena el valor de entrada en el flanco activo.
+  - **Tipo JK**: Versátil, permite funciones de set, reset, memoria y basculación (toggle).
+  - **Tipo T**: Cambia el estado interno si la entrada es 1.
+
+### Máquinas de Estados Finitos (FSM)
+- **Modelo de Mealy**: La salida depende del estado actual y de las entradas.
+- **Modelo de Moore**: La salida depende exclusivamente del estado actual.
+
+### Registros y Contadores
+- **Registros de Desplazamiento**: Movimiento secuencial de datos bit a bit.
+- **Contadores Síncronos y Asíncronos**: Evolución de estados siguiendo una secuencia numérica (Binaria, Gray, BCD).
+
+## Resolución de Problemas Seleccionados
+
+1. **Análisis de un Contador Síncrono**
+   *Problema*: Determinar la secuencia de estados de un contador basado en dos biestables JK.
+   *Metodología*: 
+   - Obtención de las ecuaciones de excitación de las entradas $J$ y $K$.
+   - Elaboración de la tabla de transición de estados.
+   - Identificación de ciclos o estados no deseados (autocorrección).
+
+2. **Diseño de un Detector de Secuencia**
+   *Problema*: Diseñar una FSM que detecte la secuencia binaria `1011` en una corriente de datos de entrada.
+   *Resolución*: 
+   - Definición del diagrama de estados (5 estados requeridos para el modelo de Moore).
+   - Codificación de estados y selección de biestables.
+   - Síntesis de la lógica de control lógica combinacional de entrada y salida.
+
+3. **Cronogramas (Timing Diagrams)**
+   *Problema*: Dibujar la evolución temporal de la salida $Q$ de un Flip-Flop D disparado por flanco de subida, considerando tiempos de establecimiento ($t_{setup}$) y mantenimiento ($t_{hold}$).
+   *Concepto Crítico*: La violación de estos parámetros temporales puede inducir estados de metaestabilidad en el sistema.

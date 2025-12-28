@@ -1,15 +1,28 @@
-# FC - Relación 3: Circuitos Combinacionales (Oficial UHU)
+# Fundamentos de Computadores - Relación 3: Bloques Combinacionales
 
-## 🧠 Contexto Teórico
-Circuitos donde la salida depende exclusivamente de las entradas actuales.
+El diseño combinacional se enfoca en circuitos cuyas salidas dependen exclusivamente de los valores actuales de sus entradas en un instante dado.
 
-*   **Mapas de Karnaugh**: Método gráfico de simplificación.
-*   **Módulos MSI**: Multiplexores (selector), Decodificadores (activador), Sumadores.
+## Fundamentación Teórica
 
-## 📝 Ejercicios de la Relación
-1.  **Simplificación K-Map**: Simplifica $F(A,B,C,D) = \sum m(0,2,8,10,5,7,13,15)$.
-    *   *Resolución:* Agrupamos los 4 unos de las esquinas ($\overline{B}\overline{D}$) y los 4 del centro ($BD$). Resultado: $F = \overline{B}\overline{D} + BD = B \odot D$ (XNOR).
-2.  **Diseño con Multiplexores**: Implementa una XOR de 2 entradas usando un MUX 4:1.
-    *   *Resolución:* Entradas de selección $A, B$. Entradas de datos: $I_0=0, I_1=1, I_2=1, I_3=0$.
-3.  **Análisis de sumador**: ¿Cuál es el resultado de un sumador de 4 bits si sumamos $1011 + 0101$?
-    *   *Resolución:* $1011 (11) + 0101 (5) = 10000 (16)$. El resultado es $0000$ con acarreo de salida $C_{out}=1$.
+### Bloques de Procesamiento de Datos
+- **Codificadores y Decodificadores**: Traducción entre representaciones binarias (ej. binario a 7 segmentos).
+- **Multiplexores (MUX) y Demultiplexores (DEMUX)**: Selección y enrutamiento de señales de datos bajo el control de señales de selección.
+- **Comparadores**: Determinación de relaciones de igualdad o magnitud entre dos palabras binarias.
+
+### Bloques Aritméticos
+- **Semisumador (Half-Adder)** y **Sumador Completo (Full-Adder)**.
+- **Unidad Lógica Aritmética (ALU)**: Bloque fundamental capaz de realizar múltiples operaciones aritméticas y lógicas.
+
+## Resolución de Problemas Seleccionados
+
+1. **Diseño de un Sumador de 4 Bits (Ripple Carry Adder)**
+   *Problema*: Interconexión de sumadores completos para procesar palabras de 4 bits.
+   *Concepto Crítico*: El retardo de propagación del acarreo ($C_{out}$) limita la frecuencia máxima de operación del circuito. Para mitigar esto, en diseños avanzados se utilizan sumadores con anticipación de acarreo (Carry Look-Ahead).
+
+2. **Implementación de Funciones Lógicas con Multiplexores**
+   *Problema*: Utilizar un MUX de 8 a 1 para implementar la función $f(A,B,C,D) = \sum m(0,1,3,4,8,9,15)$.
+   *Metodología*: Se utilizan las variables $A, B, C$ como señales de selección y se conecta la variable $D$ o sus constantes (0, 1) a las entradas de datos según la tabla de verdad.
+
+3. **Decodificadores de Siete Segmentos**
+   *Problema*: Diseño de la lógica para el segmento 'a' de un visualizador LED basado en una entrada BCD de 4 bits.
+   *Resolución*: Definición de minitérminos para los dígitos 0-9 y tratamiento como "don't care" (X) para los valores 10-15 para optimizar el área del circuito.

@@ -1,22 +1,24 @@
-# FAA - Relación 5: Programación Dinámica (Oficial UHU)
+# FAA - Relación 5: Programación Dinámica
 
-## 🧠 De qué va esto
-Si Greedy falla o no es óptimo, tiramos de Dinámica. La clave es: "No calcules dos veces lo mismo". Guardamos resultados en una tabla.
+La Programación Dinámica es una técnica de diseño de algoritmos que resuelve problemas complejos descomponiéndolos en subproblemas solapados. A diferencia de "Divide y Vencerás", esta técnica evita la redundancia mediante la memorización o tabulación de resultados.
 
-*   **Principio de Optimalidad de Bellman**: Una solución óptima contiene subsoluciones óptimas.
-*   **Bottom-up**: Empezamos por los casos base y rellenamos la tabla hacia arriba.
+## 1. Requisitos para la Aplicación
+1. **Subestructura Óptima**: La solución al problema original puede construirse eficientemente a partir de las soluciones óptimas de sus subproblemas.
+2. **Subproblemas Solapados**: El espacio de subproblemas es pequeño, y los mismos subproblemas se resuelven repetidamente.
 
-## 📝 Ejercicios Típicos
-1.  **Mochila (0/1)**: El mismo de antes, pero NO puedes partir los objetos. O los coges o no.
-    *   *La tabla (V[i][j])*: 
-        - Filas: Objetos.
-        - Columnas: Capacidad de la mochila (de 0 a W).
-    *   *Fórmula que hay que saberse*: $V[i][j] = \max(V[i-1][j], \text{valor}[i] + V[i-1][j-\text{peso}[i]])$.
-    *   Básicamente: "Mejor me quedo como estaba (arriba) o meto el nuevo objeto y le sumo lo que podía meter con el hueco que queda".
+## 2. Metodología de Resolución
+- **Enfoque Top-Down (Memoization)**: Resolución recursiva con almacenamiento de resultados para evitar recomputaciones.
+- **Enfoque Bottom-Up (Tabular)**: Resolución iterativa que rellena una tabla de menor a mayor complejidad de subproblema.
 
-2.  **Cambio de monedas (Mínimo)**: Para que sea siempre óptimo.
-    *   *Ecuación*: $C[v] = 1 + \min(C[v - \text{moneda}_i])$.
-    *   Rellenas un array de 0 hasta el valor deseado. El último elemento es tu respuesta. Es mucho más lento que el Greedy pero este no falla nunca.
+## 📝 Aplicación Técnica: Multiplicación de Cadenas de Matrices
+El objetivo es determinar el orden óptimo de paréntesis para minimizar el número de multiplicaciones escalares.
+- **Ecuación de Recurrencia**: 
+  $m[i,j] = \min_{i \le k < j} \{ m[i,k] + m[k+1,j] + p_{i-1}p_kp_j \}$
+  Donde $p$ define las dimensiones de las matrices.
 
-3.  **Multiplicación de Matrices**: Hallar el orden de paréntesis que minimiza las operaciones.
-    *   *Tip para el examen*: La tabla es triangular. Rellena las diagonales poco a poco. Es un coñazo de calcular a mano, así que no te equivoques con las sumas.
+## 📝 Ejercicio de Examen
+Dada una secuencia de matrices con dimensiones $10 \times 100$, $100 \times 5$ y $5 \times 50$, calcule el coste mínimo de multiplicación.
+*Resolución*:
+1. Multiplicar $(A_1 A_2) A_3$: $(10 \cdot 100 \cdot 5) + (10 \cdot 5 \cdot 50) = 5000 + 2500 = 7500$ operaciones.
+2. Multiplicar $A_1 (A_2 A_3)$: $(100 \cdot 5 \cdot 50) + (10 \cdot 100 \cdot 50) = 25000 + 50000 = 75000$ operaciones.
+*Conclusión*: La primera opción es el orden óptimo.
