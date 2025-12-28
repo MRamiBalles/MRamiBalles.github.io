@@ -1,0 +1,16 @@
+<project name="Urium" default="dist" basedir=".">
+  <description>  build file for Urium compiler </description>
+	
+  <target name="dist" description="generate the distribution" >
+
+
+    <!-- Put everything in /bin into the uriumc.jar file -->
+    <jar jarfile="uriumc.jar" 
+         manifest="UriumManifest.mf"
+         basedir="bin" />
+
+
+  </target>
+
+
+</project>
