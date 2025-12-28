@@ -1,28 +1,20 @@
 # FAA - Relación 2: Análisis de Algoritmos Iterativos (Oficial UHU)
 
-## 🧠 Contexto Teórico (Análisis de Bucles)
-El coste de un algoritmo iterativo se obtiene sumando las operaciones elementales de cada instrucción.
+## 🧠 ¿Cuánto tarda este bucle?
+En los exámenes de la UHU les encanta poner bucles raros. La regla de oro es: si es un bucle simple, es el número de vueltas. Si están anidados, multiplicas.
 
-*   **Regla de la secuencia**: $T(S_1; S_2) = T(S_1) + T(S_2)$.
-*   **Regla de la selección**: $T(\text{if } B \text{ then } S_1 \text{ else } S_2) = T(B) + \max(T(S_1), T(S_2))$.
-*   **Regla de la iteración**: $\sum_{i=1}^{n} \text{coste}(Cuerpo)$.
+*   **Secuencia**: Es una suma ($T_1 + T_2$). No pierdas tiempo, quédate con el más gordo.
+*   **If-Then-Else**: Quédate con la rama que más tarde. Siempre nos ponemos en lo peor (Peor Caso).
 
 ## 📝 Ejercicios de la Relación
-1.  **Suma de Naturales**: Analiza el coste de un bucle que suma los elementos de un array de tamaño n.
-    *   *Resolución:* $\sum_{i=0}^{n-1} c = c \cdot n = \Theta(n)$.
-2.  **Bucles Anidados Independientes**:
+1.  **El bucle tonto**: Recorrer un array de cabo a rabo.
+    *   Damos $n$ vueltas haciendo una operación constante. Pues $\Theta(n)$. Sin misterios.
+2.  **Bucles dependientes**: 
     ```cpp
-    for (int i=0; i < n; i++)
-        for (int j=0; j < m; j++)
+    for (int i=0; i<n; i++)
+        for (int j=0; j<i; j++) // Ojo aquí, j depende de i
             count++;
     ```
-    *   *Resolución:* $\sum_{i=0}^{n-1} \sum_{j=0}^{m-1} 1 = n \cdot m$. Si $n=m$, $\Theta(n^2)$.
-3.  **Bucle con Paso Logarítmico**:
-    ```cpp
-    int i = n;
-    while (i > 0) {
-        // O(1)
-        i = i / 2;
-    }
-    ```
-    *   *Resolución:* El número de iteraciones es la potencia $k$ tal que $2^k \approx n$. Es decir, $k = \log_2 n$. Resultado $\Theta(\log n)$.
+    *   *Truco*: Esto es la mitad de un cuadrado. Es la suma $1+2+3 \dots + n = \frac{n(n+1)}{2}$. Por tanto, $\Theta(n^2)$.
+3.  **El que divide**: `while (i > 0) { i /= 2; }`
+    *   Esto es logarítmico. Siempre que el avance sea multiplicando o dividiendo, el coste es $\log n$.
