@@ -1,17 +1,22 @@
-# AC - Relación 2: Planificación Dinámica - Tomasulo (Oficial UHU)
+# AC - Relación 2: Planificación Dinámica de Instrucciones (Algoritmo de Tomasulo)
 
-## 🧠 Entendiendo a Tomasulo
-Este es el "coco" de la asignatura. El objetivo es ejecutar instrucciones fuera de orden (OoO) para no pararnos si una instrucción tarda mucho.
+El Algoritmo de Tomasulo permite la ejecución de instrucciones fuera de orden (Out-of-Order Execution), maximizando el paralelismo a nivel de instrucción (ILP) mediante el renombramiento de registros y la eliminación de riesgos de datos.
 
-*   **Estaciones de Reserva (RS)**: Buffers donde las instrucciones esperan a que sus operandos estén listos.
-*   **Renombramiento de Registros**: Evita los riesgos WAW y WAR. Desligamos el "nombre" del registro ($R1, R2$) del "valor" real.
-*   **CDB (Common Data Bus)**: El bus por el que los resultados vuelan hacia todas las RS que los estén esperando.
+## 1. Mecanismos Fundamentales
+- **Estaciones de Reserva (RS)**: Buffers que almacenan instrucciones pendientes, sus operandos (si están disponibles) o el identificador de la unidad funcional que producirá el operando.
+- **Common Data Bus (CDB)**: Bus de difusión que permite la propagación de resultados directamente a todas las RS que los requieran, evitando cuellos de botella en el banco de registros.
+- **Renombramiento de Registros**: Mitiga riesgos WAR (Write After Read) y WAW (Write After Write) al desacoplar los nombres de los registros lógicos de sus valores físicos.
 
-## 📝 Ejercicio de Examen (La Tabla)
-Te dan un código y tienes que rellenar el estado de las RS en el ciclo $X$.
-1.  **Emisión (Issue)**: La instrucción entra en una RS si hay hueco.
-2.  **Ejecución**: Si tiene los valores ($Vj, Vk$ están listos), empieza a contar ciclos.
-3.  **Escritura**: El resultado se lanza al CDB.
+## 2. Etapas del Algoritmo
+1. **Emisión (Issue)**: La instrucción se traslada a una RS libre. Se realiza el renombramiento de registros.
+2. **Ejecución (Execute)**: Cuando los operandos son válidos, la unidad funcional inicia la operación.
+3. **Escritura (Write Result)**: El resultado se difunde por el CDB y se actualiza el banco de registros y las RS dependientes.
 
-*   *El truco de la UHU*: Si ves un campo $Qj$ con algo como `Add1`, significa que está esperando a que la unidad `Add1` termine. En cuanto termine, ese valor pasa a ser un `Vj` (valor real).
-*   *Diferencia con Scoreboarding*: Tomasulo usa el CDB y renombramiento; Scoreboarding es más simple y tiene riesgos WAR/WAW.
+## 📝 Análisis de Estado (RS Table)
+En un ciclo de reloj determinado, la tabla de Estaciones de Reserva permite visualizar la telemetría del procesador:
+- `Busy`: Indica si la RS está ocupada.
+- `Op`: Operación a realizar.
+- `Vj, Vk`: Valores de los operandos.
+- `Qj, Qk`: Unidades funcionales de las que se espera un resultado.
+
+*Nota Técnica*: El uso del CDB permite la resolución de riesgos RAW (Read After Write) mediante el "forwarding" hardware, reduciendo los ciclos de parada (stalls) en comparación con técnicas de planificación estática.
