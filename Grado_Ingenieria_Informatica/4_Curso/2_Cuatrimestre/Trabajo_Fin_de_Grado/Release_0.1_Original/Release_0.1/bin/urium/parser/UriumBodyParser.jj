@@ -1,0 +1,1972 @@
+options
+{
+  STATIC=false;
+}
+PARSER_BEGIN(UriumBodyParser)
+
+//------------------------------------------------------------------//
+//                        COPYRIGHT NOTICE                          //
+//------------------------------------------------------------------//
+// Copyright (c) 2024, Francisco J. Moreno Velo                     //
+//                                                                  //
+// Permission is hereby granted, free of charge, to any person      //
+// obtaining a copy of this software and associated documentation   //
+// files (the "Software"), to deal in the Software without          //
+// restriction, including without limitation the rights to use,     //
+// copy, modify, merge, publish, distribute, sublicense, and/or     //
+// sell copies of the Software, and to permit persons to whom the   //
+// Software is furnished to do so, subject to the following         //
+// conditions:                                                      //
+//                                                                  //
+// - The above copyright notice and this permission notice shall be //
+//   included in all copies or substantial portions of the Software.//
+//                                                                  //
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,  //
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES  //
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND         //
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT      //
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,     //
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING     //
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR    //
+// OTHER DEALINGS IN THE SOFTWARE.                                  //
+//------------------------------------------------------------------//
+
+//------------------------------------------------------------------//
+//                      Universidad de Huelva                       //
+//          Departamento de Tecnologías de la Información           //
+//   Área de Ciencias de la Computación e Inteligencia Artificial   //
+//------------------------------------------------------------------//
+//                                                                  //
+//                         Urium compiler                           //
+//                                                                  //
+//------------------------------------------------------------------//
+
+package urium.parser;
+
+import java.util.Vector;
+import urium.ast.*;
+import urium.ast.expression.*;
+import urium.ast.statement.*;
+import urium.ast.struct.*;
+
+public class UriumBodyParser {
+
+	//----------------------------------------------------------------//
+	//                         Private members                        //
+	//----------------------------------------------------------------//
+
+	/**
+	 * Error count
+	 */
+	private int errorCount;
+	
+	/**
+	 * Error message
+	 */
+	private String errorMsg;
+
+	//----------------------------------------------------------------//
+	//                           Public methods                       //
+	//----------------------------------------------------------------//
+	
+	/**
+	 * Method to parse an Urium file
+	 */
+	public void parse(String name, SymbolTable symtab)
+	{
+	    this.errorCount = 0;
+	    this.errorMsg = "";
+		try
+		{
+		  	symtab.setActiveLibrary(name);
+			CompilationUnit(symtab);
+		}
+		catch(Exception e)
+		{
+		    catchError(e);
+		}
+	}
+	
+	/**
+	 * Gets the number of errors in the analysis
+	 */
+	public int getErrorCount()
+	{
+		return this.errorCount;
+	}
+	
+	/**
+	 * Get the error message of the analysis
+	 */
+	public String getErrorMsg()
+	{
+		return this.errorMsg;
+	}
+
+	//----------------------------------------------------------------//
+	//                 Private methods (semantic checks)              //
+	//----------------------------------------------------------------//
+
+	/**
+	 * Stores a parse error
+	 */
+	private void catchError(Throwable ex)
+	{
+		this.errorCount++;
+		this.errorMsg += ex.toString();
+	}
+
+	/**
+	 * Checks that the statement to be added to a block is reachable
+	 */
+	private boolean verifyReachableCode(Statement stm, BlockStatement block)
+	{
+		if(stm != null && block.returns() )
+		{
+			int errorcode = SemanticException.UNREACHABLE_CODE_EXCEPTION;
+			catchError(new SemanticException(errorcode,getToken(0)));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that a variable is not duplicated
+	 */
+	private boolean verifyNonDuplicatedVariable(Token tk, SymbolTable symtab)
+	{
+		if(symtab.getVariableInScope(tk.image)!=null)
+		{
+			int errorcode = SemanticException.DUPLICATE_VARIABLE_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that a condition is of boolean type.
+	 */
+	private boolean verifyConditionType(Token tk, Expression expr)
+	{
+		if(!TypeSystem.isBoolean( expr.getType() ))
+		{
+			int errorcode = SemanticException.INVALID_CONDITION_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks the existence of a variable in an assignment statement
+	 */
+	private boolean verifyKnownVariable(Token tk, SymbolTable symtab)
+	{
+		if(symtab.getVariable(tk.image) == null)
+		{
+			int errorcode = SemanticException.UNKNOWN_VARIABLE_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/** 
+	 * Checks that the data types in an assignment statement are correct
+	 */
+	private boolean verifyAssignTypes(Token tk, Variable var, Expression expr)
+	{
+		if(!TypeSystem.isAssignable(var.getType(),expr.getType()))
+		{
+			int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks the existence of a library in the symbol table
+	 */
+	private boolean verifyKnownLibrary(Token tk, String name, SymbolTable symtab)
+	{
+	    String libname = symtab.getActiveLibrary().getLibraryNameFromAlias(name);
+		if(libname == null)
+		{
+			int errorcode = SemanticException.UNKNOWN_LIBRARY_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		if(symtab.getLibrary(libname) == null)
+		{
+			int errorcode = SemanticException.UNKNOWN_LIBRARY_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks the existence of a procedure in the active library
+	 */
+	private boolean verifyKnownProcedure(Token tk, CallParameters param, SymbolTable symtab)
+	{
+		if(symtab.getActiveLibrary().getAnyProcedure(tk.image,param.getTypes()) == null)
+		{
+			int errorcode = SemanticException.UNKNOWN_PROCEDURE_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks the existence of a public procedure in a certain library
+	 */
+	private boolean verifyKnownProcedure(Token tk, String procname, CallParameters param, LibraryDeclaration library)
+	{
+		if(library.getPublicProcedure(procname,param.getTypes()) == null)
+		{
+			int errorcode = SemanticException.UNKNOWN_PROCEDURE_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that both operands of a logical expression (AND, OR) are boolean
+	 */
+	private boolean verifyBooleanTypes(Token tk, Expression exp1, Expression exp2)
+	{
+		if(!TypeSystem.isBoolean(exp1.getType()) || !TypeSystem.isBoolean(exp2.getType()))
+		{
+			int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that the data types of the two operands of a relation are correct
+	 */
+	private boolean verifyRelationTypes(Token tk, int relop, Expression exp1, Expression exp2)
+	{
+		switch(relop)
+		{
+		case BinaryExpression.EQ:
+		case BinaryExpression.NEQ:
+			if(!TypeSystem.isComparable(exp1.getType(),exp2.getType()))
+			{
+				int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+				catchError(new SemanticException(errorcode,tk));
+				return false;
+			}
+			return true;
+		case BinaryExpression.GT:
+		case BinaryExpression.GE:
+		case BinaryExpression.LT:
+		case BinaryExpression.LE:
+			if(!TypeSystem.isOrderable(exp1.getType(),exp2.getType()))
+			{
+				int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+				catchError(new SemanticException(errorcode,tk));
+				return false;
+			}
+			return true;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that an expression is of boolean type (to be able to apply NOT)
+	 */
+	private boolean verifyBooleanType(Token tk, Expression expr)
+	{
+		if(!TypeSystem.isBoolean( expr.getType() ))
+		{
+			int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that an expression is of numeric type (so that '+' and '-' can be applied)
+	 */
+	private boolean verifyNumericType(Token tk, Expression exp)
+	{
+		if(!TypeSystem.isNumeric(exp.getType()))
+		{
+			int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks that two expressions are of numeric type (so that '+','-','*'and'/' can be applied)
+	 */
+	private boolean verifyNumericTypes(Token tk, Expression exp1, Expression exp2)
+	{
+		if(!TypeSystem.isNumeric( exp1.getType() ) || !TypeSystem.isNumeric( exp2.getType() ))
+		{
+			int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that two expressions are of integer type (so that '%' can be applied).
+	 */
+	private boolean verifyIntegerTypes(Token tk, Expression exp1, Expression exp2)
+	{
+		if(!TypeSystem.isInteger( exp1.getType() ) || !TypeSystem.isInteger( exp2.getType() ))
+		{
+			int errorcode = SemanticException.TYPE_MISMATCH_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that the value of an integer literal is correct
+	 */
+	private boolean verifyIntegerValue(Token tk)
+	{
+		try
+		{
+	    	if(tk.image.startsWith("0x") || tk.image.startsWith("0X")) IntegerLiteralExpression.parseHexInt(tk.image.substring(2));
+	    	else if(tk.image.startsWith("0b") || tk.image.startsWith("0B")) IntegerLiteralExpression.parseBinaryInt(tk.image.substring(2));
+	    	else if(tk.image.startsWith("0")) Integer.parseInt(tk.image,8);
+	    	else Integer.parseInt(tk.image);
+	    	return true;
+		}
+		catch(Exception e)
+		{
+			int errorcode = SemanticException.NUMBER_FORMAT_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+	}
+	
+	//----------------------------------------------------------------//
+	//   Private methods (semantic actions for handling statements)   //
+	//----------------------------------------------------------------//
+
+	/**
+     * Semantic action to add a statement to a block of statements.
+     */
+    private void actionAddStatement(BlockStatement block, Statement stm)
+    {
+    	if(stm == null) return;
+    	if(!verifyReachableCode(stm,block)) return;
+    	block.addStatement(stm);
+    }
+
+    /**
+     * Semantic action to assign the body of a procedure
+     */
+    private void actionSetProcedureBody(Token tk, BlockStatement block, SymbolTable symtab)
+    {
+    	Procedure proc = symtab.getActiveProcedure();
+    	if(proc != null) proc.setBody(block);
+    }
+
+	/**
+	 * Semantic action that adds the declaration of a variable
+	 */
+	private Variable actionAddDeclaration(SymbolTable symtab, DataType type,Token tid)
+	{
+		if(!verifyNonDuplicatedVariable(tid, symtab)) return null;
+		Variable var = new Variable(type, tid.image);
+		symtab.addLocalVariable(var);
+		return var;
+	}
+
+	/**
+	 * Semantic action that adds an assignment statement
+	 */
+	private void actionAddAssignement(BlockStatement block, Token tk, Variable var, Expression exp)
+	{
+		if(exp != null && var != null)
+		{
+			if(!verifyAssignTypes(tk, var, exp)) return;
+			VariableExpression varexp = new VariableExpression(var);
+			AssignStatement stm = new AssignStatement(varexp,exp);
+			block.addStatement(stm);
+		}									
+	}
+	
+	/**
+	 * Semantic action that obtains the instruction associated with a variable
+	 * declaration. If there are no initializations, it returns null. If there
+	 * is only one initialization, it returns that assignment. If there is more
+	 * than one (in a list of declarations), it returns the block of assignments.
+	 */
+	private Statement actionGetStatementFromBlock(BlockStatement block)
+	{
+		Statement[] list = block.getStatementList();
+		if(list.length == 0) return null;
+		if(list.length == 1) return list[0];
+		return block;
+	}
+
+	/**
+	 * Semantic action that creates an if statement
+	 */
+	private Statement actionIfStatement(Token tk, Expression cond, Statement thenStm, Statement elseStm)
+	{
+		if(!verifyConditionType(tk,cond)) return null;
+		return new IfStatement(cond,thenStm,elseStm);
+	}
+
+    /**
+     * Semantic action that creates a while statement
+     */
+	private Statement actionWhileStatement(Token tk, Expression cond, Statement body)
+    {
+		if(!verifyConditionType(tk,cond)) return null;
+		return new WhileStatement(cond,body);
+    }
+
+    /**
+     * Semantic action that creates an endp statement
+     */
+	private Statement actionEndpStatement(Token tk, SymbolTable symtab)
+	{
+		return new EndpStatement();
+	}
+
+	/**
+	 * Semantic action that creates an assignment statement
+	 */
+	private Statement actionAssignStatement(Token tk, Expression exp, SymbolTable symtab)
+	{
+		if(!verifyKnownVariable(tk,symtab)) return null;
+		Variable var = symtab.getVariable(tk.image);
+		if(!verifyAssignTypes(tk,var,exp)) return null;
+		VariableExpression varexp = new VariableExpression(var);
+		return new AssignStatement(varexp,exp);
+	}
+
+	/**
+	 * Semantic action that creates a call instruction to a procedure in the same library
+	 */
+	private Statement actionCallStatement(Token tk, CallParameters param, SymbolTable symtab)
+	{
+		if(!verifyKnownProcedure(tk,param,symtab)) return null;		
+		Procedure called = symtab.getActiveLibrary().getAnyProcedure(tk.image,param.getTypes());
+		return new CallStatement(called,param,symtab.getActiveLibrary());
+	}
+	
+	/**
+	 * Semantic action that creates a call instruction to a procedure in n imported library
+	 */
+	private Statement actionCallStatement(Token tid, String name, CallParameters param, SymbolTable symtab)
+	{
+	  	int last = name.lastIndexOf('.');
+		String aliasname = name.substring(0,last);
+		String procname= name.substring(last+1);
+		
+		if(!verifyKnownLibrary(tid,aliasname,symtab)) return null;
+		String libname = symtab.getActiveLibrary().getLibraryNameFromAlias(aliasname);
+		LibraryDeclaration lib = symtab.getLibrary(libname);
+		if(!verifyKnownProcedure(tid,procname,param,lib)) return null;
+		Procedure called = lib.getPublicProcedure(procname,param.getTypes());
+		return new CallStatement(called,param,lib);
+	}
+
+	//----------------------------------------------------------------//
+	//   Private methods (semantic actions for handling expressions)  //
+	//----------------------------------------------------------------//
+	
+	/**
+	 * Semantic action that creates a binary expression that defines
+	 * an OR between two expressions
+	 */
+	private Expression actionOrExpression(Token tk,Expression exp1, Expression exp2)
+	{
+		if(exp1 == null || exp2 == null) return new BooleanLiteralExpression(false);
+		if(!verifyBooleanTypes(tk,exp1,exp2)) return new BooleanLiteralExpression(false);
+		int op = BinaryExpression.OR;
+		Expression exp = new BinaryExpression(op, exp1, exp2);
+		return exp;
+	}
+
+	/**
+	 * Semantic action that creates a binary expression that defines
+	 * an AND between two expressions
+	 */
+	private Expression actionAndExpression(Token tk,Expression exp1, Expression exp2)
+	{
+		if(exp1 == null || exp2 == null) return new BooleanLiteralExpression(false);
+		if(!verifyBooleanTypes(tk,exp1,exp2)) return new BooleanLiteralExpression(false);
+		int op = BinaryExpression.AND;
+		Expression exp = new BinaryExpression(op, exp1, exp2);
+		return exp; 
+	}
+
+	/**
+	 * Semantic action that creates a binary expression that defines
+	 * a relation between two expressions
+	 */
+	private Expression actionRelExpression(Token tk, int op, Expression exp1, Expression exp2)
+	{
+		if(exp1 == null || exp2 == null) return new BooleanLiteralExpression(false);
+		if(!verifyRelationTypes(tk, op, exp1, exp2)) return new BooleanLiteralExpression(false);
+		Expression exp = new BinaryExpression(op, exp1, exp2);
+		return exp; 
+	}
+
+	/**
+	 * Semantic action that creates a unary expression on another expression.
+	 */
+	private Expression actionUnaryExpression(Token tk, int op, Expression exp)
+	{
+		switch(op)
+		{
+			case UnaryExpression.NONE: 
+				return exp;
+			case UnaryExpression.NOT: 
+				if(!verifyBooleanType(tk,exp)) return new BooleanLiteralExpression(false); 
+				return new UnaryExpression(op,exp);
+			case UnaryExpression.MINUS:
+				if(!verifyNumericType(tk,exp)) return new IntegerLiteralExpression(0); 
+				return new UnaryExpression(op,exp);
+			case UnaryExpression.PLUS:
+				if(!verifyNumericType(tk,exp)) return new IntegerLiteralExpression(0); 
+				return exp;
+		}
+		return exp; 
+	}
+	
+	/**
+	 * Semantic action that creates a binary expression in the form of addition or subtraction
+	 */
+	private Expression actionSumExpression(Token tk,int op, Expression exp1, Expression exp2)
+	{
+		if(exp1 == null || exp2 == null) return new IntegerLiteralExpression(0);
+		if(!verifyNumericTypes(tk,exp1,exp2)) return new IntegerLiteralExpression(0);
+		Expression exp = new BinaryExpression(op, exp1, exp2);
+		return exp; 
+	}
+
+	/**
+	 * Semantic action that creates a binary expression in the form of a product, division or remainder
+	 */
+	private Expression actionProdExpression(Token tk,int op, Expression exp1, Expression exp2)
+	{
+		if(exp1 == null || exp2 == null) return new IntegerLiteralExpression(0);
+		if(op == BinaryExpression.MOD && !verifyIntegerTypes(tk,exp1,exp2)) return new IntegerLiteralExpression(0);
+		if(op != BinaryExpression.MOD && !verifyNumericTypes(tk,exp1,exp2)) return new IntegerLiteralExpression(0);
+		Expression exp = new BinaryExpression(op, exp1, exp2);
+		return exp; 
+	}
+
+	/**
+	 * Semantic action that creates a literal of integer type
+	 */
+	private LiteralExpression actionIntegerLiteral(Token tk)
+	{
+		if(!verifyIntegerValue(tk)) return new IntegerLiteralExpression(0);
+		return new IntegerLiteralExpression(tk.image); 
+	}
+
+	/**
+	 * Semantic action that creates a reference to a variable
+	 */
+	private Expression actionReferenceExpression(Token tid, SymbolTable symtab)
+	{
+		return actionVariableExpression(tid, symtab);
+	}
+
+	/**
+	 * Semantic action that creates a reference to a variable
+	 */
+	private Expression actionVariableExpression(Token tid, SymbolTable symtab)
+	{
+		if(!verifyKnownVariable(tid,symtab)) return new IntegerLiteralExpression(0);
+		Variable var = symtab.getVariable(tid.image);
+		return new VariableExpression(var);
+	}
+
+	/**
+	 * Semantic action that creates an output parameter
+	 */
+	private Expression actionOutParameter(Token tid, SymbolTable symtab)
+	{
+		if(!verifyKnownVariable(tid,symtab)) return new IntegerLiteralExpression(0);
+		Variable var = symtab.getVariable(tid.image);
+		return new OutVariableExpression(var);
+	}
+}
+
+PARSER_END(UriumBodyParser)
+
+
+/* WHITE SPACE */
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+/* COMMENTS */
+
+SKIP :
+{
+  <SINGLE_LINE_COMMENT: "//" ( ~["\n","\r"] )* ("\n" | "\r" | "\r\n") >
+|
+  <MULTI_LINE_COMMENT: "/*" ( ~["*"] | ("*")+ ~["*","/"] )* ("*")+ "/" >
+}
+
+
+/* RESERVED WORDS */
+
+TOKEN :
+{
+  < AS: "as" >
+| < BOOLEAN: "boolean" >
+| < CHAR: "char" >
+| < ELSE: "else" >
+| < ENDP: "endp" >
+| < FALSE: "false" >
+| < IF: "if" >
+| < IMPORT: "import" >
+| < INT: "int" >
+| < LIBRARY: "library" >
+| < NATIVE: "native" >
+| < OUT: "out" >
+| < PRIVATE: "private" >
+| < PROC: "proc" >
+| < PUBLIC: "public" >
+| < TRUE: "true" >
+| < WHILE: "while" >
+}
+
+/* LITERALS */
+
+TOKEN :
+{
+  < INTEGER_LITERAL: ( <DECIMAL_LITERAL> | <HEX_LITERAL> | <OCTAL_LITERAL> | <BINARY_LITERAL> ) >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+|
+  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+|
+  < #BINARY_LITERAL: "0" ["b","B"] (["0"-"1"])+ >
+|
+  < CHAR_LITERAL:
+      "'"
+      (   (~["'","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )
+      "'"
+  >
+}
+
+/* IDENTIFIERS */
+
+TOKEN :
+{
+  < IDENTIFIER: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","0"-"9","_"] )* >
+}
+
+/* SEPARATORS */
+
+TOKEN :
+{
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACE: "{" >
+| < RBRACE: "}" >
+| < SEMICOLON: ";" >
+| < COMMA: "," >
+| < DOT: "." >
+}
+
+/* OPERATORS */
+
+TOKEN :
+{
+  < ASSIGN: "=" >
+| < EQ: "==" >
+| < LE: "<=" >
+| < GT: ">" >
+| < LT: "<" >
+| < GE: ">=" >
+| < NE: "!=" >
+| < OR: "||" >
+| < AND: "&&" >
+| < NOT: "!" >
+| < PLUS: "+" >
+| < MINUS: "-" >
+| < PROD: "*" >
+| < DIV: "/" >
+| < MOD: "%" >
+}
+
+
+/**************************************************************/
+/*         EL AN�LISIS DE LA CABECERA COMIENZA AQU�           */
+/**************************************************************/
+
+/**
+ * Parses the full content of a source file
+ *
+ * CompilationUnit ::= (InportClause)* UriumDecl
+ */
+void CompilationUnit(SymbolTable symtab):
+{}
+{ 
+  ( ImportClause() )*
+  UriumDecl(symtab)
+}
+
+/**
+ * Parse an import clause
+ *
+ * ImportClause ::= <IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* (<AS> <IDENTIFIER>)? <SEMICOLON> 
+ */
+void ImportClause():
+{
+}
+{
+  <IMPORT>
+  <IDENTIFIER>
+  (<DOT> <IDENTIFIER>)*
+  (<AS> <IDENTIFIER>)?
+  <SEMICOLON>
+}
+
+/**
+ * Parses the declaration of a library (ordinary or native)
+ *
+ * UriumDecl ::=  LibraryDecl |  NativeDecl 
+ */
+void UriumDecl(SymbolTable symtab) :
+{
+}
+{
+  (
+    LibraryDecl(symtab)
+  |
+    NativeDecl(symtab)
+  )
+}
+
+/**
+ * Parses the declaration of an ordinary library
+ *
+ * LibraryDecl ::=  <LIBRARY> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <LBRACE> ( ProcedureDecl )* <RBRACE> 
+ */
+void LibraryDecl(SymbolTable symtab) :
+{
+}
+{
+  <LIBRARY>
+  <IDENTIFIER>
+  (<DOT> <IDENTIFIER>)*
+  <LBRACE>
+  ( ProcedureDecl(symtab) )*
+  <RBRACE> 
+}
+
+/**
+ * Parses the declaration of a procedure
+ *
+ * ProcedureDecl ::= Access <PROC> <IDENTIFIER> ArgumentDecl ProcedureBody
+ */
+void ProcedureDecl(SymbolTable symtab) :
+{
+  Token tid;
+  DataType[] args;
+}
+{
+  Access()
+  <PROC>
+  tid = <IDENTIFIER>
+  args = ArgumentDecl()
+  { symtab.setActiveProcedure(tid.image, args); }
+  ProcedureBody(symtab)
+}
+
+/**
+ * Parses the declaration of a native library
+ *
+ * NativeDecl ::=  <NATIVE> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <LBRACE> ( NativeProcedure )* <RBRACE> 
+ */
+void NativeDecl(SymbolTable symtab) :
+{
+}
+{
+  <NATIVE>
+  <IDENTIFIER>
+  (<DOT> <IDENTIFIER>)*
+  <LBRACE>
+  ( NativeProcedure(symtab) )*
+  <RBRACE> 
+}
+
+/**
+ * Parses the declaration of a procedure of a native library
+ *
+ * NativeProcedure ::= Access <PROC> <IDENTIFIER> ArgumentDecl <SEMICOLON>
+ */
+void NativeProcedure(SymbolTable symtab) :
+{
+}
+{
+  Access()
+  <PROC>
+  <IDENTIFIER>
+  ArgumentDecl()
+  <SEMICOLON>
+}
+
+/**
+ * Parses an access modifier
+ *
+ * Access ::= <PUBLIC> | <PRIVATE>
+ */
+void Access() :
+{
+}
+{
+  <PUBLIC>
+|
+  <PRIVATE>
+}
+
+/**
+ * Parses the declaration of arguments of a procedure
+ *
+ * ArgumentDecl ::= <LPAREN> ( Argument ( <COMMA> Argument )* )? <RPAREN>
+ */
+DataType[] ArgumentDecl() :
+{
+  Vector<DataType > args = new Vector<DataType>();
+}
+{
+  <LPAREN>
+  (
+    Argument(args)
+    (
+      <COMMA>
+      Argument(args)
+    )*
+  )?
+  <RPAREN>
+  {
+    DataType[] type = new DataType[args.size()];
+	args.copyInto(type);
+    return type;
+  }
+}
+
+
+/**
+ * Parses the declaration of an argument
+ *
+ * Argument ::= ArgumentType <IDENTIFIER>
+ */
+void Argument(Vector<DataType> args) :
+{
+  DataType type;
+}
+{
+  type = tryArgumentType()
+  <IDENTIFIER>
+  {
+    args.add(type);
+  }
+}
+
+/**
+ * Parses the data type of an argument
+ *
+ * ArgumentType ::= ( <OUT> )? ( <INT> | <CHAR> | <BOOLEAN> )
+ */
+DataType tryArgumentType() :
+{
+  int[] lsync = { };
+  int[] rsync = { IDENTIFIER };
+  DataType type = DataType.mismatch_type;
+}
+{
+  try
+  {
+    type = parseArgumentType()
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return type;
+  }
+}
+
+/**
+ * Parses the data type of an argument
+ *
+ * ArgumentType ::= ( <OUT> )? ( <INT> | <CHAR> | <BOOLEAN> )
+ */
+DataType parseArgumentType() :
+{
+  DataType type;
+  boolean out = false;
+}
+{
+  ( <OUT> {  out = true; } )?
+    
+  (
+    <INT> { type = (out? DataType.int_ref_type: DataType.int_type); }
+  |
+    <CHAR> { type = (out? DataType.char_ref_type: DataType.char_type); }
+  |
+    <BOOLEAN> { type = (out? DataType.boolean_ref_type: DataType.boolean_type); }
+  )
+  {
+    return type;
+  }
+}
+
+/**
+ * Parses the body of a procedure
+ *
+ * ProcedureBody ::= <LBRACE> ( Statement )* <RBRACE>
+ */
+void ProcedureBody(SymbolTable symtab) :
+{
+  BlockStatement block = new BlockStatement();
+  Statement stm;
+  Token tk;
+}
+{
+  <LBRACE>
+  (
+    stm = tryStatement(symtab)
+    { actionAddStatement(block,stm); }
+  )*
+  tk = <RBRACE>
+  {
+    actionSetProcedureBody(tk, block, symtab);
+  }
+}
+
+/**************************************************************/
+/*             STATEMENT DESCRIPTIONS STARTS HERE             */
+/**************************************************************/
+
+/**
+ * Parses a language statement
+ *
+ * Statement ::= Decl | IdStm | IfStm | WhileStm | EndpStm | NoStm | BlockStm
+ */
+Statement tryStatement(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseStatement(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  } 
+}
+
+/**
+ * Parses a language statement
+ *
+ * Statement ::= Decl | IdStm | IfStm | WhileStm | EndpStm | NoStm | BlockStm
+ */
+Statement parseStatement(SymbolTable symtab) :
+{
+  Statement stm;
+}
+{
+  (    stm = tryDecl(symtab)
+  | stm = tryIdStm(symtab)
+  | stm = tryIfStm(symtab)
+  | stm = tryWhileStm(symtab)
+  | stm = tryEndpStm(symtab)
+  | stm = tryNoStm(symtab)
+  | stm = tryBlockStm(symtab)
+  )
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses the declaration of a variable (or a list of variables)
+ *
+ * Decl ::= Type <IDENTIFIER> Assignement ( <COMMA> <IDENTIFIER> Assignement )* <SEMICOLON>
+ */
+Statement tryDecl(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseDecl(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses the declaration of a variable (or a list of variables)
+ *
+ * Decl ::= Type <IDENTIFIER> Assignement ( <COMMA> <IDENTIFIER> Assignement )* <SEMICOLON>
+ */
+Statement parseDecl(SymbolTable symtab) :
+{
+  DataType type;
+  Token tid;
+  Expression exp;
+  BlockStatement block = new BlockStatement();
+  Variable var;
+}
+{
+  type = tryType()
+  tid = <IDENTIFIER>
+  exp = tryAssignement(symtab)
+  {
+    var = actionAddDeclaration(symtab, type, tid);
+    actionAddAssignement(block,tid,var,exp);
+  }
+  (
+    <COMMA>
+    tid = <IDENTIFIER>
+    exp = tryAssignement(symtab)
+    {
+      var = actionAddDeclaration(symtab, type, tid);
+      actionAddAssignement(block,tid,var,exp);
+    }
+  )*
+  <SEMICOLON>
+  {
+    return actionGetStatementFromBlock(block);
+  }
+}
+
+/**
+ * Parses a basic data type
+ *
+ * Type ::= <INT> | <CHAR> | <BOOLEAN>
+ */
+DataType tryType() :
+{
+  int[] lsync = { };
+  int[] rsync = { IDENTIFIER };
+  DataType type = DataType.mismatch_type;
+}
+{
+  try
+  {
+    type = parseType()
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return type;
+  }
+}
+
+/**
+ * Parses a basic data type
+ *
+ * Type ::= <INT> | <CHAR> | <BOOLEAN>
+ */
+DataType parseType() :
+{
+  DataType type;
+}
+{
+  (
+    <INT> { type = DataType.int_type; }
+  |
+    <CHAR> { type = DataType.char_type; }
+  |
+    <BOOLEAN> { type = DataType.boolean_type; }
+  )
+  {
+    return type;
+  }
+}
+
+/**
+ * Parses the initial assignment of a variable
+ *
+ * Assignement ::= ( <ASSIGN>  Expr )? 
+ */
+Expression tryAssignement(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { COMMA, SEMICOLON };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseAssignement(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses the initial assignment of a variable
+ *
+ * Assignement ::= ( <ASSIGN>  Expr )? 
+ */
+Expression parseAssignement(SymbolTable symtab) :
+{
+  Expression exp = null;
+}
+{
+  (
+    <ASSIGN>
+    exp = tryExpr(symtab)
+  )?
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses an if statement
+ *
+ * IfStm ::= <IF> <LPAREN> Expr <RPAREN> Stm  ( <ELSE> Stm )?
+ */
+Statement tryIfStm(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseIfStm(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses an if statement
+ *
+ * IfStm ::= <IF> <LPAREN> Expr <RPAREN> Stm  ( <ELSE> Stm )?
+ */
+Statement parseIfStm(SymbolTable symtab) :
+{
+  Token tk;
+  Expression cond;
+  Statement thenStm;
+  Statement elseStm = null;
+}
+{
+  <IF>
+  tk = <LPAREN>
+  cond = tryExpr(symtab)
+  <RPAREN>
+  thenStm = tryStatement(symtab)
+  (
+    LOOKAHEAD( 1 )
+    <ELSE>
+    elseStm = tryStatement(symtab)
+  )?
+  {
+    return actionIfStatement(tk,cond,thenStm,elseStm);
+  }
+}
+
+/**
+ * Parses a while statement
+ *
+ * WhileStm ::= <WHILE> <LPAREN> Expr <RPAREN> Stm
+ */
+Statement tryWhileStm(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseWhileStm(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses a while statement
+ *
+ * WhileStm ::= <WHILE> <LPAREN> Expr <RPAREN> Stm
+ */
+Statement parseWhileStm(SymbolTable symtab) :
+{
+  Token tk;
+  Expression cond;
+  Statement body;
+}
+{
+  <WHILE>
+  tk = <LPAREN>
+  cond = tryExpr(symtab)
+  <RPAREN>
+  body = tryStatement(symtab)
+  {
+    return actionWhileStatement(tk,cond,body);
+  }
+}
+
+/**
+ * Parses an endp statement
+ *
+ * EndpStm ::= <ENDP> <SEMICOLON>
+ */
+Statement tryEndpStm(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseEndpStm(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses an endp statement
+ *
+ * EndpStm ::= <ENDP> <SEMICOLON>
+ */
+Statement parseEndpStm(SymbolTable symtab) :
+{
+  Token tk;
+}
+{
+  tk = <ENDP>
+  <SEMICOLON>
+  {
+    return actionEndpStatement(tk,symtab);
+  }
+}
+
+/**
+ * Parses an empty statement
+ *
+ * NoStm ::= <SEMICOLON>
+ */
+Statement tryNoStm(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseNoStm(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses an empty statement
+ *
+ * NoStm ::= <SEMICOLON>
+ */
+Statement parseNoStm(SymbolTable symtab) :
+{
+}
+{
+  <SEMICOLON>
+  {
+    return null;
+  }
+}
+
+/**
+ * Parses an assignment or a procedure call
+ *
+ * IdStm ::= <ID> ( Assignement | ProcedureCall | (<DOT>  <ID>)+  ProcedureCall )  <SEMICOLON>
+ */
+Statement tryIdStm(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseIdStm(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses an assignment or a procedure call
+ *
+ * IdStm ::= <ID> ( Assignment | ProcedureCall | (<DOT>  <ID>)+  ProcedureCall )  <SEMICOLON>
+ */
+Statement parseIdStm(SymbolTable symtab) :
+{
+  Token tid1, tid2;
+  Expression exp;
+  CallParameters param;
+  Statement stm;
+  String libname="";
+}
+{
+  tid1 = <IDENTIFIER> { libname = tid1.image; }
+  (
+    <ASSIGN> exp = tryExpr(symtab)
+    { stm = actionAssignStatement(tid1,exp,symtab); }
+  |
+    param = ProcedureCall(symtab)
+    { stm = actionCallStatement(tid1,param,symtab); }
+  |
+    (<DOT> tid2= <IDENTIFIER> { libname += "."+tid2.image; } )+
+    param=ProcedureCall(symtab)
+    { stm = actionCallStatement(tid1,libname,param,symtab); }
+  )
+  <SEMICOLON>
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses a block of statements
+ *
+ * BlockStm ::= <LBRACE> ( Stm )* <RBRACE>
+ */
+Statement tryBlockStm(SymbolTable symtab) :
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { INT, CHAR, BOOLEAN, IF, WHILE, ENDP, RBRACE};
+  Statement stm = null;
+}
+{
+  try
+  {
+    stm = parseBlockStm(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return stm;
+  }
+}
+
+/**
+ * Parses a block of statements
+ *
+ * BlockStm ::= <LBRACE> ( Stm )* <RBRACE>
+ */
+Statement parseBlockStm(SymbolTable symtab) :
+{
+  BlockStatement block = new BlockStatement();
+  Statement stm;
+}
+{
+  <LBRACE>
+  {
+    symtab.createScope();
+  }
+  (
+    stm = tryStatement(symtab)
+    { actionAddStatement(block,stm); }
+  )*
+  <RBRACE>
+  {
+    symtab.deleteScope();
+    return block;
+  }
+}
+
+/**************************************************************/
+/*             EXPRESSION DESCRIPTIONS STARTS HERE            */
+/**************************************************************/
+
+/**
+ * Parses an expression (considering the OR operator as the lowest priority)
+ *
+ * Expr ::= AndExpr ( <OR> AndExpr )*
+ */
+Expression tryExpr(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { SEMICOLON, COMMA, RPAREN };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseExpr(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses an expression (considering the OR operator as the lowest priority)
+ *
+ * Expr ::= AndExpr ( <OR> AndExpr )*
+ */
+Expression parseExpr(SymbolTable symtab) :
+{
+  Expression exp1, exp2;
+  Token tk;
+}
+{
+  exp1 = tryAndExpr(symtab)
+  (
+    tk = <OR>
+    exp2 = tryAndExpr(symtab)
+    { exp1 = actionOrExpression(tk, exp1,exp2); }
+  )*
+  {
+    return exp1;
+  }
+}
+
+/**
+ * Parses an expression at the AND operator priority level
+ *
+ * AndExpr ::= RelExpr ( <AND> RelExpr )*
+ */
+Expression tryAndExpr(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { SEMICOLON, COMMA, RPAREN, OR };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseAndExpr(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses an expression at the AND operator priority level
+ *
+ * AndExpr ::= RelExpr ( <AND> RelExpr )*
+ */
+Expression parseAndExpr(SymbolTable symtab) :
+{
+  Expression exp1, exp2;
+  Token tk;
+}
+{
+  exp1 = tryRelExpr(symtab)
+  (
+    tk = <AND>
+    exp2 = tryRelExpr(symtab)
+    { exp1 = actionAndExpression(tk, exp1,exp2); }
+  )*
+  {
+    return exp1;
+  }
+}
+
+/**
+ * Parses an expression at the comparator priority level
+ *
+ * RelExpr ::= SumExpr ( RelOp SumExpr )?
+ */
+Expression tryRelExpr(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { SEMICOLON, COMMA, RPAREN, OR, AND };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseRelExpr(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses an expression at the comparator priority level
+ *
+ * RelExpr ::= SumExpr ( RelOp SumExpr )?
+ */
+Expression parseRelExpr(SymbolTable symtab) :
+{
+  Expression exp1, exp2;
+  int op;
+  Token tk;
+}
+{
+  exp1 = trySumExpr(symtab)
+  (
+    { tk = getToken(1); }
+    op = RelOp()
+    exp2 = trySumExpr(symtab)
+    { exp1 = actionRelExpression(tk, op, exp1,exp2); }
+  )?
+  {
+    return exp1;
+  }
+}
+
+/**
+ * Parses a comparison operator
+ *
+ * RelOp ::= <EQ> | <NE> | <GT> | <GE> | <LT> | <LE>
+ */
+int RelOp() :
+{
+  int op;
+}
+{
+  (    <EQ> { op = BinaryExpression.EQ; } 
+  | <NE> { op = BinaryExpression.NEQ; } 
+  | <GT> { op = BinaryExpression.GT; } 
+  | <GE> { op = BinaryExpression.GE; } 
+  | <LT> { op = BinaryExpression.LT; } 
+  | <LE> { op = BinaryExpression.LE; }
+  )
+  {
+    return op;
+  }
+}
+
+/**
+ * Parses an expression at the priority level of addition
+ * (an arithmetic expression)
+ *
+ * SumExpr ::= UnOp ProdExpr ( SumOp ProdExpr )*
+ */
+Expression trySumExpr(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { SEMICOLON, COMMA, RPAREN, OR, AND, EQ, NE, GT, GE, LT, LE };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseSumExpr(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses an expression at the priority level of addition
+ * (an arithmetic expression)
+ *
+ * SumExpr ::= UnOp ProdExpr ( SumOp ProdExpr )*
+ */
+Expression parseSumExpr(SymbolTable symtab) :
+{
+  Expression exp1, exp2;
+  int unop, op;
+  Token tk;
+}
+{
+  { tk = getToken(1); }
+  unop = UnOp()
+  exp1 = tryProdExpr(symtab)
+  { exp1 = actionUnaryExpression(tk, unop,exp1); } 
+  (
+    { tk = getToken(1); }
+    op = SumOp()
+    exp2 = tryProdExpr(symtab)
+    { exp1 = actionSumExpression(tk, op, exp1,exp2); }
+  )*
+  {
+    return exp1;
+  }
+}
+
+/**
+ * Parses a unary operator
+ *
+ * UnOp ::= ( <NOT> | <MINUS>  | <PLUS>  )?
+ */
+int UnOp() :
+{
+  int op = UnaryExpression.NONE;
+}
+{
+  (
+    <NOT> { op = UnaryExpression.NOT; }
+  | <MINUS> { op = UnaryExpression.MINUS; }
+  | <PLUS> {  op = UnaryExpression.PLUS; }
+  )?
+  {
+    return op;
+  }
+}
+
+/**
+ * Parses an addition operator
+ *
+ * SumOp ::= <MINUS> | <PLUS>
+ */
+int SumOp() :
+{
+  int op;
+}
+{
+  (
+    <MINUS> {  op = BinaryExpression.MINUS; }
+  | <PLUS> { op = BinaryExpression.PLUS; }
+  )
+  {
+    return op;
+  }
+}	
+
+/**
+ * Parses an expression at the priority level of product
+ * (an arithmetic term)
+ *
+ * ProdExpr ::= Factor ( MultOp Factor )*
+ */
+Expression tryProdExpr(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { SEMICOLON, COMMA, RPAREN, OR, AND, EQ, NE, GT, GE, LT, LE, PLUS, MINUS };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseProdExpr(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses an expression at the priority level of product
+ * (an arithmetic term)
+ *
+ * ProdExpr ::= Factor ( MultOp Factor )*
+ */
+Expression parseProdExpr(SymbolTable symtab) :
+{
+  Expression exp1, exp2;
+  int op;
+  Token tk;
+}
+{
+  exp1 = tryFactor(symtab)
+  (
+    { tk = getToken(1); }
+    op = MultOp()
+    exp2 = tryFactor(symtab)
+    { exp1 = actionProdExpression(tk, op, exp1,exp2); }
+  )*
+  {
+    return exp1;
+  }
+}
+
+/**
+ * Parses a product operator
+ *
+ * MultOp ::= <PROD> | <DIV> | <MOD>
+ */
+int MultOp() :
+{
+  int op;
+}
+{
+  (
+    <PROD> {  op = BinaryExpression.PROD; }
+  | <DIV> { op = BinaryExpression.DIV; }
+  | <MOD> { op = BinaryExpression.MOD; }
+  )
+  {
+    return op;
+  }
+}	
+
+/**
+ * Parses a factor
+ *
+ * Factor ::= Literal | Reference | <LPAREN> Expr <RPAREN>
+ */
+Expression tryFactor(SymbolTable symtab) :
+{
+  int[] lsync = { };
+  int[] rsync = { SEMICOLON, COMMA, RPAREN, OR, AND, EQ, NE, GT, GE, LT, LE, PLUS, MINUS, PROD, DIV, MOD };
+  Expression exp = null;
+}
+{
+  try
+  {
+    exp = parseFactor(symtab)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses a factor
+ *
+ * Factor ::= Literal | Reference | <LPAREN> Expr <RPAREN>
+ */
+Expression parseFactor(SymbolTable symtab) :
+{
+  Expression exp;
+}
+{
+  (
+    exp = Literal()
+  | exp = Reference(symtab)
+  |	<LPAREN>  exp = tryExpr(symtab)  <RPAREN>
+  )
+  {
+    return exp;
+  }
+}
+
+/**
+ * Parses a literal
+ *
+ * Literal ::= <INTEGER_LITERAL> | <CHAR_LITERAL>  | <TRUE>  | <FALSE>
+ */
+Expression Literal() :
+{
+  Expression exp;
+  Token tk;
+}
+{
+  (
+    tk = <INTEGER_LITERAL> { exp = actionIntegerLiteral(tk); }
+  | tk = <CHAR_LITERAL>    { exp = new CharLiteralExpression(tk.image); }
+  |	<TRUE>                 { exp = new BooleanLiteralExpression(true); }
+  |	<FALSE>                { exp = new BooleanLiteralExpression(false); }
+  )
+  {
+    return exp;
+  }              
+}
+
+/**
+ * Parses a reference to a variable
+ *
+ * Reference ::= <IDENTIFIER>
+ */
+Expression Reference(SymbolTable symtab) :
+{
+  Token tid;
+}
+{
+  tid = <IDENTIFIER>
+  {
+    return actionReferenceExpression(tid,symtab);
+  }
+}
+
+/**
+ * Parses the parameters of a procedure call
+ *
+ * ProcedureCall ::= <LPAREN> ( Parameter ( <COMMA> Parameter )* )? <RPAREN>
+ */
+CallParameters ProcedureCall(SymbolTable symtab) :
+{
+  CallParameters param = new CallParameters(); 
+  Expression exp;
+}
+{
+  <LPAREN>
+  (
+    exp = parseParameter(symtab)
+    { param.addParameter(exp); } 
+    (
+      <COMMA>
+      exp = parseParameter(symtab)
+      { param.addParameter(exp); }
+    )*
+  )?
+  <RPAREN>
+  {
+    return param;
+  }
+}
+
+/**
+ * Parses a procedure call parameter
+ *
+ * Parameter ::= <LPAREN> ( Parameter ( <COMMA> Parameter )* )? <RPAREN>
+ */
+Expression parseParameter(SymbolTable symtab) :
+{
+  Token tid;
+  Expression exp;
+}
+{
+  (    <OUT> tid=<IDENTIFIER>
+    { exp = actionOutParameter(tid, symtab); }
+  | 
+    exp = tryExpr(symtab)
+  )
+  {
+    return exp;
+  }
+}
+
+
+JAVACODE
+void skipTo(int[] left, int[] right)
+{
+  Token prev = getToken(0);
+  Token next = getToken(1);
+  boolean flag = false;
+  if(prev.kind == EOF || next.kind == EOF) flag = true;
+  for(int i=0; i<left.length; i++) if(prev.kind == left[i]) flag = true;
+  for(int i=0; i<right.length; i++) if(next.kind == right[i]) flag = true;
+	
+  while(!flag)
+  {
+    getNextToken();
+    prev = getToken(0);
+    next = getToken(1);
+    if(prev.kind == EOF || next.kind == EOF) flag = true;
+    for(int i=0; i<left.length; i++) if(prev.kind == left[i]) flag = true;
+    for(int i=0; i<right.length; i++) if(next.kind == right[i]) flag = true;
+  }
+}

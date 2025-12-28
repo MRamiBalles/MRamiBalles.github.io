@@ -1,0 +1,828 @@
+options
+{
+  STATIC=false;
+}
+
+PARSER_BEGIN(UriumHeaderParser)
+
+//------------------------------------------------------------------//
+//                        COPYRIGHT NOTICE                          //
+//------------------------------------------------------------------//
+// Copyright (c) 2024, Francisco J. Moreno Velo                     //
+//                                                                  //
+// Permission is hereby granted, free of charge, to any person      //
+// obtaining a copy of this software and associated documentation   //
+// files (the "Software"), to deal in the Software without          //
+// restriction, including without limitation the rights to use,     //
+// copy, modify, merge, publish, distribute, sublicense, and/or     //
+// sell copies of the Software, and to permit persons to whom the   //
+// Software is furnished to do so, subject to the following         //
+// conditions:                                                      //
+//                                                                  //
+// - The above copyright notice and this permission notice shall be //
+//   included in all copies or substantial portions of the Software.//
+//                                                                  //
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,  //
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES  //
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND         //
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT      //
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,     //
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING     //
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR    //
+// OTHER DEALINGS IN THE SOFTWARE.                                  //
+//------------------------------------------------------------------//
+
+//------------------------------------------------------------------//
+//                      Universidad de Huelva                       //
+//          Departamento de Tecnologías de la Información           //
+//   Área de Ciencias de la Computación e Inteligencia Artificial   //
+//------------------------------------------------------------------//
+//                                                                  //
+//                         Urium compiler                           //
+//                                                                  //
+//------------------------------------------------------------------//
+
+package urium.parser;
+
+import urium.ast.*;
+import urium.ast.struct.*;
+import java.util.Vector;
+
+public class UriumHeaderParser {
+
+	//----------------------------------------------------------------//
+	//                         Private members                        //
+	//----------------------------------------------------------------//
+
+	/**
+	 * Error count
+	 */
+	private int errorCount;
+	
+	/**
+	 * Error message
+	 */
+	private String errorMsg;
+
+	//----------------------------------------------------------------//
+	//                           Public methods                       //
+	//----------------------------------------------------------------//
+	
+	/**
+	 * Method to parse an Urium file
+	 */
+	public LibraryDeclaration parse(String libname) 
+	{
+		this.errorCount = 0;
+		this.errorMsg = "";
+		try
+		{
+			LibraryDeclaration library = tryCompilationUnit(libname);
+			return library;
+		}
+		catch(Throwable e)
+		{
+			catchError(e);
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the number of errors in the analysis
+	 */
+	public int getErrorCount()
+	{
+		return this.errorCount;
+	}
+	
+	/**
+	 * Get the error message of the analysis
+	 */
+	public String getErrorMsg()
+	{
+		return this.errorMsg;
+	}
+
+	//----------------------------------------------------------------//
+	//                 Private methods (semantic checks)              //
+	//----------------------------------------------------------------//
+
+	/**
+	 * Stores a parse error
+	 */
+	private void catchError(Throwable ex)
+	{
+		this.errorCount++;
+		this.errorMsg += ex.toString();
+	}
+	
+	/**
+	 * Checks that the library name corresponds to the source file name 
+	 */
+	private boolean verifyLibraryName(Token tk, String name, LibraryDeclaration library)
+	{
+		if(!name.equals(library.getName()))
+		{
+			int errorcode = SemanticException.LIBRARY_NAME_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that a certain procedure has not been previously defined in the library
+	 */
+	private boolean verifyNonDuplicatedProcedure(Token tk, Procedure proc, LibraryDeclaration library)
+	{
+		DataType[] type = proc.getArgumentTypes();
+		Procedure dup = library.getAnyProcedure(tk.image,type);
+		if(dup != null)
+		{
+			int errorcode = SemanticException.DUPLICATE_PROCEDURE_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checks that an argument name is not duplicated
+	 */
+	private boolean verifyNonDuplicatedArgument(Token tk, Vector<Variable> arguments)
+	{
+		if(arguments.contains(tk.image))
+		{	
+			int errorcode = SemanticException.DUPLICATE_ARGUMENT_EXCEPTION;
+			catchError(new SemanticException(errorcode,tk));
+			return false;
+		}
+		return true;
+	}
+
+	//----------------------------------------------------------------//
+	//                 Private methods (semantic actions)             //
+	//----------------------------------------------------------------//
+
+    /**
+     * Semantic action that creates a procedure in a library
+     */
+	private void actionLibraryProcedure(int acc, Token tid, Vector<Variable> arguments, LibraryDeclaration library)
+	{
+	    Procedure proc = new Procedure(acc, tid.image, library.getName());
+	    proc.addArgumentList(arguments);
+		if(!verifyNonDuplicatedProcedure(tid,proc,library)) return;
+		library.addProcedure(proc);  
+	}
+
+	/**
+     * Semantic action that adds an argument to an argument list
+     */
+	private void actionAddArgument(DataType type, Token tk, Vector<Variable> arguments)
+	{
+	  if(!verifyNonDuplicatedArgument(tk,arguments)) return;
+	  arguments.add(new Variable(type, tk.image) );
+	}
+	
+}
+
+PARSER_END(UriumHeaderParser)
+
+
+/* WHITE SPACE */
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+/* COMMENTS */
+
+SKIP :
+{
+  <SINGLE_LINE_COMMENT: "//" ( ~["\n","\r"] )* ("\n" | "\r" | "\r\n") >
+|
+  <MULTI_LINE_COMMENT: "/*" ( ~["*"] | ("*")+ ~["*","/"] )* ("*")+ "/" >
+}
+
+
+/* RESERVED WORDS */
+
+TOKEN :
+{
+  < AS: "as" >
+| < BOOLEAN: "boolean" >
+| < CHAR: "char" >
+| < ELSE: "else" >
+| < ENDP: "endp" >
+| < FALSE: "false" >
+| < IF: "if" >
+| < IMPORT: "import" >
+| < INT: "int" >
+| < LIBRARY: "library" >
+| < NATIVE: "native" >
+| < OUT: "out" >
+| < PRIVATE: "private" >
+| < PROC: "proc" >
+| < PUBLIC: "public" >
+| < TRUE: "true" >
+| < WHILE: "while" >
+}
+
+/* LITERALS */
+
+TOKEN :
+{
+  < INTEGER_LITERAL: ( <DECIMAL_LITERAL> | <HEX_LITERAL> | <OCTAL_LITERAL> | <BINARY_LITERAL> ) >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+|
+  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+|
+  < #BINARY_LITERAL: "0" ["b","B"] (["0"-"1"])+ >
+|
+  < CHAR_LITERAL:
+      "'"
+      (   (~["'","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )
+      "'"
+  >
+}
+
+/* IDENTIFIERS */
+
+TOKEN :
+{
+  < IDENTIFIER: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","0"-"9","_"] )* >
+}
+
+/* SEPARATORS */
+
+TOKEN :
+{
+  < LPAREN: "(" >
+| < RPAREN: ")" >
+| < LBRACE: "{" >
+| < RBRACE: "}" >
+| < SEMICOLON: ";" >
+| < COMMA: "," >
+| < DOT: "." >
+}
+
+/* OPERATORS */
+
+TOKEN :
+{
+  < ASSIGN: "=" >
+| < EQ: "==" >
+| < LE: "<=" >
+| < GT: ">" >
+| < LT: "<" >
+| < GE: ">=" >
+| < NE: "!=" >
+| < OR: "||" >
+| < AND: "&&" >
+| < NOT: "!" >
+| < PLUS: "+" >
+| < MINUS: "-" >
+| < PROD: "*" >
+| < DIV: "/" >
+| < MOD: "%" >
+}
+
+
+/**************************************************************/
+/*             SYNTACTIC DESCRIPTION STARTS HERE              */
+/**************************************************************/
+
+/**
+ * Parses the full content of a source file
+ *
+ * CompilationUnit ::= (InportClause)* UriumDecl
+ */
+LibraryDeclaration tryCompilationUnit(String name):
+{
+  int[] lsync = { };
+  int[] rsync = { EOF };
+  LibraryDeclaration library = new LibraryDeclaration(name);
+}
+{ 
+  try
+  {
+    parseCompilationUnit(library)
+    <EOF>
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return library;
+  }
+}
+
+/**
+ * Parses the full content of a source file
+ *
+ * CompilationUnit ::= (InportClause)* UriumDecl
+ */
+void parseCompilationUnit(LibraryDeclaration library):
+{
+}
+{ 
+  ( tryImportClause(library) )*
+  tryUriumDecl(library)
+}
+
+/**
+ * Parses an import clause
+ *
+ * ImportClause ::= <IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* (<AS> <IDENTIFIER>)? <SEMICOLON> 
+ */
+void tryImportClause(LibraryDeclaration library):
+{
+  int[] lsync = { SEMICOLON };
+  int[] rsync = { IMPORT, LIBRARY, NATIVE };
+}
+{
+  try
+  {
+    parseImportClause(library)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+}
+
+/**
+ * Parses an import clause
+ *
+ * ImportClause ::= <IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* (<AS> <IDENTIFIER>)? <SEMICOLON> 
+ */
+void parseImportClause(LibraryDeclaration library):
+{
+  Token tid;
+  String name;
+  String alias = null;
+}
+{
+  <IMPORT>
+  tid = <IDENTIFIER>
+  {
+    name = tid.image;
+  }
+  (<DOT> tid = <IDENTIFIER> { name += "."+tid.image; } )*
+  (<AS> tid = <IDENTIFIER> { alias = tid.image; })?
+  <SEMICOLON>
+  {
+    if(alias == null) alias = name;
+    library.addImportedLibrary(alias,name);
+  }  
+}
+
+/**
+ * Parses the declaration of a library (ordinary or native)
+ *
+ * UriumDecl ::=  LibraryDecl |  NativeDecl 
+ */
+void tryUriumDecl(LibraryDeclaration library) :
+{
+  int[] lsync = { };
+  int[] rsync = { };
+}
+{
+  try
+  {
+    parseUriumDecl(library)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  } 
+}
+
+/**
+ * Parses the declaration of a library (ordinary or native)
+ *
+ * UriumDecl ::=  LibraryDecl |  NativeDecl 
+ */
+void parseUriumDecl(LibraryDeclaration library) :
+{
+}
+{
+  (
+    tryLibraryDecl(library)
+  |
+    tryNativeDecl(library)
+  )
+}
+
+/**
+ * Parses the declaration of an ordinary library
+ *
+ * LibraryDecl ::=  <LIBRARY> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <LBRACE> ( ProcedureDecl )* <RBRACE> 
+ */
+void tryLibraryDecl(LibraryDeclaration library) :
+{
+  int[] lsync = { };
+  int[] rsync = { };
+}
+{
+  try
+  {
+    parseLibraryDecl(library)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }  
+}
+
+/**
+ * Parses the declaration of an ordinary library
+ *
+ * LibraryDecl ::=  <LIBRARY> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <LBRACE> ( ProcedureDecl )* <RBRACE> 
+ */
+void parseLibraryDecl(LibraryDeclaration library) :
+{
+  Token tid, tid2;
+  String name;
+}
+{
+  <LIBRARY>
+  tid = <IDENTIFIER> { name = tid.image; }
+  (<DOT> tid2=<IDENTIFIER> { name += "."+tid2.image; } )*
+  { verifyLibraryName(tid,name,library); }
+  <LBRACE>
+  ( tryProcedureDecl(library) )*
+  <RBRACE> 
+}
+
+/**
+ * Parses the declaration of a procedure
+ *
+ * ProcedureDecl ::= Access <PROC> <IDENTIFIER> ArgumentDecl ProcedureBody
+ */
+void tryProcedureDecl(LibraryDeclaration library) :
+{
+  int[] lsync = { };
+  int[] rsync = { PUBLIC, PRIVATE }; 
+}
+{
+  try
+  {
+    parseProcedureDecl(library)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }  
+}
+
+/**
+ * Parses the declaration of a procedure
+ *
+ * ProcedureDecl ::= Access <PROC> <IDENTIFIER> ArgumentDecl ProcedureBody
+ */
+void parseProcedureDecl(LibraryDeclaration library) :
+{
+  int acc;
+  Token tid;
+  Vector<Variable> args;
+}
+{
+  acc = tryAccess()
+  <PROC>
+  tid = <IDENTIFIER>
+  args = tryArgumentDecl()
+  ProcedureBody()
+  {
+    actionLibraryProcedure(acc,tid,args,library);
+  } 
+}
+
+/**
+ * Parses the declaration of a native library
+ *
+ * NativeDecl ::=  <NATIVE> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <LBRACE> ( NativeProcedure )* <RBRACE> 
+ */
+void tryNativeDecl(LibraryDeclaration library) :
+{
+  int[] lsync = { };
+  int[] rsync = { };
+  library.setNative(true); 
+}
+{
+  try
+  {
+    parseNativeDecl(library)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+}
+
+/**
+ * Parses the declaration of a native library
+ *
+ * NativeDecl ::=  <NATIVE> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <LBRACE> ( NativeProcedure )* <RBRACE> 
+ */
+void parseNativeDecl(LibraryDeclaration library) :
+{
+  Token tid, tid2;
+  String name;
+}
+{
+  <NATIVE>
+  tid = <IDENTIFIER> { name = tid.image; }
+  (<DOT> tid2=<IDENTIFIER> { name += "."+tid2.image; } )*
+  { verifyLibraryName(tid,name,library); }
+  <LBRACE>
+  ( tryNativeProcedure(library) )*
+  <RBRACE> 
+}
+
+/**
+ * Parses the declaration of a procedure of a native library
+ *
+ * NativeProcedure ::= Access <PROC> <IDENTIFIER> ArgumentDecl <SEMICOLON>
+ */
+void tryNativeProcedure(LibraryDeclaration library) :
+{
+  int[] lsync = { };
+  int[] rsync = { PUBLIC, PRIVATE }; 
+}
+{
+  try
+  {
+    parseNativeProcedure(library)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }  
+}
+
+/**
+ * Parses the declaration of a procedure of a native library
+ *
+ * NativeProcedure ::= Access <PROC> <IDENTIFIER> ArgumentDecl <SEMICOLON>
+ */
+void parseNativeProcedure(LibraryDeclaration library) :
+{
+  int acc;
+  Token tid;
+  Vector<Variable> args;
+}
+{
+  acc = tryAccess()
+  <PROC>
+  tid = <IDENTIFIER>
+  args = tryArgumentDecl()
+  <SEMICOLON>
+  {
+    actionLibraryProcedure(acc,tid,args,library);
+  } 
+}
+
+/**
+ * Parses an access modifier
+ *
+ * Access ::= <PUBLIC> | <PRIVATE>
+ */
+int tryAccess() :
+{
+  int[] lsync = { };
+  int[] rsync = { PROC };
+  int acc = Access.PUBLIC_ACCESS; 
+}
+{
+  try
+  {
+    acc = parseAccess()
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return acc;
+  }
+}
+
+/**
+ * Parses an access modifier
+ *
+ * Access ::= <PUBLIC> | <PRIVATE>
+ */
+int parseAccess() :
+{
+  int acc;
+}
+{
+  (    <PUBLIC> { acc = Access.PUBLIC_ACCESS; }
+  |
+    <PRIVATE> { acc = Access.PRIVATE_ACCESS; }
+  )
+  {
+    return acc;
+  }
+}
+
+/**
+ * Parses the declaration of arguments of a procedure
+ *
+ * ArgumentDecl ::= <LPAREN> ( Argument ( <COMMA> Argument )* )? <RPAREN>
+ */
+Vector<Variable> tryArgumentDecl() :
+{
+  int[] lsync = { RPAREN };
+  int[] rsync = { LBRACE };
+  Vector<Variable> args = null;
+}
+{
+  try
+  {
+    args = parseArgumentDecl()
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return args;
+  }
+}
+
+/**
+ * Parses the declaration of arguments of a procedure
+ *
+ * ArgumentDecl ::= <LPAREN> ( Argument ( <COMMA> Argument )* )? <RPAREN>
+ */
+Vector<Variable> parseArgumentDecl() :
+{
+  Vector<Variable> args = new Vector<Variable>();
+}
+{
+  <LPAREN>
+  (
+    tryArgument(args)
+    (
+      <COMMA>
+      tryArgument(args)
+    )*
+  )?
+  <RPAREN>
+  {
+    return args;
+  }
+}
+
+/**
+ * Parses the declaration of an argument
+ *
+ * Argument ::= ArgumentType <IDENTIFIER>
+ */
+void tryArgument(Vector<Variable> args) :
+{
+  int[] lsync = { };
+  int[] rsync = { COMMA, RPAREN };
+}
+{
+  try
+  {
+    parseArgument(args)
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+}
+
+/**
+ * Parses the declaration of an argument
+ *
+ * Argument ::= ArgumentType <IDENTIFIER>
+ */
+void parseArgument(Vector<Variable> args) :
+{
+  DataType type;
+  Token tid;
+}
+{
+  type = tryArgumentType()
+  tid = <IDENTIFIER>
+  {
+    actionAddArgument(type,tid,args);
+  }
+}
+
+/**
+ * Parses the data type of an argument
+ *
+ * ArgumentType ::= ( <OUT> )? ( <INT> | <CHAR> | <BOOLEAN> )
+ */
+DataType tryArgumentType() :
+{
+  int[] lsync = { };
+  int[] rsync = { IDENTIFIER };
+  DataType type = DataType.mismatch_type;
+}
+{
+  try
+  {
+    type = parseArgumentType()
+  }
+  catch(Exception ex)
+  {
+    catchError(ex);
+    skipTo(lsync,rsync);
+  }
+  {
+    return type;
+  }
+}
+
+/**
+ * Parses the data type of an argument
+ *
+ * ArgumentType ::= ( <OUT> )? ( <INT> | <CHAR> | <BOOLEAN> )
+ */
+DataType parseArgumentType() :
+{
+  DataType type;
+  boolean out = false;
+}
+{
+  ( <OUT> {  out = true; } )?
+    
+  (
+    <INT> { type = (out? DataType.int_ref_type: DataType.int_type); }
+  |
+    <CHAR> { type = (out? DataType.char_ref_type: DataType.char_type); }
+  |
+    <BOOLEAN> { type = (out? DataType.boolean_ref_type: DataType.boolean_type); }
+  )
+  {
+    return type;
+  }
+}
+
+JAVACODE
+void ProcedureBody()
+{
+  Token tk = getNextToken();  // Consume el caracter "{"
+  int level = 1;
+  while(level != 0)
+  {
+    tk = getNextToken();
+	if(tk.kind == EOF) break;
+    else if(tk.kind == LBRACE) level ++;
+    else if(tk.kind == RBRACE) level --;
+  }
+}
+
+JAVACODE
+void skipTo(int[] left, int[] right)
+{
+  Token prev = getToken(0);
+  Token next = getToken(1);
+  boolean flag = false;
+  if(prev.kind == EOF || next.kind == EOF) flag = true;
+  for(int i=0; i<left.length; i++) if(prev.kind == left[i]) flag = true;
+  for(int i=0; i<right.length; i++) if(next.kind == right[i]) flag = true;
+	
+  while(!flag)
+  {
+    getNextToken();
+    prev = getToken(0);
+    next = getToken(1);
+    if(prev.kind == EOF || next.kind == EOF) flag = true;
+    for(int i=0; i<left.length; i++) if(prev.kind == left[i]) flag = true;
+    for(int i=0; i<right.length; i++) if(next.kind == right[i]) flag = true;
+  }
+}

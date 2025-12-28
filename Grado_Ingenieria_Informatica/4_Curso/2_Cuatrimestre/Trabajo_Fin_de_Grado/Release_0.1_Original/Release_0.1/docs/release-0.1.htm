@@ -1,0 +1,1316 @@
+﻿<html>
+
+<head>
+  <title>Diseño de Compiladores</title>
+  </head>
+
+<body>
+
+<table border="0" width="740" cellspacing="0" cellpadding="0" >
+  <tr>
+    <td width="740" valign="top">
+      <p><img border="0" src="head.jpg" alt="Escuela Técnica Superior de Ingeniería" width="740" height="100" ></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="740" valign="top">
+      <p align="center">&nbsp;</p>
+      <p style="text-align: center; color: #000080; font-size: x-large;">Grado en Ingeniería Informática</p>
+      <p style="text-align: center; color: #000080; font-size: x-large;">Diseño de Compiladores</p>
+      <p style="text-align: center; color: #000080; font-size: large;">Curso 2018/2019</p>
+      <p align="center">&nbsp;</p>
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table1">
+        <tr>
+          <td width="100%" align="center" bgcolor="#9999FF">
+            <font size="6" color="#000080">Práctica 1</font>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" align="center" bgcolor="#9999FF">
+            <font size="6" color="#000080">El compilador del lenguaje Tinto</font>
+          </td>
+        </tr>
+      </table>
+      
+      <p>&nbsp;</p>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table2">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><span style="font-weight: 700">Objetivo</span></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">&nbsp;
+            <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+              El objetivo de esta práctica es presentar la versión 1.0 del lenguaje de programación Tinto
+              y explicar el código de su compilador. 
+            </p>
+            <ul>
+              <li><a href="practica01/practica01.rar">Código de la práctica</a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+
+      <p>&nbsp;</p>
+      
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table3">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><b>Características generales del lenguaje de programación <i>Tinto 
+			  1.0</i></b></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">
+            <p>&nbsp;</p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              <i>Tinto</i> es un lenguaje de programación imperativo orientado a procesos (tipo 
+              <i>C</i>). El objetivo de <i>Tinto</i> es definir un lenguaje de programación simple 
+              que sirva de apoyo a la docencia de las asignaturas de <em>Procesadores de 
+              Lenguaje</em> y <em>Diseño de Compiladores</em>. Las prácticas de 
+			  la asignatura <em>Procesadores de Lenguaje</em> están dedicadas a 
+			  explicar cómo desarrollar cada una de las etapas de un compilador, 
+			  tanto de forma manual como con ayuda de herramientas automáticas. 
+			  Por ese motivo, en la especificación inicial del lenguaje (<em>Tinto 
+			  1.0</em>) se ha optado por definir un lenguaje simple. Con 
+			  respecto a las prácticas de la asignatura <em>Diseño de 
+			  Compiladore</em>s, esta especificación inicial se utiliza como 
+			  punto de partida sobre el que trabajar para definir un lenguaje 
+			  con características más avanzadas.</p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              A continuación se muestra un ejemplo del contenido de un fichero fuente 
+              descrito en lenguaje <i>Tinto</i>:
+            </p>
+            <table border="1" cellpadding="10" cellspacing="10" 
+             style="border-color: #111111; border-collapse: collapse; background-color: #FFFFC0; margin-right: 10px; margin-left: 10px;" 
+             width="700" id="Table1">
+              <tr>
+                <td>
+<pre>
+import Math;
+  
+library Ejemplo {
+
+  public int MaximoComunDivisor(int a, int b) 
+  {
+    int mcd = Math.min(a,b);
+    while(mcd&gt;0) 
+    {
+      if( a%mcd == 0 &amp;&amp; b%mcd == 0) return mcd;
+      mcd = mcd - 1;
+    }
+    return 1;
+  }
+    
+}
+</pre>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              Algunas de las características de <i>Tinto 1.0</i> son las siguientes:
+            </p>
+            <ul>
+              <li><p>Palabras reservadas:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                <i>Tinto 1.0</i> incluye un número reducido de palabras reservadas (15 en total). 
+                Comparado con C (32 palabras reservadas), C++ (50 palabras reservadas) o 
+                Java (53 palabras reservadas) se puede valorar el esfuerzo de simplificación 
+                realizado en el diseño del lenguaje. Las palabras reservadas de <i>Tinto</i> son 
+                las siguientes: <i>boolean</i>, <i>char</i>, <i>else</i>, <i>false</i>, <i>
+                if</i>, <i>import</i>, <i>int</i>, <i>library</i>, <i>native, private</i>, <i>public</i>, <i>return</i>, <i>true</i>,
+                <i>void</i> y <i>while</i>.
+              </p>
+            </blockquote>
+            <ul>
+              <li><p>Tipos de datos:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                El lenguaje incluye tan solo tres tipos de datos: <i>int</i>, <i>char</i> y
+                <i>boolean</i>. Se asume que todos ellos serán almacenados en registros de 
+                32 bits. El tipo <i>char</i> se considera descrito en código ASCII de 8 bits 
+                almacenados en el byte menos significativo (los 24 bits más significativos 
+                deben tener el valor 0). El tipo <i>boolean</i> utiliza el valor 0 para 
+                indicar falso y el valor 1 para indicar verdadero. Se considera también el 
+                tipo <i>void</i> para indicar que una función no devuelve ningún dato.
+              </p>
+            </blockquote>
+            <ul>
+              <li><p>Instrucciones:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                Las funciones de <i>Tinto 1.0</i> están formadas por una lista de instrucciones. 
+                Las instrucciones incluidas en el lenguaje son: declaraciones de variables 
+                locales (se admite la asignación en el momento de la declaración y la 
+                declaración conjunta de una lista de variables del mismo tipo), 
+                instrucciones de asignación simple (por medio del operador = ), 
+                instrucciones de ejecución de una función, instrucciones condicionales (<i>if-else</i>), 
+                bucles (<i>while</i>) y finalización de las funciones (<i>return</i>).
+              </p>
+            </blockquote>
+            <ul>
+              <li><p>Operadores aritméticos y lógicos:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                <i>Tinto 1.0</i> incluye los siguientes operadores aritméticos: suma ( + ), resta ( - ), multiplicación ( * ), división ( / ) y 
+                módulo ( % ).
+              </p>
+            </blockquote>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                Por su parte, los operadores lógicos incluidos en <i>
+                Tinto</i> son los siguientes: and con 
+                cortocircuito ( &amp;&amp; ), or con cortocircuito ( || ) y not ( ! ).
+              </p>
+            </blockquote>
+            <ul>
+              <li><p>Operadores relacionales:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                Los operadores relacionales permiten establecer 
+                comparaciones entre los valores de distintas expresiones. <i>Tinto</i> 
+                incluye cuatro operadores relacionales que pueden aplicarse a 
+                expresiones de tipo <i>int</i> y <i>char</i>: mayor ( &gt; ), menor ( &lt; ), 
+                mayor o igual ( &gt;= ) y menor o igual ( &lt;= ). Además se incluyen los 
+                operadores igual ( == ) y distinto ( != ) que son válidos para todos los 
+                tipos de datos (<i>int</i>, <i>char</i> y <i>boolean</i>).
+              </p>
+            </blockquote>
+            <ul>
+              <li><p>Literales:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                <i>Tinto 1.0</i> permite definir literales para cada tipo de dato: valores de 
+                tipo <i>int</i> (en formato decimal, octal, hexadecimal y binario), valores 
+                de tipo <i>char</i> (entre comillas simples que pueden incluir caracteres 
+                imprimibles, caracteres de escape y caracteres en formato octal) y valores 
+                de tipo <i>boolean</i> (<i>true</i> o <i>false</i>).
+              </p>
+            </blockquote>
+            <ul>
+              <li><p>Componentes del lenguaje:</p></li>
+            </ul>
+            <blockquote>
+              <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+                Los ficheros descritos en el lenguaje <i>Tinto</i> <em>1.0</em> definen bibliotecas de 
+                funciones. Cada fichero contiene una lista de bibliotecas importadas 
+                (cláusulas <i>import</i>) y una biblioteca (<i>library</i>) cuyo nombre debe 
+                coincidir con el nombre del fichero. La biblioteca está formada por una 
+                lista de funciones que pueden ser públicas o privadas. El código de las funciones
+                puede contener llamadas a otras funciones públicas o privadas de la misma biblioteca.
+                También pueden contener llamadas a funciones públicas de otras bibliotecas. 
+                En este último caso, para identificar a la función llamada se utiliza el nombre 
+                de la biblioteca, seguido de un punto y del nombre de la función. Para poder 
+                utilizar las funciones de una biblioteca, ésta debe haber sido importada 
+                previamente en el fichero.
+                El lenguaje permite definir también bibliotecas nativas (<em>native</em>) 
+				que están formadas por una lista de declaraciones de funciones. 
+				En este caso, el código de las funciones está desarrollado 
+				directamente en ensamblador y no se describe en el fichero 
+				fuente. Gracias a estas bibliotecas nativas se pueden utilizar 
+				funciones que usan instrucciones de ensamblador específicas que 
+				no genera el compilador, como llamadas al sistema (por medio de 
+				la instrucción <em>syscall</em>).</p>
+            </blockquote>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              &nbsp;
+            </p>
+          </td>
+        </tr>
+      </table>
+      
+      <p>&nbsp;</p>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table4">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><span style="font-weight: 700">Gramática del lenguaje Tinto 1.0</span></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">
+            <p>&nbsp;</p>
+            <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+              Un fichero fuente escrito en <em>Tinto 1.0</em> está formado por 
+			  una lista de bibliotecas importadas seguido de una declaración de 
+			  una biblioteca normal o de una biblioteca nativa. Una biblioteca 
+			  normal se declara por medio de la palabra clave <em>library</em>, 
+			  seguida de su identificador (que debe coincidir con el nombre del 
+			  fichero) y una lista de funciones. Una biblioteca nativa se 
+			  declara por medio de la palabra clave <em>native</em> seguida de 
+			  su identificador (que debe coincidir con el nombre del fichero) y 
+			  una lista de declaraciones de funciones. Las funciones se definen 
+			  con su visibilidad (<em>public</em> o <em>private</em>), su tipo 
+			  de dato (<em>int</em>, <em>char</em>, <em>boolean</em> o <em>void</em>), 
+			  su identificador, la definición de argumentos y su cuerpo (salvo 
+			  que sea una declaración en una biblioteca nativa). Los argumentos 
+			  se declaran con su tipo de datos y su identificador. El cuerpo de 
+			  las funciones está formado por una lista de instrucciones.
+			</p>
+            <table border="1" cellpadding="10" cellspacing="10" 
+             style="border-color: #111111; border-collapse: collapse; background-color: #FFFFC0; margin-right: 10px; margin-left: 10px;" 
+             width="700" id="Table4.1">
+              <tr>
+                <td>
+                  <ul>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        CompilationUnit ::= ( ImportClause )* TintoDecl
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        ImportClause ::= <b><u>import</u></b> <u><b>identifier</b></u> <b><u>semicolon</u></b>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        TintoDecl ::= LibraryDecl  |  NativeDecl
+                      </p>
+                    </li>          
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        LibraryDecl ::= <u><b>library</b></u> <u><b>identifier</b></u> <u><b>lbrace</b></u>&nbsp; ( Function )* <b>&nbsp;<u>rbrace</u></b>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Function ::= Access FunctionType <u><b>identifier</b></u> ArgumentDecl FunctionBody
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        NativeDecl ::= <u><b>native</b></u> <u><b>identifier</b></u> <u><b>lbrace</b></u>&nbsp; ( NativeFunction )* <b>&nbsp;<u>rbrace</u></b>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        NativeFunction ::= Access FunctionType <u><b>identifier</b></u> ArgumentDecl <b><u>semicolon</u></b>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Access ::= <u><b>public</b></u> | <u><b>private</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        FunctionType ::= Type | <u><b>void</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Type ::= <u><b>int</b></u> | <u><b>char</b></u> | <u><b>boolean</b></u> 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        ArgumentDecl ::= <u><b>lparen</b></u> ( Argument ( <u><b>comma</b></u> Argument )* )? <u><b>rparen</b></u> 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Argument ::= Type <u><b>identifier</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        FunctionBody ::= <u><b>lbrace</b></u> ( Statement )* <u><b>rbrace</b></u> 
+                      </p>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+              Las instrucciones
+              incluidas en la versión inicial de <em>Tinto</em> son las 
+			  declaraciones de variables, las asignaciones simples, las llamadas 
+			  a funciones, la instrucción condicioinal (<em>if-else</em>), los 
+			  bucles (<em>while</em>) y la instrucción de retorno (<em>return</em>).
+			</p>
+    
+            <table border="1" cellpadding="10" cellspacing="10" 
+             style="border-color: #111111; border-collapse: collapse; background-color: #FFFFC0; margin-right: 10px; margin-left: 10px;" 
+             width="700" id="Table4.1">
+              <tr>
+                <td>
+                  <ul>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Statement ::= ( Decl | IdStm | IfStm | WhileStm | ReturnStm | NoStm | BlockStm )
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Decl ::= Type <u><b>identifier</b></u> Assignement ( <u><b>comma</b></u> <u><b>identifier</b></u> Assignement )* <u><b>semicolon</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Assignement ::= ( <u><b>assign</b></u> Expr )? 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        IfStm ::= <u><b>if</b></u> <u><b>lparen</b></u> Expr <u><b>rparen</b></u> Statement ( <b><u>else</u></b> Statement )? 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        WhileStm ::= <u><b>while</b></u>  <u><b>lparen</b></u> Expr <u><b>rparen</b></u> Statement
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        ReturnStm ::= <u><b>return</b></u> ( Expr )? <u><b>semicolon</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        NoStm ::= <u><b>semicolon</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        IdStm ::= <u><b>identifier</b></u> ( Assignement | FunctionCall | <u><b>dot</b></u> <u><b>identifier</b></u> FunctionCall ) <u><b>semicolon</b></u>
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        BlockStm ::= <u><b>lbrace</b></u> ( Statement )* <u><b>rbrace</b></u>
+                      </p>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+
+            <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+              &nbsp;Las 
+			  expresiones utilizan operadores aritméticos (+,-,*,/,%), lógicos 
+			  (&amp;&amp;, || !) y relacionales ( ==, !=, &gt;, &gt;=, &lt;, &lt;=). Los factores 
+			  que aparecen en las expresiones pueden ser literales, referencias 
+			  a variables o llamadas a funciones.</p>
+    
+            <table border="1" cellpadding="10" cellspacing="10" 
+             style="border-color: #111111; border-collapse: collapse; background-color: #FFFFC0; margin-right: 10px; margin-left: 10px;" 
+             width="700" id="Table4.1">
+              <tr>
+                <td>
+                  <ul>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Expr ::= AndExpr ( <u><b>or</b></u> AndExpr )*
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        AndExpr ::= RelExpr ( <u><b>and</b></u> RelExpr )* 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        RelExpr ::= SumExpr ( RelOp SumExpr )? 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        RelOp ::= ( <u><b>eq</b></u> | <u><b>ne</b></u> | <u><b>gt</b></u> | <u><b>ge</b></u> | <u><b>lt</b></u> | <u><b>le</b></u> )
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        SumExpr ::= UnOpn ProdExpr ( SumOp ProdExpr )* 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        UnOp ::= ( <u><b>not</b></u> | <u><b>minus</b></u> | <u><b>plus</b></u> )? 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        SumOp ::= ( <u><b>minus</b></u> | <u><b>plus</b></u> ) 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        ProdExpr ::= Factor ( MultOp Factor )*
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        MultOp ::= ( <u><b>prod</b></u> | <u><b>div</b></u> | <u><b>mod</b></u> ) 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Factor ::= ( Literal | Reference | <u><b>lparen</b></u> Expr <u><b>rparen</b></u> ) 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Literal ::= ( <u><b>integer_literal</b></u> | <u><b>char_literal</b></u> | <u><b>true</b></u> | <u><b>false</b></u> ) 
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        Reference ::= <u><b>identifier</b></u> ( FunctionCall | <u><b>dot</b></u> <u><b>identifier</b></u> FunctionCall )?
+                      </p>
+                    </li>
+                    <li>
+                      <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                        FunctionCall ::= <u><b>lparen</b></u> ( Expr ( <u><b>comma</b></u> Expr )* )? <u><b>rparen</b></u> 
+                      </p>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+
+    		<p>&nbsp;</p>          
+            
+          </td>
+        </tr>
+      </table>
+
+      <p>&nbsp;</p>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table5">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><span style="font-weight: 700">Estructura del compilador de Tinto 1.0</span></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">
+            <p>&nbsp;</p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              El código del compilador de Tinto está formado por un total de 61 
+			  ficheros distribuidos en 10 paquetes.
+              El código está escrito en Java y los analizadores están generados de forma automática por medio de
+              la herramienta JavaCC. El uso de JavaCC nos va a permitir realizar fácilmente modificaciones en la 
+              gramática para ir añadiendo nuevas características al lenguaje. Los paquetes incluidos en el código
+              son los siguientes:
+            </p>
+            <ul>
+              <li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto</strong>: Se trata del paquete principal en el 
+				  que se encuentra el punto de entrada del compilador. El 
+				  paquete contiene dos clases:</p>
+				<ul>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>TintoCompilerOptions</em>: 
+				  está dedicada a analizar los parámetros de la llamada al 
+				  compilador y procesar las opciones de compilación. </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>TintoCompiler</em>: contiene el método <em>main()</em> del 
+				  compilador y desarrolla el proceso de análisis de los 
+				  diferentes ficheros fuente y la ejecución de las distintas 
+				  etapas del proceso de compilación.</p>
+					</li>
+				</ul>
+              </li>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.ast</strong>: Es el paquete raíz de todas las clases utilizadas en 
+				  el Árbol de Sintaxis Abstracta del compilador. 
+                  El paquete sólo contiene las clases que desarrollan el sistema de tipos, que son 
+                  utilizadas por muchas de las clases de los distintos subpaquetes.</p>
+				<ul>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>Access</i>: Es una interfaz que define las constantes 
+					usadas para describir los dos tipos de visibilidad incluidos 
+					en el lenguaje: <i>public</i> y <i>private.</i></p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>Type</i>: Es una interfaz que define las constantes 
+					utilizadas para describir los tipos de datos incluidos en el 
+					lenguaje Tinto: <i>void</i>, <i>int</i>, <i>char</i> y <i>
+					boolean.</i></p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>TypeSystem</i>: Es la clase que desarrolla los métodos 
+					asociados al sistema de tipos del lenguaje.</p>
+					</li>
+				</ul>
+              </li>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.ast.expression</strong>: Contiene las clases que 
+				  permiten describir los diferentes tipos de expresiones 
+				  soportadas por el lenguaje Tinto. Estas expresiones se 
+				  utilizan como parte derecha en las asignaciones, como 
+				  argumentos en las llamadas a funciones y como condiciones en 
+				  las instrucciones <i>if</i> y <i>while</i>. El contenido del 
+				  paquete es el siguiente:</p>
+				<ul>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>Expression</i>: Se trata de una clase abstracta que se 
+					utiliza como superclase de todas las clases que describen 
+					expresiones. Su único campo es <i>type</i>, que 
+					contiene el tipo de dato de la expresión. Este tipo se 
+					almacena como un entero y puede tomar los valores definidos 
+					en la interfaz <i>tinto.ast.Type</i>. </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>OperatorExpression</i>: Es una clase abstracta que 
+					encapsula a todas las expresiones que representan una 
+					operación sobre otras expresiones. Esta clase es 
+					desarrollada por las subclases <i>BinaryExpression</i> y <i>
+					UnaryExpression</i>. </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>LiteralExpression</i>: Es la clase abstracta que 
+					encapsula a todas las expresiones que representan un valor 
+					literal. Esta clase es desarrollada por las subclases <i>
+					BooleanLiteralExpression</i>, <i>CharLiteralExpression</i> e
+					<i>IntegerLiteralExpression</i>. </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>ReferenceExpression</i>: Se trata de una clase abstracta 
+					que encapsula a todas las expresiones que representan una 
+					referencia (a una variable o a una función). </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>BinaryExpression</i>: Es la clase que describe 
+					expresiones binarias, es decir, expresiones formadas por un 
+					operador y dos operandos. La clase define una serie de 
+					constantes para identificar los diferentes operadores 
+					binarios del lenguaje Tinto: operadores lógicos (AND y OR), 
+					operadores aritméticos (PLUS, MINUS, PROD, DIV y MOD) y 
+					operadores de comparación (EQ, NEQ, GT, GE, LT y LE).</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>UnaryExpression</i>:<span lang="es"> </span>Es la clase 
+					que describe expresiones unarias, es decir, expresiones 
+					formadas por un operador y un único operando. La clase 
+					define una serie de constantes para identificar los 
+					diferentes operadores unarios del lenguaje Tinto: el 
+					operador lógico de negación (NOT) y los operadores 
+					aritméticos unarios (PLUS y MINUS). También incluye una 
+					constante (NONE) para indicar que no se aplica ningún 
+					operador unario al operando.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>BooleanLiteralExpression</i>: Esta clase permite 
+					describir un literal de tipo <i>boolean</i>, es decir, 
+					permite representar las constantes <i>true</i> y <i>false</i>.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>CharLiteralExpression</i>: Es la clase dedicada a 
+					representar literales de tipo carácter.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>IntegerLiteralExpression</i>: Describe literales de tipo 
+					entero. </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>CallExpression</i>: Es la clase que describe una llamada 
+					a una función.&nbsp;El tipo de datos de la expresión corresponde 
+					al tipo de datos que devuelve la función.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>CallParameters</i>: Es la 
+					única clase del paquete que no es subclase de <em>Expression</em>. 
+					Describe los argumentos de la llamada a una función, es 
+					decir, la lista de expresiones utilizadas en la definición 
+					de la llamada.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>VariableExpression</i>:
+					Describe una expresión formada por la referencia a una 
+					variable local o a un argumento del método. El tipo de datos 
+					de la expresión corresponde al tipo de datos de la variable.
+					</p>
+					</li>
+				</ul>
+              </li>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.ast.statement</strong>: Es el paquete en el que se incluyen las clases que describen 
+                  las diferentes sentencias del lenguaje Tinto: (<em>if, while, return,</em> etc.). 
+				  El paquete está formado por las siguientes clases:</p>
+				<ul>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<em>Statement</em>: Se trata de una clase abstracta que 
+					sirve como superclase de cualquier clase que defina una 
+					instrucción.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<em>IfStatement</em>: Es la clase que describe una 
+					instrucción <i>if</i>. Sus campos contienen la condición y 
+					las instrucciones a ejecutar si la condición es cierta o 
+					falsa.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>WhileStatement</i>: Es la clase que describe una 
+					instrucción <em>while</em>. Almacena como campos la 
+					condición y el cuerpo del bucle.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>ReturnStatement</i>:<span lang="es"> Describe una 
+					instrucción <i>return</i>. </span>Almacena la expresión que 
+					permite calcular el valor a devolver.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>AssignStatement</i>:<span lang="es"> Es la clase que 
+					describe una instrucción de asignación. </span>Es un 
+					contenedor que almacena la referencia a la variable objeto 
+					de la asignación y la expresión a asignar.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>CallStatement</i>:<span lang="es"> Describe una 
+					instrucción de llamada a una función.</span></p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>BlockStatement</i>:<span lang="es"> Es una clase que 
+					describe un bloque de instrucciones. Se suele utilizar como 
+					cuerpo de las instrucciones <i>if</i> y <i>while</i>. </span>
+					Contiene una lista de las instrucciones incluidas en el 
+					bloque.</p>
+					</li>
+				</ul>
+              </li>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.ast.struct</strong>: Es el paquete al que pertenecen las clases que describen los 
+                  componentes de alto nivel del lenguaje Tinto (bibliotecas, funciones, etc.). 
+				  Contiene las siguientes clases:</p>
+				<ul>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>LibraryDeclaration</i>: Es la clase que contiene toda la 
+					información recopilada de un archivo fuente, es decir, 
+					constituye la raíz del árbol de sintaxis abstracta a 
+					construir. Almacena su identificador, una lista de los 
+					nombres de otras bibliotecas importadas y el conjunto de 
+					funciones definidas en la biblioteca.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>Function</i>: Describe una función definida en el 
+					interior de una biblioteca. Además de su identificador y su 
+					tipo de datos, la clase contiene la lista de argumentos y la 
+					lista de instrucciones de la función.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>Variable</i>:<span lang="es"> Contiene la descripción de 
+					una variable local o un argumento de una función. </span>Es 
+					un contenedor que almacena el nombre y el tipo de dato de la 
+					variable. </p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify;">
+					<i>SymbolTable</i>:<span lang="es"> Es la clase que 
+					desarrolla la tabla de símbolos del compilador. La tabla de 
+					símbolos contiene el conjunto de bibliotecas analizadas por 
+					el compilador y se encarga de identificar la biblioteca y la 
+					función que se está analizando en cada momento.</span></p>
+					</li>
+				</ul>
+              </li>
+              <li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.parser</strong>: Contiene las clases que 
+				  desarrollan los analizadores semánticos del compilador. Los 
+				  analizadores se desarrollan por medio de la herramienta JavaCC 
+				  por lo que la mayor parte de las clases contenidas en el 
+				  paquete son generadas automáticamente por esta herramienta. 
+				  La fase de análisis requiere dos pasadas. En la primera pasada 
+				  se analiza las definiciones de bibliotecas y funciones. En la 
+				  segunda fase se analiza el código de las funciones. Las clases no generadas por JavaCC son las siguientes:</p>
+				<ul>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>SemanticException</em>: Contiene la descripción de los 
+					errores de tipo semántico. El compilador de Tinto define un 
+					total de 13 errores semánticos diferentes.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>TintoHeaderParser.jj</em>: Desarrolla el analizador 
+					semántico de la cabecera de las bibliotecas que constituye 
+					la primera fase del análisis. Este análisis 
+					consiste en construir un objeto <em>LibraryDeclaration</em> y su 
+					lista de objetos <em>Function</em>, pero no se analiza el cuerpo de 
+					las funciones.</p>
+					</li>
+					<li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>TintoParser.jj</em>: Desarrolla el analizador semántico 
+					que realiza la segunda fase del análisis. Esta fase consiste 
+					en estudiar el cuerpo de las funciones construyendo la lista 
+					de instrucciones que lo forman.</p>
+					</li>
+				</ul>
+			  </li>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.code</strong>: Es el paquete dedicado a 
+				  construir el código intermedio a partir del árbol de sintaxis 
+				  abstracta. Está formado por las siguientes clases:</p>
+			    <ul>
+				  <li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                    <em>CodeConstants</em>: Se trata de una interfaz que 
+					define las constantes que identifican los tipos de 
+					instrucciones del código intermedio.</p>
+				  </li>
+				  <li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>CodeAddress</em>: Es una clase abstracta que describe 
+					una dirección en el código de tres direcciones. Las 
+					direcciones utilizadas en las instrucciones pueden ser 
+					etiquetas, literales (valores constantes) y referencias a 
+					variables.</p>
+				  </li>
+				  <li>
+					<p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+					<em>CodeLabel</em>:
+					Subclase de <em>CodeAddress</em>. Define una etiqueta que puede ser 
+					utilizada como campo en las instrucciones del código 
+					intermedio. </p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>CodeLiteral</em>:
+					Subclase de <em>CodeAddress</em>. Define un valor constante (un 
+					literal) que puede ser utilizado como campo en las 
+					instrucciones del código intermedio. El valor de la 
+					constante se almacena en formato hexadecimal. </p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>CodeVariable</em>:
+					Subclase de <em>CodeAddress</em>. Define una referencia a 
+					una variable que puede ser utilizada como campo en las 
+					instrucciones del código intermedio.</p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>CodeInstruction</em>:
+					Clase que representa una instrucción en código intermedio. 
+					El campo <i>kind</i> indica el tipo de instrucción (alguno 
+					de los códigos definidos en CodeConstants). Los campos <i>
+					target</i>, <i>source1</i> y <i>source2</i> contienen las 
+					tres direcciones de la instrucción. El campo <i>comment</i> 
+					se utiliza para generar un comentario asociado a la 
+					instrucción que pretende describir la instrucción en un 
+					formato más interpretable. </p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>CodeInstructionList</em>:
+					Describe una lista de instrucciones. Esta clase facilita la 
+					generación del código intermedio al desarrollar la 
+					concatenación de listas de instrucciones o la inclusión de 
+					nuevas instrucciones a la lista.</p>
+				  </li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>FunctionCodification</em>: Describe el código intermedio 
+					asociado a una función de una biblioteca escrita en Tinto. </p>
+				  </li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>LibraryCodification</em>: Describe el código intermedio 
+					asociado a una biblioteca. Contiene una lista de objetos <em>
+					FunctionCodification</em> que desarrollan el código 
+					intermedio de las funciones de la biblioteca.</p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>CodeGenerator</em>: Clase encargada de generar el código 
+					intermedio en el compilador de Tinto. Esta clase se encarga 
+					de crear un objeto <em>LibraryCodification</em> a partir de 
+					un objeto <em>Library</em>. Para ello realiza llamadas al 
+					método <em>generateFunctionCode()</em>, que crea objetos <em>
+					FunctionCodification</em> a partir de objetos <em>Function</em>. 
+					La clase contiene numerosos métodos que se dedican a generar 
+					el código intermedio asociado a las diferentes estructuras 
+					del árbol de sintaxis abstracta.</p>
+				  </li>
+				</ul>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.mips</strong>: Se trata del paquete dedicado a 
+				  generar el código ensamblador a partir de la descripción de 
+				  las bibliotecas en código intermedio. El paquete contiene tres 
+				  clases: </p>
+				<ul>
+			      <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+   				    <em>ApplicationAssembler</em>: Clase que permite generar el 
+					código ensamblador común a todas las aplicaciones. Este 
+					código consta de una parte dedicada a describir el control 
+					de las excepciones y el código de comienzo de la aplicación que 
+   				    contiene un salto a la etiqueta <i>Main.Main</i> correspondiente 
+   				    a la ejecución de la función <i>Main()</i> de la clase <i>Main</i>.
+				    </p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>LibraryAssembler</em>: Clase que almacena el código ensamblador generado para un fichero fuente de Tinto. 
+				    La clase contiene una lista de objetos <i>FunctionAssembler</i> 
+					que son los que generan el código ensamblador de cada 
+					método. </p>
+				  </li>
+				  <li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>FunctionAssembler</em>: Es la clase encargada de generar el código ensamblador a partir del código 
+					intermedio de cada función descrita en Tinto. </p>
+				  </li>
+				</ul>
+			  </li>
+			  <li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.mips.registers</strong>: Contiene las clases 
+				  dedicadas a describir los registros del procesador MIPS.</p>
+			    <ul>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>Register</em>: Clase que describe un registro del 
+					procesador MIPS. La clase contiene un campo con el código 
+					del registro y un método <i>getName()</i> que 
+					devuelve el nombre asociado a cada registro.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RegisterConstants</em>: Interfaz que define los 
+					códigos de los registros del procesador MIPS.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RegisterSet</em>: Clase que contiene la definición de 
+					todos los registros de MIPS como referencias a objetos <i>
+					Register</i>. Cada vez que una instrucción 
+					necesite hacer referencia a un registro de MIPS, se utilizan 
+					los campos estáticos de esta clase. De esta forma se evita 
+					crear cientos de referencias repetidas a los mismos 
+					registros.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>DispRegister</em>: Clase auxiliar que permite 
+					describir un direccionamiento indirecto, es decir, un 
+					desplazamiento sobre un registro.</p>
+					</li>
+				</ul>
+			  </li>
+				<li>
+                <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+                  <strong>tinto.mips.instructions</strong>: Contiene las clases 
+				  dedicadas a describir las instrucciones del ensamblador del 
+				  procesador MIPS.</p>
+			    <ul>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>InstructionSet</em>: Se trata de una interfaz que 
+					define códigos asociados a cada instrucción del procesador 
+					MIPS. La interfaz incluye códigos para todas las 
+					instrucciones de MIPS, aunque solo algunas de ellas son 
+					finalmente utilizadas por el compilador de Tinto.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>Instruction</em>: Clase abstracta que describe una 
+					instrucción del procesador MIPS. Las diferentes subclases de
+					<i>Instruction</i> se diferencian en el modo de 
+					direccionamiento de los datos. El procesador MIPS desarrolla 
+					un código ensamblador de tres direcciones donde el 
+					direccionamiento puede ser inmediato (un valor constante), 
+					directo (un registro) o indirecto (un desplazamiento sobre 
+					un registro).</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RRRInstruction</em>: Describe una instrucción MIPS 
+					con tres direcciones con direccionamiento directo (tres 
+					registros). Típicamente permite describir instrucciones de 
+					operaciones entre dos registros, almacenando el resultado en 
+					el tercer registro (por ejemplo la suma ADDU).</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RRInstruction</em>: Describe una instrucción MIPS que 
+					requiere dos direcciones con direccionamiento directo (dos 
+					registros).</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RInstruction</em>: Describe una instrucción MIPS con 
+					una única dirección con direccionamiento directo (un 
+					registro).</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RRIInstruction</em>: Describe una instrucción MIPS 
+					con tres direcciones con dos direccionamientos directos (dos 
+					registros) y uno inmediato (un valor). Por ejemplo, la suma 
+					de un valor (ADDIU).</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RIInstruction</em>: Describe una instrucción MIPS con 
+					dos direcciones con direccionamiento directo (un registro) e 
+					inmediato (un valor). Por ejemplo, la asignación directa de 
+					un valor a un registro.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>LabelInstruction</em>: Describe una instrucción MIPS 
+					con una dirección correspondiente a una etiqueta. 
+					Típicamente permite representar saltos incondicionales.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RLInstruction</em>: Describe una instrucción MIPS con 
+					dos direcciones correspondiente a un registro y una 
+					etiqueta. Típicamente permite representar saltos 
+					condicionados al valor de un registro.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RRLInstruction</em>: Describe una instrucción MIPS 
+					con tres direcciones correspondiente a dos registros y una 
+					etiqueta. Típicamente permite representar saltos 
+					condicionados a la comparación entre dos registros.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>RDRInstruction</em>: Describe una instrucción MIPS 
+					con tres direcciones correspondiente a un registro y un 
+					desplazamiento sobre otro registro. Por ejemplo, las 
+					instrucciones de acceso a memoria (load y store) son de este 
+					tipo.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>NInstruction</em>: Describe una instrucción MIPS que 
+					no necesita ninguna dirección.</p>
+					</li>
+					<li>
+					<p style="margin-left: 10px; margin-right: 10px; text-align: justify;">
+					<em>InstructionFactory</em>: Clase que contiene un 
+					conjunto de métodos estáticos para crear las instrucciones 
+					de MIPS. Sólo se han incluido las funciones necesarias para 
+					el compilador de Tinto, de manera que existen muchas 
+					instrucciones de MIPS sin su correspondiente método en esta 
+					clase.</p>
+					</li>
+				</ul>
+			  </li>
+            </ul>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+      </table>
+
+      <p>&nbsp;</p>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table6">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><span style="font-weight: 700">Proceso de compilación y ejecución de programas en Tinto</span></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">
+            <p>&nbsp;</p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              El compilador de <em>Tinto</em> se encuentra en el archivo
+			  <em>tintoc.jar</em>. Para 
+			  realizar un proceso de compilación se debe ejecutar este archivo 
+			  desde una línea de comandos:
+			</p>
+            <table border="1" cellpadding="10" cellspacing="10" 
+             style="border-color: #111111; border-collapse: collapse; background-color: #9999FF; margin-right: 10px; margin-left: 10px;" 
+             width="700" id="Table1">
+              <tr>
+                <td>
+                  <p style="margin-left: 10; margin-right: 10; text-align: center;">
+                    java -jar tintoc.jar <em>options</em>
+                  </p>
+                </td>
+              </tr>
+            </table>
+            <p style="margin-right: 10px; margin-left: 10px; text-align: justify">
+              El objetivo del compilador es compilar el archivo <em>Main.tinto</em> 
+			  que debe contener la función <em>Main()</em> que marca el comienzo 
+			  de la aplicación programada. A partir de esta biblioteca se 
+			  analizan y compilan el resto de bibliotecas importadas. Por 
+			  defecto el directorio de trabajo es desde aquel en el que se 
+			  ejecuta el comando de compilación, pero se puede modificar por 
+			  medio de las opciones. Por defecto las bibliotecas importadas 
+			  deben encontrarse en el directorio de trabajo pero se pueden 
+			  configurar otros directorios de búsqueda por medio de la opción
+			  <strong><em>-I</em></strong>. El resultado de la compilación es un 
+			  archivo con extensión &quot;<em>.s</em>&quot; con el código ensamblador que 
+			  desarrolla la aplicación programada. Por defecto, el archivo 
+			  generado como salida se denomina &quot;<em>Application.s</em>&quot; pero 
+			  este nombre se puede modificar por medio de la opción <strong><em>
+			  -o</em></strong>. Por medio de la opción <strong><em>-v</em></strong> 
+			  se le puede indicar al compilador que genere archivos con la 
+			  descripción del código intermedio en modo texto. Las opciones que 
+			  admite el compilador son las siguientes:
+            </p>
+            <ul>
+              <li>
+                <strong>Path</strong>, indica directorio de trabajo.
+              </li>
+              <li>
+                <strong>-o Name</strong>, indica el nombre del fichero de salida (sin la extensión ".s").
+              </li>
+              <li>
+                <strong>-I Path</strong>, añade un directorio de búsqueda de archivos importados.
+              </li>
+              <li>
+                <strong>-v</strong>, indica que se generen los ficheros de código intermedio 
+				(por defecto no se generarán).
+              </li>
+            </ul>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              La distribución del compilador de <i>Tinto</i> contiene algunos ejemplos 
+			  y un directorio llamado <em>Utils</em> que incluye 
+              una biblioteca llamada <i>Console</i>. Esta biblioteca contiene 
+			  varios métodos de 
+              presentación de información en la consola. Para utilizar correctamente 
+              esta biblioteca es aconsejable añadir el directorio <em>Utils</em> 
+			  como directorio de búsqueda por medio de la opción <em>-I</em>. El 
+			  resultado de la compilación es un fichero escrito en ensamblador 
+			  del procesador MIPS. Para ejecutar este código se utiliza el 
+			  simulador Qt-Spim.</p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              &nbsp;
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <p>&nbsp;</p>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table7">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><span style="font-weight: 700">Características del procesador MIPS</span></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              &nbsp;
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              MIPS (Microprocessor without Interlocked Pipeline Stages) es el nombre de 
+              una familia de procesadores RISC desarrollados por 
+              <a href="http://www.mips.com">MIPS Technologies</a>. La empresa concede 
+              licencias a otros fabricantes para integrar la arquitectura MIPS en sus 
+              productos (por ejemplo, CISCO, SGI, Toshiba, Sony, ...). La arquitectura 
+              MIPS es la base de los procesadores de muchos routers de CISCO, de las 
+              estaciones de trabajo de SGI, de las videoconsolas Nintendo 64, PlayStation, 
+              PlayStation 2, PlayStation Portable, de las impresoras de HP, etc.
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              Algunas de las características más interesantes de la arquitectura MIPS 
+              son las siguientes:
+            </p>
+            <ul>
+              <li>
+                <p style="text-align: justify;">
+                  Describe procesadores RISC, cuyo código es más fácil de generar para un compilador.
+                </p>
+              </li>
+              <li>
+                <p style="text-align: justify;">
+                  Está muy bien documentada
+                  <a href="practica01/MD00082-2B-MIPS32INT-AFP-02.50.pdf">(Arquitectura)</a>
+                  <a href="practica01/MD00086-2B-MIPS32BIS-AFP-02.50.pdf">(Conjunto de instrucciones)</a>
+                  <a href="practica01/MD00090-2B-MIPS32PRA-AFP-02.50.pdf">(Arquitectura de recursos privilegiados)</a>
+                </p>
+              </li>
+              <li>
+                <p style="text-align: justify;">
+                  Es una arquitectura de 32/64 bits.
+                </p>
+              </li>
+              <li>
+                <p style="text-align: justify;">
+                  Contiene una unidad en coma flotante que admite los 
+                  formatos IEEE Standar 754 de 32 bits (<em>float</em>) y de 64 bits (<em>double</em>).
+                </p>
+              </li>
+              <li>
+                <p style="text-align: justify;">
+                  Podemos simular el código ensamblador por medio del simulador QT-SPIM.
+                </p>
+              </li>
+            </ul>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              La arquitectura cuenta con una unidad de propósito generar formada por 32 
+              registros de 32 bits ($0 a $31) 
+              y una unidad de coma flotante con 32 registros de 32 bits ($f0 a 
+			  $f31) que se pueden utilizar como 16 registros de 64 bits para 
+			  almacenar datos en formato <em>double</em>.</p>
+            <p align="center">
+              <img border="2" src="practica01/mips1.png" alt="Arquitectura de MIPS" >
+            </p>
+			<p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              Los registros de propósito general pueden usarse libremente en las 
+			  instrucciones, aunque hay que tener en cuenta que el registro $0 
+			  está cableado a 0 y que el registro $31 almacena la dirección de 
+			  retorno cuando se ejecuta una instrucción JAL (<em>jump and link</em>). El 
+			  resto de registros se puede utilizar libremente aunque se 
+			  recomienda seguir un convenio de uso de los registros que indica 
+			  el tipo de dato que se debe almacenar en cada registro. Este 
+			  convenio incluye utilizar una serie de alias para referirse a los 
+			  registros. La siguiente tabla describe el convenio de uso de los 
+			  registros de MIPS.</p>
+            <p align="center">
+              <img border="2" src="practica01/mips2.png" alt="Registros de MIPS" >
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              El conjunto de instrucciones es sencillo y potente
+              <a href="practica01/CPU-InstructionSet.pdf">(Instrucciones CPU)</a>
+              <a href="practica01/FPU-InstructionSet.pdf">(Instrucciones FPU)</a>
+              <a href="practica01/InstructionSet.pdf">(Tabla resumen)</a>. La descripción completa 
+              de cada instrucción se encuentra <a href="practica01/MD00086-2B-MIPS32BIS-AFP-02.50.pdf">aquí</a>.
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              &nbsp;
+            </p>          
+          </td>
+        </tr>
+      </table>
+
+      <p>&nbsp;</p>
+
+      <table border="1" cellpadding="0" cellspacing="0" style="border-color: #111111; border-collapse: collapse" width="100%" id="Table8">
+        <tr>
+          <td width="100%" bgcolor="#000080">
+            <p align="center">
+              <font color="#FFFFFF"><span style="font-weight: 700">El simulador Qt-Spim</span></font>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%" style="margin-left: 10; margin-right: 10">
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">&nbsp;</p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              SPIM es un simulador que ejecuta programas descritos en ensamblador de 
+              MIPS32. La herramienta ha sido programada por 
+              <a href="https://people.epfl.ch/cgi-bin/people?id=240726&op=bio&lang=en&cvlang=en">James Larus</a> 
+              y se distribuye libremente. La versión más reciente se denomina QT-SPIM y se puede descargar desde
+              <a href="https://sourceforge.net/projects/spimsimulator/files/">la página oficial</a>.
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              El simulador desarrolla un conjunto mínimo de llamadas al sistema que 
+              permiten acceder a una consola y acceder a ficheros. La tabla de llamadas al 
+              sistema es <a href="practica01/SPIM_syscall.pdf">ésta</a>.
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              La ventana principal de Qt-Spim muestra tres paneles: el panel de la iquierda muestra el 
+              contenido de los registros del procesador, el panel de la derecha muestra el 
+              contenido de la memoria y el panel inferior se utiliza para mostrar mensajes.
+              El panel de registros tiene dos pestañas que permiten seleccionar entre los registros 
+              de propósito general (GPR) y los registros de la unidad de coma flotante (FPR). 
+              El panel de memoria tiene también dos pestañas que permiten mostrar el segmento 
+              de texto (que contiene las instrucciones del programa a ejecutar) y el segmento de datos 
+              (que contiene la pila y la memoria estática y dinámica).
+            </p>
+            <p align="center">
+              <a href="practica01/qtspim1.png">
+              <img border="2" src="practica01/qtspim1.png" alt="QtSpim" width="500" >
+              </a>
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              Para ejecutar un programa (el fichero <i>Application.s</i>, en nuestro caso) en 
+              primer lugar hay que cargarlo (Opción File->Load file). A continuación se puede ejecutar 
+              completamente (F5) o paso a paso (F10). También es posible establecer puntos de parada 
+              (<i>breakpoints</i>) y ejecutar el programa a saltos. 
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              El proceso de ejecución se configura por medio de la opción (Simulator -> Settings).
+              En nuestro caso, las opciones "Enable Delayed Branches" y "Enable Delayed Loads" deben estar
+              marcadas para simular el procesador de forma realista. La opción "Accept Pseudo Instructions"
+              tambien debe estar marcadas, ya que el ensamblador generado por el compilador de Tinto 
+              utiliza algunas pseudo-instrucciones. Es importante desmarcar la opción
+              "Load Exception Handler" ya que nuestro fichero <i>Application.s</i> ya contiene el código 
+              de las excepciones. 
+            </p>
+            <p align="center">
+              <a href="practica01/qtspim2.png">
+              <img border="2" src="practica01/qtspim2.png" alt="QtSpim" width="500" >
+              </a>
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">
+              El simulador contiene una consola en la que se pueden mostrar e introducir datos.
+            </p>
+            <p align="center">
+              <a href="practica01/qtspim3.png">
+              <img border="2" src="practica01/qtspim3.png" alt="QtSpim" width="500" >
+              </a>
+            </p>
+            <p style="margin-left: 10; margin-right: 10; text-align: justify;">&nbsp;</p>
+          </td>
+        </tr>
+      </table>
+
+      <p>&nbsp;</p>
+            
+    </td>
+  </tr>
+</table>
+</body>
+</html>
