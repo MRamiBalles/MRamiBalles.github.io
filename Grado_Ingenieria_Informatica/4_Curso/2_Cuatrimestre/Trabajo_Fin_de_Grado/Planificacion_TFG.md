@@ -13,7 +13,9 @@ El TFG es el boss final. Aquí tienes que demostrar que eres un Ingeniero.
 ### 📋 Ideas de Temas (Backlog)
 - [ ] Aplicación Móvil con IA integrada para ayuda al estudio.
 - [ ] Sistema de monitorización de red mediante Raspberry Pi.
-- [ ] **Programación Funcional en Urium**: Implementación de Funciones Puras, Recursión por Cola y Funciones como Tipos de Datos.
+- [ ] **Programación Funcional en Urium**:
+    - [ ] [Fase 1: Funciones Puras (Release 0.2)](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Trabajo_Fin_de_Grado/PLANIFICACION_RELEASE_0.2.md)
+    - [ ] [Fase 2: Optimización y Orden Superior (Release 0.3)](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Trabajo_Fin_de_Grado/PLANIFICACION_RELEASE_0.3.md)
 - [ ] Dashboard de analítica de datos universitarios.
 
 ### 📁 Gestión de la Memoria
