@@ -1,0 +1,14 @@
+@relation ejemplosCredito
+
+@attribute duration numeric
+@attribute purpose {'new car','used car',furniture/equipment,radio/tv,'domestic appliance',repairs,education,vacation,retraining,business,other}
+@attribute credit_amount numeric
+@attribute personal_status {'male div/sep','female div/dep/mar','male single','male mar/wid','female single'}
+@attribute age numeric
+@attribute job {'unemp/unskilled non res','unskilled resident',skilled,'high qualif/self emp/mgmt'}
+@attribute class {good,bad}
+
+@data
+12,vacation,1500,'male single',37,'unskilled resident',?
+48,'domestic appliance',3000,'male mar/wid',25,'unskilled resident',?
+6,business,6500,'female single',45,skilled,?

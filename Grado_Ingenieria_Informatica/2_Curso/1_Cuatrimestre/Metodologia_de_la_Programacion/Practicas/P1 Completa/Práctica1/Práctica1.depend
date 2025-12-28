@@ -1,0 +1,74 @@
+# depslib dependency file v1.0
+1637094616 source:d:\p1 completa\práctica1\main.cpp
+	<cstdlib>
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	<cstdlib>
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	"Empresa.h"
+
+1637093394 d:\p1 completa\práctica1\include\fecha.h
+	<iostream>
+
+1637057432 d:\p1 completa\práctica1\include\cliente.h
+	"Fecha.h"
+	<iostream>
+	<cstring>
+
+1637057366 d:\p1 completa\práctica1\include\contrato.h
+	"fecha.h"
+	<iostream>
+	<cstring>
+
+1637052720 d:\p1 completa\práctica1\include\contratotp.h
+	"contrato.h"
+
+1637095184 d:\p1 completa\práctica1\include\contratomovil.h
+	"contrato.h"
+	<iostream>
+
+1637094820 d:\p1 completa\práctica1\include\empresa.h
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+
+1637057450 source:d:\p1 completa\práctica1\src\cliente.cpp
+	<string.h>
+	"Cliente.h"
+	<cstring>
+	<iostream>
+
+1637057366 source:d:\p1 completa\práctica1\src\contrato.cpp
+	"Contrato.h"
+	<iostream>
+	<cstring>
+
+1637052634 source:d:\p1 completa\práctica1\src\contratomovil.cpp
+	"ContratoMovil.h"
+	"string.h"
+
+1637052600 source:d:\p1 completa\práctica1\src\contratotp.cpp
+	"ContratoTP.h"
+
+1637094912 source:d:\p1 completa\práctica1\src\empresa.cpp
+	<typeinfo>
+	<cstdio>
+	"Empresa.h"
+	"Fecha.h"
+
+1637093394 source:d:\p1 completa\práctica1\src\fecha.cpp
+	<cmath>
+	<iostream>
+	"Fecha.h"
+

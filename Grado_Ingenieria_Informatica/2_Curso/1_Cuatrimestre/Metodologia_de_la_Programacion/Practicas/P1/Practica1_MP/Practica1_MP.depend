@@ -1,0 +1,82 @@
+# depslib dependency file v1.0
+1637598464 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\main.cpp
+	<cstdlib>
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+
+1637875206 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\include\fecha.h
+	<iostream>
+
+1637875167 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\include\cliente.h
+	"Fecha.h"
+
+1637875228 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\src\fecha.cpp
+	<cmath>
+	<iostream>
+	"Fecha.h"
+
+1637875509 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\src\cliente.cpp
+	<string.h>
+	"Cliente.h"
+
+1637601852 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\prueba1.cpp
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+
+1637602968 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\prueba2.cpp
+	<cstdlib>
+	<iostream>
+	<iomanip>
+	"Fecha.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+
+1637875666 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\src\contrato.cpp
+	"Contrato.h"
+	<iostream>
+
+1637875545 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\include\contrato.h
+	"fecha.h"
+
+1637878881 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\src\contratotp.cpp
+	"ContratoTP.h"
+	<iostream>
+
+1637878678 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\include\contratotp.h
+	"contrato.h"
+
+1637876931 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\src\contratomovil.cpp
+	"ContratoMovil.h"
+	"string.h"
+	<iostream>
+
+1637876331 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\include\contratomovil.h
+	"contrato.h"
+
+1637602585 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\src\empresa.cpp
+	<typeinfo>
+	<cstdio>
+	"Empresa.h"
+	"Fecha.h"
+
+1637602585 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\include\empresa.h
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+
+1637602911 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\practica1_mp\prueba3.cpp
+	<cstdlib>
+	<iostream>
+	<iomanip>
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	"Empresa.h"
+

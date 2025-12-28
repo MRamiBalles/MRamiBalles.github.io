@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1634635124 source:c:\users\usuario\desktop\pract0_pate1\practica0_parte1\src\complejo.cpp
+	"complejo.h"
+	<iostream>
+
+1634635711 c:\users\usuario\desktop\pract0_pate1\practica0_parte1\include\complejo.h
+	<iostream>
+
+1634635348 source:c:\users\usuario\desktop\pract0_pate1\practica0_parte1\main.cpp
+	<iostream>
+	<fstream>
+	"complejo.h"
+

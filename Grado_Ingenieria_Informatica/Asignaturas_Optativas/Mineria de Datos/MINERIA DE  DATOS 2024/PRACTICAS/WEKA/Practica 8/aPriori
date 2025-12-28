@@ -1,0 +1,85 @@
+=== Run information ===
+
+Scheme:       weka.associations.Apriori -N 100 -T 1 -C 1.1 -D 0.05 -U 1.0 -M 0.1 -S -1.0 -c -1
+Relation:     titanic
+Instances:    2201
+Attributes:   4
+              clase
+              edad
+              sexo
+              sobrevivió?
+=== Associator model (full training set) ===
+
+
+Apriori
+=======
+
+Minimum support: 0.1 (220 instances)
+Minimum metric <lift>: 1.1
+Number of cycles performed: 18
+
+Generated sets of large itemsets:
+
+Size of set of large itemsets L(1): 9
+
+Size of set of large itemsets L(2): 15
+
+Size of set of large itemsets L(3): 9
+
+Size of set of large itemsets L(4): 2
+
+Best rules found:
+
+  1. edad=1 sexo=0 425 ==> sobrevivió?=1 316    conf:(0.74) < lift:(2.3)> lev:(0.08) [178] conv:(2.62)
+  2. sobrevivió?=1 711 ==> edad=1 sexo=0 316    conf:(0.44) < lift:(2.3)> lev:(0.08) [178] conv:(1.45)
+  3. sobrevivió?=1 711 ==> sexo=0 344    conf:(0.48) < lift:(2.27)> lev:(0.09) [192] conv:(1.52)
+  4. sexo=0 470 ==> sobrevivió?=1 344    conf:(0.73) < lift:(2.27)> lev:(0.09) [192] conv:(2.51)
+  5. sexo=0 470 ==> edad=1 sobrevivió?=1 316    conf:(0.67) < lift:(2.26)> lev:(0.08) [176] conv:(2.13)
+  6. edad=1 sobrevivió?=1 654 ==> sexo=0 316    conf:(0.48) < lift:(2.26)> lev:(0.08) [176] conv:(1.52)
+  7. edad=1 sexo=1 1667 ==> clase=0 sobrevivió?=0 670    conf:(0.4) < lift:(1.31)> lev:(0.07) [160] conv:(1.16)
+  8. clase=0 sobrevivió?=0 673 ==> edad=1 sexo=1 670    conf:(1) < lift:(1.31)> lev:(0.07) [160] conv:(40.82)
+  9. clase=0 885 ==> edad=1 sexo=1 862    conf:(0.97) < lift:(1.29)> lev:(0.09) [191] conv:(8.95)
+ 10. edad=1 sexo=1 1667 ==> clase=0 862    conf:(0.52) < lift:(1.29)> lev:(0.09) [191] conv:(1.24)
+ 11. clase=0 sobrevivió?=0 673 ==> sexo=1 670    conf:(1) < lift:(1.27)> lev:(0.06) [140] conv:(35.93)
+ 12. clase=0 edad=1 sobrevivió?=0 673 ==> sexo=1 670    conf:(1) < lift:(1.27)> lev:(0.06) [140] conv:(35.93)
+ 13. sexo=1 1731 ==> clase=0 sobrevivió?=0 670    conf:(0.39) < lift:(1.27)> lev:(0.06) [140] conv:(1.13)
+ 14. sexo=1 1731 ==> clase=0 edad=1 sobrevivió?=0 670    conf:(0.39) < lift:(1.27)> lev:(0.06) [140] conv:(1.13)
+ 15. clase=0 885 ==> edad=1 sexo=1 sobrevivió?=0 670    conf:(0.76) < lift:(1.25)> lev:(0.06) [135] conv:(1.62)
+ 16. edad=1 sexo=1 sobrevivió?=0 1329 ==> clase=0 670    conf:(0.5) < lift:(1.25)> lev:(0.06) [135] conv:(1.2)
+ 17. clase=0 885 ==> sexo=1 862    conf:(0.97) < lift:(1.24)> lev:(0.08) [165] conv:(7.87)
+ 18. clase=0 edad=1 885 ==> sexo=1 862    conf:(0.97) < lift:(1.24)> lev:(0.08) [165] conv:(7.87)
+ 19. sexo=1 1731 ==> clase=0 862    conf:(0.5) < lift:(1.24)> lev:(0.08) [165] conv:(1.19)
+ 20. sexo=1 1731 ==> clase=0 edad=1 862    conf:(0.5) < lift:(1.24)> lev:(0.08) [165] conv:(1.19)
+ 21. clase=3 edad=1 sexo=1 462 ==> sobrevivió?=0 387    conf:(0.84) < lift:(1.24)> lev:(0.03) [74] conv:(1.96)
+ 22. sobrevivió?=0 1490 ==> clase=3 edad=1 sexo=1 387    conf:(0.26) < lift:(1.24)> lev:(0.03) [74] conv:(1.07)
+ 23. clase=3 sexo=1 510 ==> sobrevivió?=0 422    conf:(0.83) < lift:(1.22)> lev:(0.03) [76] conv:(1.85)
+ 24. sobrevivió?=0 1490 ==> clase=3 sexo=1 422    conf:(0.28) < lift:(1.22)> lev:(0.03) [76] conv:(1.07)
+ 25. clase=0 885 ==> sexo=1 sobrevivió?=0 670    conf:(0.76) < lift:(1.22)> lev:(0.06) [121] conv:(1.56)
+ 26. clase=0 edad=1 885 ==> sexo=1 sobrevivió?=0 670    conf:(0.76) < lift:(1.22)> lev:(0.06) [121] conv:(1.56)
+ 27. sexo=1 sobrevivió?=0 1364 ==> clase=0 670    conf:(0.49) < lift:(1.22)> lev:(0.06) [121] conv:(1.17)
+ 28. sexo=1 sobrevivió?=0 1364 ==> clase=0 edad=1 670    conf:(0.49) < lift:(1.22)> lev:(0.06) [121] conv:(1.17)
+ 29. edad=1 sobrevivió?=0 1438 ==> clase=0 sexo=1 670    conf:(0.47) < lift:(1.19)> lev:(0.05) [106] conv:(1.14)
+ 30. clase=0 sexo=1 862 ==> edad=1 sobrevivió?=0 670    conf:(0.78) < lift:(1.19)> lev:(0.05) [106] conv:(1.55)
+ 31. edad=1 sexo=1 1667 ==> sobrevivió?=0 1329    conf:(0.8) < lift:(1.18)> lev:(0.09) [200] conv:(1.59)
+ 32. sobrevivió?=0 1490 ==> edad=1 sexo=1 1329    conf:(0.89) < lift:(1.18)> lev:(0.09) [200] conv:(2.23)
+ 33. sexo=1 1731 ==> edad=1 sobrevivió?=0 1329    conf:(0.77) < lift:(1.18)> lev:(0.09) [198] conv:(1.49)
+ 34. edad=1 sobrevivió?=0 1438 ==> sexo=1 1329    conf:(0.92) < lift:(1.18)> lev:(0.09) [198] conv:(2.79)
+ 35. sexo=1 1731 ==> sobrevivió?=0 1364    conf:(0.79) < lift:(1.16)> lev:(0.09) [192] conv:(1.52)
+ 36. sobrevivió?=0 1490 ==> sexo=1 1364    conf:(0.92) < lift:(1.16)> lev:(0.09) [192] conv:(2.51)
+ 37. clase=0 885 ==> edad=1 sobrevivió?=0 673    conf:(0.76) < lift:(1.16)> lev:(0.04) [94] conv:(1.44)
+ 38. edad=1 sobrevivió?=0 1438 ==> clase=0 673    conf:(0.47) < lift:(1.16)> lev:(0.04) [94] conv:(1.12)
+ 39. clase=3 sexo=1 510 ==> edad=1 sobrevivió?=0 387    conf:(0.76) < lift:(1.16)> lev:(0.02) [53] conv:(1.43)
+ 40. edad=1 sobrevivió?=0 1438 ==> clase=3 sexo=1 387    conf:(0.27) < lift:(1.16)> lev:(0.02) [53] conv:(1.05)
+ 41. clase=0 sexo=1 862 ==> sobrevivió?=0 670    conf:(0.78) < lift:(1.15)> lev:(0.04) [86] conv:(1.44)
+ 42. sobrevivió?=0 1490 ==> clase=0 sexo=1 670    conf:(0.45) < lift:(1.15)> lev:(0.04) [86] conv:(1.1)
+ 43. clase=0 edad=1 sexo=1 862 ==> sobrevivió?=0 670    conf:(0.78) < lift:(1.15)> lev:(0.04) [86] conv:(1.44)
+ 44. sobrevivió?=0 1490 ==> clase=0 edad=1 sexo=1 670    conf:(0.45) < lift:(1.15)> lev:(0.04) [86] conv:(1.1)
+ 45. clase=0 885 ==> sobrevivió?=0 673    conf:(0.76) < lift:(1.12)> lev:(0.03) [73] conv:(1.34)
+ 46. sobrevivió?=0 1490 ==> clase=0 673    conf:(0.45) < lift:(1.12)> lev:(0.03) [73] conv:(1.09)
+ 47. clase=0 edad=1 885 ==> sobrevivió?=0 673    conf:(0.76) < lift:(1.12)> lev:(0.03) [73] conv:(1.34)
+ 48. sobrevivió?=0 1490 ==> clase=0 edad=1 673    conf:(0.45) < lift:(1.12)> lev:(0.03) [73] conv:(1.09)
+ 49. clase=3 edad=1 627 ==> sobrevivió?=0 476    conf:(0.76) < lift:(1.12)> lev:(0.02) [51] conv:(1.33)
+ 50. sobrevivió?=0 1490 ==> clase=3 edad=1 476    conf:(0.32) < lift:(1.12)> lev:(0.02) [51] conv:(1.05)
+ 51. clase=3 706 ==> sobrevivió?=0 528    conf:(0.75) < lift:(1.1)> lev:(0.02) [50] conv:(1.27)
+ 52. sobrevivió?=0 1490 ==> clase=3 528    conf:(0.35) < lift:(1.1)> lev:(0.02) [50] conv:(1.05)
+

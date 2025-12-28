@@ -1,0 +1,46 @@
+cla
+clear all
+% configuración de la pieza
+posicion=[20 10 0];
+alfa=0; beta=0; gamma=0;
+  
+matriz_construccion_global = Desplazamiento(posicion(1), posicion(2), posicion(3))*Rotacionz(alfa)*Rotaciony(beta)*Rotacionx(gamma);
+
+matriz_rojo_construccion = Desplazamiento(1.5,0,0);
+matriz_rojo_global = matriz_construccion_global*matriz_rojo_construccion;
+
+matriz_azul_construccion = Desplazamiento(-1.5,0,0);
+matriz_azul_global = matriz_construccion_global*matriz_azul_construccion;
+
+matriz_verde_construccion = Desplazamiento(0,0,6);
+matriz_verde_global = matriz_construccion_global*matriz_verde_construccion;
+
+%pinta_pieza_delgada(matriz_pieza)
+pinta_bloque(matriz_rojo_global,'r')
+pinta_bloque(matriz_azul_global,'b')
+pinta_bloque(matriz_verde_global,'g')
+
+
+% matriz_agarre = Desplazamiento(0,0,4)*Rotaciony(pi)*Rotacionz(-pi/2);
+% matriz_pinza = matriz_verde_global * matriz_agarre;
+
+matriz_agarre2 = Desplazamiento(0,0,4)*Rotacionx(pi);
+matriz_pinza2 = matriz_verde_global * matriz_agarre2;
+
+% matriz_agarre3 = Desplazamiento(0,-0.8,4)*Rotaciony(-pi/2)*Rotacionx(-pi/2); %Rotacionx(-pi/2)*Rotacionz(-pi/2);
+% matriz_pinza3 = matriz_verde_global * matriz_agarre3
+
+matriz_pinza_desplazada = matriz_pinza2 * Desplazamiento(0,0,-10);
+
+codo=1;
+avance=1;
+simetrico=0;
+% [q1,q2,q3,q4,q5,q6] = inv_kinema_ur3_new(matriz_pinza,codo,avance,simetrico);
+[q1,q2,q3,q4,q5,q6] = inv_kinema_ur3_new(matriz_pinza2,codo,avance,simetrico);
+% [q1,q2,q3,q4,q5,q6] = inv_kinema_ur3_new(matriz_pinza3,codo,avance,simetrico);
+% [q1,q2,q3,q4,q5,q6] = inv_kinema_ur3_new(matriz_pinza_desplazada,codo,avance,simetrico);
+
+% matriz = funcion_pinta_UR3_new([q1 q2 q3 q4 q5 q6], matriz_pinza);
+matriz2 = funcion_pinta_UR3_new([q1 q2 q3 q4 q5 q6], matriz_pinza2);
+% matriz3= funcion_pinta_UR3_new([q1 q2 q3 q4 q5 q6], matriz_pinza3);
+% matriz3 = funcion_pinta_UR3_new([q1 q2 q3 q4 q5 q6], matriz_pinza_desplazada);

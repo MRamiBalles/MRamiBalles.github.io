@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Práctica1" />
+		<Option execution_dir="D:/P1 Completa/Práctica1/" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Práctica1" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Práctica1" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="D:/P1 Completa/Práctica1/include/Cliente.h" />
+		<Unit filename="D:/P1 Completa/Práctica1/include/Contrato.h" />
+		<Unit filename="D:/P1 Completa/Práctica1/include/ContratoMovil.h" />
+		<Unit filename="D:/P1 Completa/Práctica1/include/ContratoTP.h" />
+		<Unit filename="D:/P1 Completa/Práctica1/include/Empresa.h" />
+		<Unit filename="D:/P1 Completa/Práctica1/include/Fecha.h" />
+		<Unit filename="D:/P1 Completa/Práctica1/main.cpp" />
+		<Unit filename="D:/P1 Completa/Práctica1/src/Cliente.cpp" />
+		<Unit filename="D:/P1 Completa/Práctica1/src/Contrato.cpp" />
+		<Unit filename="D:/P1 Completa/Práctica1/src/ContratoMovil.cpp" />
+		<Unit filename="D:/P1 Completa/Práctica1/src/ContratoTP.cpp" />
+		<Unit filename="D:/P1 Completa/Práctica1/src/Empresa.cpp" />
+		<Unit filename="D:/P1 Completa/Práctica1/src/Fecha.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

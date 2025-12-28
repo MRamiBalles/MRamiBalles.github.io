@@ -1,0 +1,98 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulación del movimiento de un robot móvil
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+clear all
+clc
+
+j=1;
+
+global l
+global radio_rueda
+global camino
+global pose
+global punto
+%cargamos el camino
+
+%camino=load('camino.dat');
+
+xc = [0 10 40 80 80 80];
+yc = [0 0 40 40 100 120];
+ds = 1; %distancia entre puntos en cm.
+
+camino = funcion_spline_cubica_varios_puntos(xc,yc,ds)';
+
+l = 3.5; %distancia entre rudas delanteras y traseras, tambien definido en modelo
+radio_rueda=1;
+
+%Condiciones iniciales 
+pose0=[0; 0; 0];
+
+t0=0;
+
+%final de la simulación
+tf=30;
+
+%paso de integracion
+h=0.1;
+%vector tiempo
+t=0:h:tf;
+%indice de la matriz
+k=0;
+
+%inicialización valores iniciales
+pose(:,k+1)=pose0;
+
+t(k+1)=t0;
+
+
+while (t0+h*k) < tf,
+    %actualización
+    k=k+1;
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %valores de los parámetros de control
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ %para representar el punto onjetivo sobre la trayectoria
+ 
+orden_minimo = minima_distancia (camino, [pose(1,k) pose(2,k)]);
+look_ahead = 7;
+if (orden_minimo+look_ahead) > length(camino)
+   look_ahead = 0.5;
+   punto_destino=[camino(orden_minimo+look_ahead,1) camino(orden_minimo+look_ahead,2)];
+   if (orden_minimo+look_ahead)==length(camino)
+         break
+   end
+else
+    punto_destino=[camino(orden_minimo+look_ahead,1) camino(orden_minimo+look_ahead,2)];
+end
+%punto_destino=[camino(orden_minimo+look_ahead,1) camino(orden_minimo+look_ahead,2)];
+
+delta=((pose(1,k)-punto_destino(1))*sin(pose(3,k)))-((pose(2,k)-punto_destino(2))*cos(pose(3,k)));
+Lh=sqrt((pose(1,k)-punto_destino(1))^2+(pose(2,k)-punto_destino(2))^2);
+
+distancia_alfinal=sqrt((pose(1,k)-camino(end,1))^2+(pose(2,k)-camino(end,2))^2);
+kp=1;
+V=kp*distancia_alfinal;
+if V>20
+    V=20;
+end
+
+rho=2*delta/Lh^2;
+
+radio_curvatura=10;
+W=V*rho;
+
+velocidad_derecha=(V+W*l)/radio_rueda;
+velocidad_izquierda=(V-W*l)/radio_rueda;
+ 
+conduccion=[velocidad_derecha velocidad_izquierda];
+punto = punto_destino;
+
+    
+%metodo de integración ruge-kuta
+
+pose(:,k+1)=kuta_diferencial(t(k),pose(:,k),h,conduccion);%da el angulo, la x y la y
+
+end

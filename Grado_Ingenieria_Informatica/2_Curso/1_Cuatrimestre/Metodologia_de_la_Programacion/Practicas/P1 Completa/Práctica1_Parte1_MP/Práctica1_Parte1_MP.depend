@@ -1,0 +1,75 @@
+# depslib dependency file v1.0
+1635848604 source:c:\users\usuario\desktop\práctica1_parte1_mp\main.cpp
+	<cstdlib>
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+
+1635848208 c:\users\usuario\desktop\práctica1_parte1_mp\include\fecha.h
+	<iomanip>
+	<iostream>
+
+1635848208 c:\users\usuario\desktop\práctica1_parte1_mp\include\cliente.h
+	"Fecha.h"
+
+1635848604 source:c:\users\usuario\desktop\práctica1_parte1_mp\src\cliente.cpp
+	"Cliente.h"
+	<cstring>
+	<iostream>
+
+1635847499 source:c:\users\usuario\desktop\práctica1_parte1_mp\src\fecha.cpp
+	"Fecha.h"
+
+1635848606 source:d:\práctica1_parte1_mp\src\cliente.cpp
+	"Cliente.h"
+	<cstring>
+	<iostream>
+
+1635848210 d:\práctica1_parte1_mp\include\cliente.h
+	"Fecha.h"
+
+1636395458 d:\práctica1_parte1_mp\include\fecha.h
+	<iomanip>
+	<iostream>
+
+1636414774 source:d:\práctica1_parte1_mp\main.cpp
+	<cstdlib>
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+
+1636415492 source:d:\práctica1_parte1_mp\src\fecha.cpp
+	"Fecha.h"
+
+1636448388 source:h:\práctica1_parte1_mp\main.cpp
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+	<cstdlib>
+	<iostream>
+	<iomanip>
+	"Fecha.h"
+	"Contrato.h"
+
+1636449010 h:\práctica1_parte1_mp\include\fecha.h
+	<iomanip>
+	<iostream>
+
+1635848210 h:\práctica1_parte1_mp\include\cliente.h
+	"Fecha.h"
+
+1635848606 source:h:\práctica1_parte1_mp\src\cliente.cpp
+	"Cliente.h"
+	<cstring>
+	<iostream>
+
+1636448728 source:h:\práctica1_parte1_mp\src\fecha.cpp
+	"Fecha.h"
+
+1636448080 source:h:\práctica1_parte1_mp\src\contrato.cpp
+	"Contrato.h"
+
+1636451598 h:\práctica1_parte1_mp\include\contrato.h
+	<fstream>
+	"Fecha.h"
+

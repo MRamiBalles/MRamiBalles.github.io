@@ -1,0 +1,66 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 3.777833333333333 
+tiers? <exists> 
+size = 1 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "Int" 
+        xmin = 0 
+        xmax = 3.777833333333333 
+        intervals: size = 13 
+        intervals [1]:
+            xmin = 0 
+            xmax = 1.6541168088148743 
+            text = "" 
+        intervals [2]:
+            xmin = 1.6541168088148743 
+            xmax = 1.7391944604756897 
+            text = "m" 
+        intervals [3]:
+            xmin = 1.7391944604756897 
+            xmax = 1.8597211336618449 
+            text = "me" 
+        intervals [4]:
+            xmin = 1.8597211336618449 
+            xmax = 1.9802478068479998 
+            text = "ek" 
+        intervals [5]:
+            xmin = 1.9802478068479998 
+            xmax = 2.0369662412885434 
+            text = "ke" 
+        intervals [6]:
+            xmin = 2.0369662412885434 
+            xmax = 2.1504031101696306 
+            text = "et" 
+        intervals [7]:
+            xmin = 2.1504031101696306 
+            xmax = 2.2744746855083195 
+            text = "tre" 
+        intervals [8]:
+            xmin = 2.2744746855083195 
+            xmax = 2.3914564565419405 
+            text = "ef" 
+        intervals [9]:
+            xmin = 2.3914564565419405 
+            xmax = 2.469444303897688 
+            text = "fe" 
+        intervals [10]:
+            xmin = 2.469444303897688 
+            xmax = 2.572246466321173 
+            text = "er" 
+        intervals [11]:
+            xmin = 2.572246466321173 
+            xmax = 2.6608690201345224 
+            text = "re" 
+        intervals [12]:
+            xmin = 2.6608690201345224 
+            xmax = 2.7743058890156096 
+            text = "e" 
+        intervals [13]:
+            xmin = 2.7743058890156096 
+            xmax = 3.777833333333333 
+            text = "" 

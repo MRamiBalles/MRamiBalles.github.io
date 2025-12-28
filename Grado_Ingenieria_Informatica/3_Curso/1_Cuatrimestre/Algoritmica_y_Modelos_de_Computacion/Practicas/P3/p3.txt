@@ -1,0 +1,27 @@
+media3 x y z = (x + y + z)/3
+
+
+paroimpar x y z = even(floor (fromRational (media3 x y z)))
+
+volesfera r = 4*pi*r*r*r/3 
+
+maximoDouble a b c d e = max a(max b(max c(max d e)))
+
+--Main> head []
+--Program error: pattern match failure: head []
+
+--Main> head [1]
+--1
+--Main> tail []
+--Program error: pattern match failure: tail []
+
+--tail(head [[2.5, 3.0], [3.4, 4.9]])
+-- Sol : [3.0]
+
+--listaNueva [a, b, c, d, e] = [b, c, d] 
+--init(tail [1,2,3,4.5])
+
+--any(pred(4)==) [0,1,2,3,4,5,6]
+
+replicate 3 5 --[5,5,5]
+pred(last(take 9 (iterate(4*) 2)))

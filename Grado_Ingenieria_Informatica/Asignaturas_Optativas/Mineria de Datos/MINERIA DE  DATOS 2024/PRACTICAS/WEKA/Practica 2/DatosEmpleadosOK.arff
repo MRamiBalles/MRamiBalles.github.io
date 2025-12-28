@@ -1,0 +1,94 @@
+@relation DatosEmpleados-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.instance.RemoveWithValues-S0.0-C5-Lfirst-last-weka.filters.unsupervised.attribute.Copy-weka.filters.unsupervised.attribute.Copy-R11-weka.filters.unsupervised.attribute.Copy-R5-weka.filters.unsupervised.attribute.Copy-R6
+
+@attribute Ej numeric
+@attribute Sueldo numeric
+@attribute Casado {No,Si}
+@attribute Coche {No,Si}
+@attribute Hijos numeric
+@attribute Alq_Prop {Alquiler,Propio}
+@attribute Sindicato {No,Si}
+@attribute Bajas_Anio numeric
+@attribute Antiguedad numeric
+@attribute Sexo {M,H,V}
+@attribute Estudios {FP,Doctorado,Obligatorios,Bachillerato,Universitarios}
+@attribute 'Copy of Estudios' {FP,Doctorado,Obligatorios,Bachillerato,Universitarios}
+@attribute 'Copy of Hijos' numeric
+@attribute 'Copy of Alq_Prop' {Alquiler,Propio}
+
+@data
+1,13000,No,Si,0,Propio,No,2,3,M,Obligatorios,Obligatorios,0,Propio
+2,32000,Si,No,2,Propio,Si,1,15,M,Bachillerato,Bachillerato,2,Propio
+3,12000,No,No,0,Alquiler,No,0,6,H,Obligatorios,Obligatorios,0,Alquiler
+4,41000,Si,Si,3,Propio,No,3,13,H,Universitarios,Universitarios,3,Propio
+5,5000,No,No,0,?,Si,0,1,H,?,Obligatorios,0,Propio
+6,65000,No,Si,0,Propio,No,3,8,M,Doctorado,Doctorado,0,Propio
+7,53000,Si,Si,5,Propio,No,4,18,M,Bachillerato,Bachillerato,5,Propio
+8,23000,No,Si,0,Alquiler,Si,7,2,H,?,Obligatorios,0,Alquiler
+9,31000,Si,No,?,Propio,Si,0,5,H,Bachillerato,Bachillerato,1,Propio
+10,30000,Si,Si,2,Propio,No,1,20,H,Bachillerato,Bachillerato,2,Propio
+11,20000,No,Si,1,Alquiler,Si,3,3,M,Universitarios,Universitarios,1,Alquiler
+12,13000,No,No,0,Propio,No,12,2,H,Bachillerato,Bachillerato,0,Propio
+13,11000,No,Si,0,Alquiler,No,0,7,H,FP,FP,0,Alquiler
+14,9000,No,Si,1,Propio,Si,2,3,H,FP,FP,1,Propio
+15,60000,Si,Si,4,Propio,No,0,10,M,Universitarios,Universitarios,4,Propio
+16,38000,No,Si,?,Propio,No,2,5,V,Universitarios,Universitarios,2,Propio
+17,6000,No,Si,0,?,No,0,1,V,Obligatorios,Obligatorios,0,Propio
+19,23000,No,Si,0,Propio,No,2,4,M,Bachillerato,Bachillerato,0,Propio
+20,43000,No,Si,3,Alquiler,Si,20,7,H,Universitarios,Universitarios,3,Alquiler
+21,13000,No,Si,0,Alquiler,Si,3,3,M,FP,FP,0,Alquiler
+22,21000,Si,Si,1,Propio,No,1,7,M,Bachillerato,Bachillerato,1,Propio
+23,15000,Si,Si,2,Propio,Si,5,10,H,Obligatorios,Obligatorios,2,Propio
+24,30000,Si,Si,1,Alquiler,No,15,7,M,Universitarios,Universitarios,1,Alquiler
+25,10000,Si,Si,0,Propio,Si,1,6,H,?,Obligatorios,0,Propio
+26,40000,No,Si,0,Alquiler,Si,3,16,M,Bachillerato,Bachillerato,0,Alquiler
+27,25000,No,No,0,Alquiler,Si,0,8,H,Bachillerato,Bachillerato,0,Alquiler
+28,20000,No,Si,0,?,Si,2,6,M,Bachillerato,Bachillerato,0,Propio
+29,20000,Si,Si,3,Propio,No,7,5,H,Obligatorios,Obligatorios,3,Propio
+30,10000,Si,No,0,Alquiler,No,7,4,H,?,Obligatorios,0,Alquiler
+31,50000,No,No,0,Alquiler,No,2,12,M,Doctorado,Doctorado,0,Alquiler
+32,8000,Si,Si,2,Propio,No,3,1,H,Obligatorios,Obligatorios,2,Propio
+33,20000,No,No,0,Alquiler,No,27,5,M,Bachillerato,Bachillerato,0,Alquiler
+34,10000,No,Si,0,Alquiler,Si,0,7,H,Obligatorios,Obligatorios,0,Alquiler
+35,8000,No,Si,0,Alquiler,No,3,2,H,FP,FP,0,Alquiler
+36,50000,Si,Si,1,Propio,No,1,12,H,Doctorado,Doctorado,1,Propio
+37,7000,No,Si,1,Propio,Si,1,2,M,Obligatorios,Obligatorios,1,Propio
+38,30000,Si,Si,2,Propio,Si,10,8,H,FP,FP,2,Propio
+39,32000,No,No,0,Propio,No,2,3,M,Universitarios,Universitarios,0,Propio
+40,33000,No,Si,3,Propio,No,5,7,H,Universitarios,Universitarios,3,Propio
+41,8000,Si,Si,2,Propio,No,3,1,V,Obligatorios,Obligatorios,2,Propio
+42,20000,No,No,1,Alquiler,No,27,5,M,Bachillerato,Bachillerato,1,Alquiler
+43,10000,No,Si,0,Alquiler,Si,0,7,H,Obligatorios,Obligatorios,0,Alquiler
+44,8000,No,Si,1,Alquiler,No,3,2,H,FP,FP,1,Alquiler
+45,50000,Si,Si,1,Alquiler,No,1,12,H,Doctorado,Doctorado,1,Alquiler
+46,7000,No,Si,?,Propio,Si,1,2,M,Obligatorios,Obligatorios,1,Propio
+47,30000,Si,Si,2,Alquiler,Si,10,8,H,FP,FP,2,Alquiler
+48,32000,No,No,0,Propio,No,2,3,M,Universitarios,Universitarios,0,Propio
+49,33000,No,Si,3,Propio,No,5,7,H,Universitarios,Universitarios,3,Propio
+50,21000,Si,Si,1,Propio,No,1,7,M,Bachillerato,Bachillerato,1,Propio
+51,15000,Si,Si,2,Propio,Si,5,10,H,Obligatorios,Obligatorios,2,Propio
+52,30000,Si,Si,1,Alquiler,No,15,7,M,Universitarios,Universitarios,1,Alquiler
+53,10000,Si,Si,0,Propio,Si,1,6,H,?,Obligatorios,0,Propio
+54,40000,No,Si,0,Alquiler,Si,3,16,M,Bachillerato,Bachillerato,0,Alquiler
+55,25000,No,No,0,Alquiler,Si,0,8,H,Bachillerato,Bachillerato,0,Alquiler
+56,20000,No,Si,0,?,Si,2,6,M,Bachillerato,Bachillerato,0,Propio
+57,20000,Si,Si,3,Propio,No,7,5,H,Obligatorios,Obligatorios,3,Propio
+58,10000,Si,No,0,Alquiler,No,7,4,H,?,Obligatorios,0,Alquiler
+59,50000,No,No,0,Alquiler,No,2,12,M,Doctorado,Doctorado,0,Alquiler
+60,8000,Si,Si,2,Propio,No,3,1,H,Obligatorios,Obligatorios,2,Propio
+61,20000,No,No,0,Alquiler,No,27,5,M,Bachillerato,Bachillerato,0,Alquiler
+62,10000,No,Si,0,Alquiler,Si,0,7,H,Obligatorios,Obligatorios,0,Alquiler
+63,8000,No,Si,0,Alquiler,No,3,2,H,FP,FP,0,Alquiler
+64,50000,Si,Si,1,Propio,No,1,12,H,Doctorado,Doctorado,1,Propio
+65,7000,No,Si,1,Propio,Si,1,2,M,Obligatorios,Obligatorios,1,Propio
+66,30000,Si,Si,2,Propio,Si,10,8,H,FP,FP,2,Propio
+67,32000,No,No,0,Propio,No,2,3,M,Universitarios,Universitarios,0,Propio
+68,33000,No,Si,3,Propio,No,5,7,H,Universitarios,Universitarios,3,Propio
+69,8000,Si,Si,2,Propio,No,3,1,V,Obligatorios,Obligatorios,2,Propio
+70,20000,No,No,1,Alquiler,No,27,5,M,Bachillerato,Bachillerato,1,Alquiler
+71,10000,No,Si,0,Alquiler,Si,0,7,H,Obligatorios,Obligatorios,0,Alquiler
+72,8000,No,Si,1,Alquiler,No,3,2,H,FP,FP,1,Alquiler
+73,50000,Si,Si,1,Alquiler,No,1,12,H,Doctorado,Doctorado,1,Alquiler
+74,7000,No,Si,?,Propio,Si,1,2,M,Obligatorios,Obligatorios,1,Propio
+75,30000,Si,Si,2,Alquiler,Si,10,8,H,FP,FP,2,Alquiler
+76,32000,No,No,0,Propio,No,2,3,M,Universitarios,Universitarios,0,Propio
+77,33000,No,Si,3,Propio,No,5,7,H,Universitarios,Universitarios,3,Propio

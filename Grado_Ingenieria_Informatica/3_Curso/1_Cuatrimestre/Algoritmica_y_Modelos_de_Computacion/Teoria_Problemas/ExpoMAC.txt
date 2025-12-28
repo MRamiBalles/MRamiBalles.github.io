@@ -1,0 +1,240 @@
+Tezos (Michelson) -> https://en.wikipedia.org/wiki/Tezos
+Implementar blockchain -> https://hackage.haskell.org/package/blockchain
+Usar haskell -> https://education.emurgo.io/using-plutus-haskell-for-writing-cardano-smart-contracts-emurgo-academy/
+Nuevo plutus -> https://forum.cardano.org/t/presentando-el-nuevo-playground-plutus/45518
+	https://developers.cardano.org/docs/smart-contracts/plutus/#get-started-with-haskell
+	https://plutus.readthedocs.io/en/latest/tutorials/plutus-tx.html
+	https://www.crypto-news-flash.com/es/cardano-iohk-lanza-version-actualizada-de-plutus-playgroundpara-contratos-inteligentes/
+	https://iohk.zendesk.com/hc/en-us/articles/4415402727321-Running-a-local-version-of-Plutus-playground
+
+	https://form.typeform.com/to/gQ0t9ep5?typeform-source=input-output.typeform.com
+	https://admin.typeform.com/accounts/01HGVECNYM2GDTTVZRKV412A1S/workspaces/ztFwkg?typeform-source=admin.typeform.com
+
+gits -> https://github.com/input-output-hk/plutus
+	https://github.com/txpipe/plutus-starter-kit
+
+Aiken -> https://aiken-lang.org/
+	https://play.aiken-lang.org/
+
+Marlowe -> https://play.marlowe.iohk.io/#/haskell
+	https://developers.cardano.org/docs/smart-contracts/marlowe/
+	https://docs.marlowe.iohk.io/docs/developer-tools/playground
+	https://cardanofortheworld.com/es-es/marlowe-tutorial_playground-overview-es-ES
+	https://www.youtube.com/watch?v=UYaynGbST7I&ab_channel=CardanoCastellano
+	https://www.youtube.com/watch?v=MpWeg6Fg0t8&ab_channel=InputOutput
+
+{-# LANGUAGE OverloadedStrings #-}
+module EscrowWithgarantia where
+
+import Language.Marlowe.Core.V1.Semantics.Types.Address (testnet)
+import Language.Marlowe.Extended.V1
+import qualified Plutus.V1.Ledger.Address as P
+import qualified Plutus.V1.Ledger.Credential as P
+
+main :: IO ()
+main = printJSON escrowC
+
+-- We can set explicitRefunds True to run Close refund analysis
+-- but we get disputa shorter contract if we set it to False
+explicitRefunds :: Bool
+explicitRefunds = False
+
+vendedor, comprador, burnAddress :: Party
+comprador = Role "vendedor"
+vendedor = Role "Vendedor"
+burnAddress = Address testnet (P.Address (P.PubKeyCredential "0000000000000000000000000000000000000000000000000000000000000000") Nothing)
+
+precio, garantia :: Value
+precio = ConstantParam "Centavos"
+garantia = ConstantParam "Cantidad de garantia"
+
+vendedorgarantiaTimeout, compradorgarantiaTimeout, depositoTimeout, disputaTimeout, respuestaTimeout :: Timeout
+vendedorgarantiaTimeout = TimeParam "Deposito de garantia por tiempo de espera del vendedor"
+compradorgarantiaTimeout = TimeParam "Deposito de garantia por tiempo de espera del vendedor"
+depositoTimeout = TimeParam "Deposito de precio por tiempo de espera del vendedor"
+disputa = TimeParam "Disputa por tiempo de espera del vendedor"
+respuestaTimeout = TimeParam "Plazo para presentar reclamaciones"
+
+depositgarantia :: Party -> Timeout -> Contract -> Contract -> Contract
+depositgarantia party timeout timeoutContinuation continuation =
+    When [Case (Deposit party party ada garantia) continuation]
+         timeout
+         timeoutContinuation
+
+burngarantias :: Contract -> Contract
+burngarantias =
+    Pay
+    vendedor (Party burnAddress) ada garantia
+    . Pay comprador (Party burnAddress) ada garantia
+
+deposito :: Timeout -> Contract -> Contract -> Contract
+deposito timeout timeoutContinuation continuation =
+    When [Case (Deposit vendedor comprador ada precio) continuation] timeout timeoutContinuation
+
+choice :: ChoiceName -> Party -> Integer -> Contract -> Case
+choice choiceName chooser choiceValue = Case (Choice (ChoiceId choiceName chooser) [Bound choiceValue choiceValue])
+
+choices :: Timeout -> Party -> Contract -> [(Integer, ChoiceName, Contract)] -> Contract
+choices timeout chooser timeoutContinuation list =
+    When [choice choiceName chooser choiceValue continuation
+          | (choiceValue, choiceName, continuation) <- list]
+         timeout
+         timeoutContinuation
+
+vendedorToBuyer :: Contract -> Contract
+vendedorToBuyer = Pay
+vendedor (Account comprador) ada
+precio
+
+refun
+vendedorgarantia :: Contract -> Contract
+refun
+vendedorgarantia
+  | explicitRefunds = Pay
+  vendedor (Party
+  vendedor) ada garantia
+  | otherwise = id
+
+refundBuyergarantia :: Contract -> Contract
+refundBuyergarantia
+  | explicitRefunds = Pay comprador (Party comprador) ada garantia
+  | otherwise = id
+
+refundgarantias :: Contract -> Contract
+refundgarantias = refun
+vendedorgarantia . refundBuyergarantia
+
+refundBuyer :: Contract
+refundBuyer
+ | explicitRefunds = Pay comprador (Party comprador) ada
+
+precio Close
+ | otherwise = Close
+
+refun
+vendedor :: Contract
+refun
+vendedor
+ | explicitRefunds = Pay
+ vendedor (Party
+ vendedor) ada
+
+precio Close
+ | otherwise = Close
+
+escrowC :: Contract
+escrowC = depositgarantia
+vendedorgarantiaTimeout Close $
+            depositgarantia comprador compradorgarantiaTimeout (refun
+            vendedorgarantia Close) $
+            deposito depositoTimeout (refundgarantias Close) $
+            choices disputa comprador (refundgarantias refun
+            vendedor)
+                [(0, "Todo es correcto", refundgarantias refun
+                vendedor), 
+                (1, "Reportar un problema",
+                vendedorToBuyer $ choices respuestaTimeout
+                vendedor (refundgarantias refundBuyer)
+                    [(1, "Confirmar problema", refundgarantias refundBuyer), 
+                    (0, "Rechazar problema", burngarantias refundBuyer)])]
+
+
+
+
+
+{-# LANGUAGE OverloadedStrings #-}
+module EscrowWithCollateral where
+
+import Language.Marlowe.Core.V1.Semantics.Types.Address (testnet)
+import Language.Marlowe.Extended.V1
+import qualified Plutus.V1.Ledger.Address as P
+import qualified Plutus.V1.Ledger.Credential as P
+
+main :: IO ()
+main = printJSON escrowC
+
+-- We can set explicitRefunds True to run Close refund analysis
+-- but we get a shorter contract if we set it to False
+explicitRefunds :: Bool
+explicitRefunds = False
+
+seller, buyer, burnAddress :: Party
+buyer = Role "Comprador"
+seller = Role "Vendedor"
+burnAddress = Address testnet (P.Address (P.PubKeyCredential "0000000000000000000000000000000000000000000000000000000000000000") Nothing)
+
+price, collateral :: Value
+price = ConstantParam "Centavos"
+collateral = ConstantParam "Cantidad de garantia"
+
+sellerCollateralTimeout, buyerCollateralTimeout, depositTimeout, disputeTimeout, answerTimeout :: Timeout
+sellerCollateralTimeout = TimeParam "Deposito de garantia por tiempo de espera del vendedor"
+buyerCollateralTimeout = TimeParam "Deposito de garantia por tiempo de espera del comprador"
+depositTimeout = TimeParam "Deposito de precio por tiempo de espera del comprador"
+disputeTimeout = TimeParam "Disputa por tiempo de espera del comprador"
+answerTimeout = TimeParam "Plazo para presentar reclamaciones"
+
+depositCollateral :: Party -> Timeout -> Contract -> Contract -> Contract
+depositCollateral party timeout timeoutContinuation continuation =
+    When [Case (Deposit party party ada collateral) continuation]
+         timeout
+         timeoutContinuation
+
+burnCollaterals :: Contract -> Contract
+burnCollaterals =
+    Pay seller (Party burnAddress) ada collateral
+    . Pay buyer (Party burnAddress) ada collateral
+
+deposit :: Timeout -> Contract -> Contract -> Contract
+deposit timeout timeoutContinuation continuation =
+    When [Case (Deposit seller buyer ada price) continuation]
+         timeout
+         timeoutContinuation
+
+choice :: ChoiceName -> Party -> Integer -> Contract -> Case
+choice choiceName chooser choiceValue = Case (Choice (ChoiceId choiceName chooser)
+                                                     [Bound choiceValue choiceValue])
+
+choices :: Timeout -> Party -> Contract -> [(Integer, ChoiceName, Contract)] -> Contract
+choices timeout chooser timeoutContinuation list =
+    When [choice choiceName chooser choiceValue continuation
+          | (choiceValue, choiceName, continuation) <- list]
+         timeout
+         timeoutContinuation
+
+sellerToBuyer :: Contract -> Contract
+sellerToBuyer = Pay seller (Account buyer) ada price
+
+refundSellerCollateral :: Contract -> Contract
+refundSellerCollateral
+  | explicitRefunds = Pay seller (Party seller) ada collateral
+  | otherwise = id
+
+refundBuyerCollateral :: Contract -> Contract
+refundBuyerCollateral
+  | explicitRefunds = Pay buyer (Party buyer) ada collateral
+  | otherwise = id
+
+refundCollaterals :: Contract -> Contract
+refundCollaterals = refundSellerCollateral . refundBuyerCollateral
+
+refundBuyer :: Contract
+refundBuyer
+ | explicitRefunds = Pay buyer (Party buyer) ada price Close
+ | otherwise = Close
+
+refundSeller :: Contract
+refundSeller
+ | explicitRefunds = Pay seller (Party seller) ada price Close
+ | otherwise = Close
+
+escrowC :: Contract
+escrowC = depositCollateral seller sellerCollateralTimeout Close $
+            depositCollateral buyer buyerCollateralTimeout (refundSellerCollateral Close) $
+            deposit depositTimeout (refundCollaterals Close) $
+            choices disputeTimeout buyer (refundCollaterals refundSeller)
+                [(0, "Todo es correcto", refundCollaterals refundSeller), 
+                (1, "Reportar un problema", sellerToBuyer $ choices answerTimeout seller (refundCollaterals refundBuyer)
+                    [(1, "Confirmar problema", refundCollaterals refundBuyer), 
+                    (0, "Rechazar problema", burnCollaterals refundBuyer)])]
+

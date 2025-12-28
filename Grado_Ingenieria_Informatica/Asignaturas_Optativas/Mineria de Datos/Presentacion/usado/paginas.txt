@@ -1,0 +1,10 @@
+Attention 2017:
+https://arxiv.org/pdf/1706.03762v6.pdf
+
+Yt:
+https://www.youtube.com/watch?v=bCz4OMemCcA&t=408s&ab_channel=UmarJamil
+https://www.youtube.com/watch?v=aL-EmKuB078&ab_channel=DotCSV
+
+
+
+https://vaclavkosar.com/ml/cross-attention-in-transformer-architecture

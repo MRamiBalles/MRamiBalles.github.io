@@ -1,0 +1,4 @@
+main = do
+	x <- readFile "F:\\Cuarto\\MAC\\ficheroPruebas.txt"
+	y <- readIO x
+	print(sum y)

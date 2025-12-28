@@ -1,0 +1,75 @@
+class Variable:
+    def __init__(self, name):
+        self.name = name
+        self.value = -1
+
+class Puzzle:
+    def __init__(self, sumandos, resultado):
+        self.sumandos = sumandos
+        self.resultado = resultado
+        self.variables = []
+        for char in set("".join(sumandos + [resultado])):
+            if char.isalpha():  # Asegura que solo se creen variables para letras
+                self.variables.append(Variable(char))
+        self.solutions = set()
+
+    def is_digit_used(self, digit):
+        return any(var.value == digit for var in self.variables)
+
+    def is_valid_assignment(self):
+        used_digits = set()
+        for var in self.variables:
+            if var.value != -1 and var.value in used_digits:
+                return False
+            used_digits.add(var.value)
+        return True
+
+    def check_solution(self):
+        send = sum(int("".join(str(v.value) for v in self.variables if v.name in word)) for word in self.sumandos)
+        return send == int("".join(str(v.value) for v in self.variables if v.name in self.resultado))
+
+    def print_solution(self):
+        # Obtener longitud máxima de todas las palabras
+        max_length = max(len(word) for word in self.sumandos + [self.resultado])
+
+        # Construir la cadena de salida dinámicamente
+        solution_str = ""
+        for i in range(len(self.sumandos)):
+            solution_str += "{:>{}s} ".format(self.sumandos[i], max_length)
+            if i == len(self.sumandos) - 1:
+                solution_str += "= "
+            else:
+                solution_str += "+ "
+        solution_str += "{}\n".format(self.resultado)
+
+        for var in self.variables:
+            solution_str = solution_str.replace(var.name, str(var.value))
+
+        print(solution_str)
+
+    def backtrack(self, index):
+        if index == len(self.variables):
+            if self.check_solution():
+                self.print_solution()
+            return
+
+        var = self.variables[index]
+        for digit in range(10):
+            if not self.is_digit_used(digit):
+                var.value = digit
+                if self.is_valid_assignment():
+                    self.backtrack(index + 1)
+                var.value = -1
+
+    def solve(self):
+        self.backtrack(0)
+
+# Función para obtener las palabras del usuario
+def obtener_palabras():
+    sumandos = input("Ingrese las palabras a sumar separadas por espacios: ").upper().split()
+    resultado = input("Ingrese la palabra a devolver: ").upper()
+    return sumandos, resultado
+
+sumandos, resultado = obtener_palabras()
+puzzle = Puzzle(sumandos, resultado)
+puzzle.solve()
