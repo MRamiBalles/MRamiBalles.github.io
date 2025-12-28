@@ -32,7 +32,7 @@ Si aún no ha definido su línea de investigación, considere estas propuestas d
 
 - **Asistente de Estudio con IA**: Aplicación móvil multiplataforma que integre LLMs para la generación de resúmenes y cuestionarios automáticos.
 - **Monitorización de Red con Hardware de Bajo Coste**: Sistema de detección de intrusiones (IDS) y monitorización de tráfico basado en Raspberry Pi.
-- **Lenguaje Urium (DSL Transpiler)**: Desarrollo de un lenguaje de dominio específico orientado a la orquestación segura. Consulte la [especificación técnica](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Trabajo_Fin_de_Grado/URIUM_LANGUAGE_SPEC.md) para más detalles.
+- **Urium Functional Extensions**: Modificación del compilador para soportar paradigmas funcionales (Pure functions, Tail Recursion, Lambdas). Proyecto de alta complejidad teórica. Consulte la [especificación](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Trabajo_Fin_de_Grado/URIUM_LANGUAGE_SPEC.md).
 - **Dashboard de Analítica Universitaria**: Plataforma de visualización de datos académicos para la detección temprana de abandono o seguimiento de rendimiento.
 
 ---

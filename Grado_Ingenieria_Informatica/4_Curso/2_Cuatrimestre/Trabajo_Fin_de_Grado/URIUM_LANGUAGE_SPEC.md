@@ -1,37 +1,46 @@
-# 💎 Especificación del Lenguaje: Urium
+# 💎 Especificación del Lenguaje: Urium (TFG - Functional Extension)
 
-**Urium** es un Lenguaje de Dominio Específico (DSL) diseñado para la orquestación segura y de alto rendimiento en sistemas distribuidos. Este proyecto se propone como un Trabajo Fin de Grado (TFG) de alta complejidad técnica, integrando conocimientos de Procesadores de Lenguajes, Sistemas Operativos y Seguridad Informática.
+**Proyecto**: Introducción de Características de Programación Funcional en el Lenguaje Urium.
+**Base**: Compilador académico Tinto (v0.1) - Orientado a Procedimientos.
+**Objetivo**: Evolucionar el lenguaje hacia un paradigma híbrido Imperativo-Funcional.
 
-## 1. Visión Holística
-Urium permite definir flujos de datos y políticas de seguridad mediante una sintaxis declarativa que transpila a C++ optimizado. Su objetivo es reducir la superficie de ataque y los errores de concurrencia en entornos críticos.
+## 1. Hoja de Ruta del Proyecto (Extracted from TFG.docx)
 
-## 2. Definición Formal de la Gramática (Resumen)
-La gramática de Urium utiliza una estructura inspirada en Rust y Go, priorizando la inmutabilidad y el tipado fuerte.
+### Fase 1: Funciones Puras
+Implementación de la palabra clave `pure` y mecanismos de validación de efectos colaterales.
+- **Léxico/Sintáctico**: Nueva palabra reservada `pure`.
+- **Semántico**: Comprobación de transparencia referencial (no uso de variables globales mutables, no E/S).
+- **Backend**: Optimizaciones posibles gracias a la pureza (Memoización básica).
 
-### 2.1. Tokens y Léxico
-- **Palabras Reservadas**: `secure`, `flow`, `node`, `verify`, `emit`.
-- **Operadores de Seguridad**: `|->` (transferencia segura), `?=` (verificación de integridad).
+### Fase 2: Optimización de Recursión por Cola (TCO)
+Modificación del compilador para detectar y optimizar llamadas recursivas finales.
+- **Objetivo**: Transformar la recursión en iteración (bucles `while`) en el código intermedio o ensamblador.
+- **Impacto**: Evitar el desbordamiento de pila (Stack Benchmark) en algoritmos recursivos profundos.
 
-### 2.2. Sintaxis (EBNF Simplificado)
+### Fase 3: Funciones como Tipos de Datos (First-Class Citizens)
+Permitir pasar funciones como argumentos y retornarlas.
+- **Tipado**: Definición de tipos funcionales (ej. `(int, int) -> int`).
+- **Implementación**: Gestión de Clausuras (Closures) y punteros a función en el backend (MIPS/RISC-V).
+
+## 2. Gramática Base (v0.1) vs Extensiones
+
+### Sintaxis Actual (v0.1)
 ```ebnf
-program      ::= { statement }
-statement    ::= flow_def | node_def | security_rule
-flow_def     ::= "flow" identifier "{" { flow_step } "}"
-flow_step    ::= identifier "|->" identifier
-security_rule ::= "verify" identifier "with" hash_algorithm
+Function ::= Access Type Id "(" Args ")" "{" Stmts "}"
 ```
 
-## 3. Características Diferenciales para el TFG
-Para que este proyecto sea calificado con Matrícula de Honor en la ETSI, se proponen las siguientes funcionalidades:
-1.  **Transpiler a C++ 20**: Generación de código eficiente que utilice punteros inteligentes y abstracciones de red de bajo nivel.
-2.  **Análisis Estático de Seguridad**: El compilador debe detectar potenciales condiciones de carrera y fugas de datos antes de la ejecución.
-3.  **Integración con Sockets**: Implementación de un runtime que permita la comunicación real entre nodos definidos en Urium.
+### Sintaxis Propuesta (v1.0 Funcional)
+```ebnf
+// Fase 1: Pure Functions
+Function     ::= Access ["pure"] Type Id "(" Args ")" "{" Stmts "}"
 
-## 4. Estado del Desarrollo
-- [x] Especificación de Gramática Inicial.
-- [ ] Implementación del Analizador Léxico (Flex/Lex).
-- [ ] Implementación del Analizador Sintáctico (Bison/Yacc).
-- [ ] Generador de Código para Backend C++.
+// Fase 3: Function Types
+Type         ::= "int" | "char" | "boolean" | FunctionType
+FunctionType ::= "(" [TypeList] ")" "->" Type
+```
+
+## 3. Justificación Académica
+Este TFG explora la brecha entre la programación imperativa clásica (C) y la funcional, implementando conceptos avanzados de "Teoría de Lenguajes" sobre un compilador real. Se diferencia de una simple "extensión de tipos" (Arrays/Structs) por su complejidad algorítmica y teórica.
 
 ---
-*Manual de Proyecto - Rama de Computación*
+*Escuela Técnica Superior de Ingeniería - Proyecto Fin de Grado*
