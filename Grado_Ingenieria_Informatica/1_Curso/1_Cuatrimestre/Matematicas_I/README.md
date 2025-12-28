@@ -1,18 +1,29 @@
-# Matem�ticas I
-Este curso cubre los fundamentos del c�lculo y �lgebra lineal necesarios para la ingenier�a.
+# Matemáticas I
 
-## Subapartados
-- **Teor�a/Problemas:** Conceptos te�ricos y resoluci�n de ejercicios.
-- **Pr�cticas:** Uso de software matem�tico (ej. MATLAB).
-- **AAD:** Actividades dirigidas por el profesor.
+Álgebra Lineal y Cálculo Infinitesimal fundamentales para el modelado en ingeniería.
 
-## Bibliograf�a
-- Larson, R., Edwards, B. H. (2010). C�lculo I. McGraw-Hill.
-- Strang, G. (2006). Linear Algebra and its Applications. Thomson.
+## 📋 Guía Docente y Bibliografía
+- **Guía Oficial**: [Enlace a Guía UHU](https://www.uhu.es/etsi/guias/get-guia.php?curso=2023&codigo=606010101)
+- **Bibliografía Recomendada**:
+  - *Álgebra lineal con aplicaciones* - Nakos y Joyner.
+  - *Cálculo infinitesimal* - Michael Spivak.
 
-## Gu�a Docente
-[Enlace a la Gu�a Docente Official](https://www.uhu.es/etsi/guias/get-guia.php?curso=2023&codigo=606010101)
+## 🧠 Síntesis Teórica
+1. **Álgebra Lineal**:
+   - Espacios Vectoriales y Aplicaciones Lineales.
+   - Diagonalización de matrices.
+2. **Cálculo Diferencial**:
+   - Límites, continuidad y derivadas de una variable.
+3. **Cálculo Integral**:
+   - Integrales indefinidas y definidas (Barrow).
+   - Aplicaciones al cálculo de áreas y volúmenes.
 
-## Notas de Revisi�n
-- [ ] Revisi�n de apuntes de teor�a.
-- [ ] Completar ejercicios de pr�cticas.
+## 🛠️ Plan de Desarrollo y Estados
+### 📂 Inventario de Contenido
+- [ ] **Resolución de Boletines**: Prácticamente todo en **PAPEL**.
+- [x] **Prácticas Matlab**: Proyecto de comparación de matrices (Finalizado).
+
+### 🚀 Etapas de Trabajo
+- **Etapa 1**: Organizar la carpeta `manualesMatlab` y asegurar que el script principal corre sin errores.
+- **Etapa 2**: Digitalizar (o fotografiar) los boletines resueltos de Álgebra (Espacios Vectoriales).
+- **Etapa 3**: Repasar integración por partes y sustitución para el examen.
