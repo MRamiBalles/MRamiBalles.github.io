@@ -1,0 +1,15 @@
+function h = funcion_histograma_pixel(I)
+    % Obtener las dimensiones de la imagen
+    [filas, columnas] = size(I);
+    
+    % Inicializar el vector del histograma con ceros
+    h = zeros(256, 1);
+
+    % Recorrer cada pixel y actualizar el histograma
+    for i = 1:filas
+        for j = 1:columnas
+            nivel_gris = double(I(i, j)) + 1;
+            h(nivel_gris) = h(nivel_gris) + 1;
+        end
+    end
+end

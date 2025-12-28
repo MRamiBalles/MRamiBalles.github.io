@@ -1,0 +1,4 @@
+--funFibo :: Int -> Int -> Int
+funFibo 1 = 1
+funFibo 2 = 1
+funFibo x = funFibo x-1 funFibo x-2

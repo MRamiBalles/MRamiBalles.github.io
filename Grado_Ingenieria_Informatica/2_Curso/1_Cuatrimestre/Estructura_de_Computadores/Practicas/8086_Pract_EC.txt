@@ -1,0 +1,291 @@
+.model small
+
+.data
+
+    cadena db 5,0,0,0,0,0,0
+    pesos db 8,4,2,1   
+    pesoc1 db 7
+    suma db 0  
+    valorbn db 0
+    valorc1 db 0  
+    signoc1 db '+'
+    
+.code 
+    
+    ;inicializacion del segmento de datos:
+    mov ax, seg cadena   
+    mov ds, ax
+    
+    ;leer por teclado:
+    mov dx, offset cadena  
+    mov ah, 0ah
+    int 21h
+    
+    ;conversion ascii a binario:
+    sub cadena [2], 48  
+    sub cadena [3], 48
+    sub cadena [4], 48
+    sub cadena [5], 48
+    
+    ;cmp cont, 0
+    ;je fin
+                 
+    mov al, cadena[3]
+    mul pesos[1]
+    mov bl, al 
+    
+    mov al, cadena[4]
+    mul pesos[2]
+    add bl, al
+    
+    mov al, cadena[5]
+    mul pesos[3]
+    add bl, al 
+    
+    mov suma, bl    ;guardamos el resultado porque nos sirve para el Complemento a 1.
+    
+    mov al, cadena[2]
+    
+    mul pesos[0]  
+    add bl, al    
+    mov valorbn, bl  ;guardamos el valor en binario natural sin signo
+    
+    
+             
+    ;Calculamos el Complemento a 1:
+    
+          
+    cmp cadena[2], 1  ;vemos si es negativo para imprimir el signo
+    je negativo
+    
+    ;si no lo es:
+    jmp fin       
+    
+    negativo:
+    mov signoc1, '-'
+
+    ;Obtenemos y guardamos su valor en c1:
+    mov al, cadena[2]
+    mul pesoc1     ;Si es positivo = 0
+    mov bl, al 
+    sub bl, suma ;Si es negativo, restamos el valor guardado en suma
+    mov valorc1, bl 
+    
+    mov ax, bx
+    mov bl, 10   ;????     
+           
+    fin:       
+    ;en ah se almacena el resto (unidad) y en al el cociente
+    div bl
+    mov cl, al
+    add cl, 48
+    mov ch, ah
+    add ch, 48
+                  
+    ;establece modo texto de pantalla para imprimir los digitos en decimal
+    mov al, 03h
+    mov ah, 00h
+    int 10h
+    
+    ;mover segmento a memoria de ´video
+    mov ax,0b800h
+    mov es, ax
+    mov di,0
+    
+    ;Mostrar binario natural
+    mov ah, 00001111b   ;fondo negro y texto blanco
+    mov al, 'B'
+    mov es:[di], ax
+    mov al, 'N'
+    mov es:[di+2], ax
+    mov al, ':'
+    mov es:[di+4], ax
+    
+    mov ah, 0
+    mov al, valorbn
+    mov bl, 10d
+    div bl
+    add al, 30h
+    mov es:[di+6], al
+    add ah, 30h
+    mov es:[di+8], ah
+    
+    ;Mostramos el Complemento a 1:     
+    mov al, 'C'
+    mov es:[di+12], ax
+    mov al, '1'
+    mov es:[di+14], ax
+    mov al, ':'
+    mov es:[di+16], ax
+    mov al, signoc1
+    mov es:[di+18], ax
+    mov al, valorc1
+    add al, 30h
+    mov es:[di+20], ax
+    
+    mov ah, 00h
+    int 16h
+    
+    ;fin:
+    mov ah, 4ch      ; Esta rutina finalizara el programa y devolvera el control al OS.
+    int 21h
+end
+
+
+
+
+
+
+
+
+
+
+ENTREGA:
+
+
+.model small
+
+.data
+
+    cadena db 5,0,0,0,0,0,0
+    peso db 8,4,2,1
+    bin db 0
+    comp1 db 0
+    signoc1 db '+'
+    
+.code 
+                     
+    ;inicializa el segmento de datos 
+    mov ax, seg cadena   
+    mov ds, ax
+    
+    ;lee por teclado
+    mov dx, offset cadena  
+    mov ah, 0ah
+    int 21h
+    
+    
+    ;cambiamos usando caracteres ascii
+    sub cadena [2], 48  
+    sub cadena [3], 48
+    sub cadena [4], 48
+    sub cadena [5], 48
+    
+    ;calculamos el valor binario
+    
+    
+    mov al, cadena[2]
+    mul peso[0]
+    
+    mov bl, al
+                 
+    mov al, cadena[3]
+    mul peso[1]
+    add bl, al 
+    
+    mov al, cadena[4]
+    mul peso[2]
+    add bl, al
+    
+    mov al, cadena[5]
+    mul peso[3]
+    add bl, al
+    
+    mov bin,bl
+    
+    
+    
+    ;calculamos el complemento a 1
+    ;primero evaluamos si es o no positivo
+    cmp cadena[2],1
+    je negativo ;salta si el bit que comparamos es igual a 1
+    
+    jmp fin ;salto incondicional
+    
+    
+    negativo:   ;invertimos el valor de los bits
+    
+    mov al,cadena [3]
+    not al    
+    and al, 00000001b
+    mov cadena[3],al
+    
+    mov al,cadena [4]
+    not al         
+    and al, 00000001b
+    mov cadena[4],al
+    
+    mov al,cadena [5]
+    not al           
+    and al, 00000001b
+    mov cadena[5],al
+    
+    
+    mov signoc1, '-'
+    
+    
+    fin: ;sumamos el valor de los bits
+    
+    mov bx, 0
+    mov al, cadena[3]
+    mul peso[1]
+    add bl, al 
+    
+    mov al, cadena[4]
+    mul peso[2]
+    add bl, al
+    
+    mov al, cadena[5]
+    mul peso[3]
+    add bl, al
+    
+    mov comp1,bl
+    
+    
+    ;mostrar resultado por pantalla
+    mov ax,0b800h
+    mov es, ax
+    
+    
+    mov ah, 00001111b;fondo negro letras blancas
+    ;Mostrar binario natural
+    mov al, 'B'
+    mov es:[160], ax
+    mov al, 'N'
+    mov es:[162], ax
+    mov al, ':'
+    mov es:[164], ax
+    mov ah, 0
+    mov al, bin
+    mov bl, 10d
+    div bl
+    add al, 48
+    mov es:[166], al
+    add ah, 48
+    mov es:[168], ah
+    
+    ;Mostrar complemento a 1
+    mov ah, 00001111b
+    mov al, 'C'
+    mov es:[320], ax
+    mov al, '1'
+    mov es:[322], ax
+    mov al, ':'
+    mov es:[324], ax
+    mov al, signoc1
+    mov es:[326], ax
+    mov al, comp1
+    add al, 48
+    mov es:[328], ax
+    
+    
+                           
+    ;Devolver el control al OS    
+    mov ah, 4Ch
+    int 21h  
+end
+    
+
+
+
+  

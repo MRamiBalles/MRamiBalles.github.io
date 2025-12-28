@@ -1,0 +1,74 @@
+# depslib dependency file v1.0
+1638222812 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\main.cpp
+	<cstdlib>
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+	<cstdlib>
+	<iostream>
+	<iomanip>
+	"Fecha.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	<cstdlib>
+	<iostream>
+	<iomanip>
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	"Empresa.h"
+
+1637936133 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\include\fecha.h
+	<iostream>
+
+1638225021 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\include\cliente.h
+	"Fecha.h"
+
+1638070498 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\src\cliente.cpp
+	"Cliente.h"
+	<cstring>
+
+1637936627 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\src\fecha.cpp
+	"Fecha.h"
+	<iostream>
+
+1638224541 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\include\contrato.h
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+
+1638020956 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\include\contratotp.h
+	<Contrato.h>
+
+1638021378 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\include\contratomovil.h
+	<Contrato.h>
+	<cstring>
+
+1638142496 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\src\contrato.cpp
+	"Contrato.h"
+	<iostream>
+
+1638031669 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\src\contratotp.cpp
+	"ContratoTP.h"
+
+1638224756 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\src\contratomovil.cpp
+	"ContratoMovil.h"
+	<cstring>
+	"Contrato.h"
+	<iostream>
+
+1638225196 c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\include\empresa.h
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	<iostream>
+
+1638143147 source:c:\users\mario\desktop\ingeniería informática\segundo curso\primer cuatrimestre\metodología de la programación\prácticas\entrega_p1_mp\src\empresa.cpp
+	"Empresa.h"
+	<typeinfo>
+

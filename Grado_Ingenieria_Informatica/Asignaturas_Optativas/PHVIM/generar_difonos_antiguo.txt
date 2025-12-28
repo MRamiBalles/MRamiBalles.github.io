@@ -1,0 +1,35 @@
+def generar_difonos(cadena):
+    difonos = []
+    i = 0
+    difonos.append("##")
+
+    if cadena[0] in ['e', 's']:
+        difonos.append(cadena[0]+"_ini")
+    elif cadena[0] == 'E':
+        difonos.append("E_ini1")
+
+    while i < len(cadena):
+        # Verificar si hay una 'r' seguida de una 'e' en un trífono
+        if i + 1 < len(cadena) and cadena[i] in ['t','k','f'] and cadena[i+1] == 'r' and cadena[i+2] in ['e']:
+            if (i==0):
+                difonos.append(cadena[i])
+            difonos.append(cadena[i:i+3])
+            i += 2  # Avanzar tres caracteres en lugar de dos
+        elif i + 1 < len(cadena) and cadena[i] in ['t','k','f'] and cadena[i+1] == 'r' and cadena[i+2] in ['E']:
+            if (i==0):
+                difonos.append(cadena[i]+"1")
+            difonos.append(cadena[i:i+3]+"1")
+            i += 2
+        elif i + 1 < len(cadena):
+            if (i == 0):
+                difonos.append(cadena[i])
+            elif cadena[i] == 'E':
+                difonos.append(cadena[i:i+2]+"1")
+            i += 1  
+        elif cadena[len(cadena)-1] in ['s','e']:
+            difonos.append(cadena[len(cadena)-1] + "fin")
+            i += 1
+        elif cadena[len(cadena)-1] == ['E']:
+            difonos.append("E_fin1")
+            i += 1
+    return difonos

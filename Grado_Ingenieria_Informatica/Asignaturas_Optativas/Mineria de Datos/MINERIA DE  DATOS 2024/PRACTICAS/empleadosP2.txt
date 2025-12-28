@@ -1,0 +1,84 @@
+#Ej	Sueldo 	Casado	Coche	Hijos	Alq/Prop	Sindicato	Bajas/Año	Antigüedad	Sexo	Estudios
+1	13000	No	Sí		Prop	No	2	3	M	Obl
+2	32000	Sí	No	2	Prop	Sí	1	15	M	Bac
+3	12000	No	No	0	Alquiler	No	0	6	H	Obligatorios
+4	41000	Sí	Sí	3	Prop	No	3	13	H	Uni
+5	5000	No	No	0		Sí	0	1	H	
+6	65000	No	Sí	0	Prop	No	3	8	M	Doc
+7	53000	yes	Sí	5	Propia	No	4	18	M	Bac
+8	23000	No	Sí	0	Alq	Sí	7	2	H	
+9	31000	Sí	No		Prop	Sí	0	5	H	Bachillerato
+10	30000	Sí	Sí	2	Prop	No	1	20	H	Bac
+11	20000	No	Sí	1	Alquiler	Sí	3	3	M	Uni
+12	13000	No	No	0	Propio	No	12	2	H	Bac
+13	11000	No	Sí	0	Alquiler	No	0	7	H	FP
+14	9000	No	Sí	1	Prop	Sí	2	3	H	FP
+15	60000	Yes	Si	4	Prop	No	0	10	M	Uni
+16	380000	No	Sí		Prop	No	2	5	V	Universitarios
+17	6000	No	Sí	0		No	0	1	V	Obl
+18	30000	sí	Sí	-7	Prop	Si	10	10	V	Uni
+19	23000	No	Sí	0	Prop	No	2	4	M	Bac
+20	43000	No	Sí	3	Alquiler	Sí	20	7	H	Uni
+21	13000	No	Sí	0	Alquiler	Sí	3	3	M	FP
+22	21000	Sí	Sí	1	Prop	No	1	7	M	Bac
+23	15000	Sí	Sí	2	Prop	Sí	5	10	H	Obl
+24	30000	Sí	Sí	1	Alquiler	No	15	7	M	Uni
+25	10000	Sí	Sí	0	Prop	Sí	1	6	H	
+26	40000	No	Sí	0	Alquiler	Si	3	16	M	Bac
+27	25000	No	No	0	Alquiler	Sí	0	8	H	Bac
+28	20000	No	Sí	0		Sí	2	6	M	Bac
+29	20000	Sí	Sí	3	Prop	No	7	5	H	Obl
+30	10000	Si	No	0	Alquiler	No	7	4	H	
+31	50000	No	No	0	Alquiler	No	2	12	M	Doctorado
+32	8000	Sí	Sí	2	Prop	No	3	1	H	Obl
+33	20000	No	No	0	Alquiler	No	27	5	M	Bac
+34	10000	No	Sí	0	Alquiler	Sí	0	7	H	Obl
+35	8000	No	Sí	0	Alquiler	No	3	2	H	FP
+36	50000	Sí	Sí	1	Prop	No	1	12	H	Doc
+37	7000	No	Sí	1	Prop	Sí	1	2	M	Obl
+38	30000	Sí	Sí	2	Prop	Sí	10	8	H	FP
+39	32000	No	No	0	Prop	No	2	3	M	Uni
+40	33000	No	Sí	3	Prop	No	5	7	H	Uni
+41										
+42	8000	Sí	Sí	2	Prop	No	3	1	V	Obl
+43	20000	No	No	1	Alquiler	No	27	5	M	Bac
+44	10000	No	Sí	0	Alquiler	Sí	0	7	H	Obl
+45	8000	No	Sí	1	Alquiler	No	3	2	H	FP
+46	50000	Sí	Sí	1	Alquiler	No	1	12	H	Doc
+47	7000	No	Sí		Prop	Sí	1	2	M	Obl
+48	30000	Sí	Sí	2	Alquiler	Sí	10	8	H	FP
+49	32000	No	No	0	Prop	No	2	3	M	Uni
+50	33000	No	Sí	3	Prop	No	5	7	H	Uni
+51										
+52	21000	Sí	Sí	1	Prop	No	1	7	M	Bac
+53	15000	Sí	Sí	2	Prop	Sí	5	10	H	Obl
+54	30000	Sí	Sí	1	Alquiler	No	15	7	M	Uni
+55	10000	Sí	Sí	0	Prop	Sí	1	6	H	
+56	40000	No	Sí	0	Alquiler	Si	3	16	M	Bac
+57	25000	No	No	0	Alquiler	Sí	0	8	H	Bac
+58	20000	No	Sí	0		Sí	2	6	M	Bac
+59	20000	Sí	Sí	3	Prop	No	7	5	H	Obl
+60	10000	Si	No	0	Alquiler	No	7	4	H	
+61	50000	No	No	0	Alquiler	No	2	12	M	Doctorado
+62	8000	Sí	Sí	2	Prop	No	3	1	H	Obl
+63	20000	No	No	0	Alquiler	No	27	5	M	Bac
+64	10000	No	Sí	0	Alquiler	Sí	0	7	H	Obl
+65	8000	No	Sí	0	Alquiler	No	3	2	H	FP
+66	50000	Sí	Sí	1	Prop	No	1	12	H	Doc
+67	7000	No	Sí	1	Prop	Sí	1	2	M	Obl
+68	30000	Sí	Sí	2	Prop	Sí	10	8	H	FP
+69	32000	No	No	0	Prop	No	2	3	M	Uni
+70	33000	No	Sí	3	Prop	No	5	7	H	Uni
+71										
+72	8000	Sí	Sí	2	Prop	No	3	1	V	Obl
+73	20000	No	No	1	Alquiler	No	27	5	M	Bac
+74	10000	No	Sí	0	Alquiler	Sí	0	7	H	Obl
+75	8000	No	Sí	1	Alquiler	No	3	2	H	FP
+76	50000	Sí	Sí	1	Alquiler	No	1	12	H	Doc
+77	7000	No	Sí		Prop	Sí	1	2	M	Obl
+78	30000	Sí	Sí	2	Alquiler	Sí	10	8	H	FP
+79	32000	No	No	0	Prop	No	2	3	M	Uni
+80	33000	No	Sí	3	Prop	No	5	7	H	Uni
+81										
+
+

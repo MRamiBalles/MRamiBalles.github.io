@@ -1,0 +1,18 @@
+https://gitlab.com/Jaco-Assistant/Scribosermo entrenamiento de modelos con deepspeech en otros idiomas, resultados y datasets
+
+wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.pbmm
+wget https://github.com/mozilla/DeepSpeech/releases/download/v0.9.3/deepspeech-0.9.3-models.scorer para instalar los modelos ya entrenados
+py -m venv ./Virtual crear un entorno virtual para ejecutar deepspeech
+pip3 install deepspeech para usar la libreria de deepspeech 
+Es necesario tener python 3.7.3
+deepspeech --model deepspeech-0.9.3-models.pbmm --scorer deepspeech-0.9.3-models.scorer --audio my_audio_file.wav para llamar a deepspeech sobre la linea de comandos
+
+https://deepspeech.readthedocs.io/en/r0.9/Python-API.html api python de deepspeech 
+Clase model: modelo de deepspeech, sirve para entrenar y ejecutar, puedes añadir hotwords como palabras con un tratamiento especial en la decodificacion, 
+calibrar los parametros alpha y beta (alpha para el modelo de lenguaje y beta para el modelo de insercion de palabras) y obtener el speech to text de un audio o stream de audio
+
+Clase Stream: para insertar audio en stream al modelo, podemos ver su stt, decodificacion parcial, stt con informacion extra(metadata), empezar y parar el stream con traduccion total o no 
+
+Clase metadata: lista de puntuaciones por transcripciones(clase transcripts)
+
+https://deepspeech.readthedocs.io/en/r0.9/Python-Examples.html Ejemplo de uso de la API python 

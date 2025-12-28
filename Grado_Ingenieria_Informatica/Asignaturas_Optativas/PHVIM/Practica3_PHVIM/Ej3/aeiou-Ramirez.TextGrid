@@ -1,0 +1,79 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0 
+xmax = 4.397833333333334 
+tiers? <exists> 
+size = 2 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "intervalos" 
+        xmin = 0 
+        xmax = 4.397833333333334 
+        intervals: size = 11 
+        intervals [1]:
+            xmin = 0 
+            xmax = 1.0582943202181845 
+            text = "" 
+        intervals [2]:
+            xmin = 1.0582943202181845 
+            xmax = 1.416917940062249 
+            text = "a" 
+        intervals [3]:
+            xmin = 1.416917940062249 
+            xmax = 1.6739315342838286 
+            text = "" 
+        intervals [4]:
+            xmin = 1.6739315342838286 
+            xmax = 1.9907157318127522 
+            text = "e" 
+        intervals [5]:
+            xmin = 1.9907157318127522 
+            xmax = 2.355316411987551 
+            text = "" 
+        intervals [6]:
+            xmin = 2.355316411987551 
+            xmax = 2.660146488855006 
+            text = "i" 
+        intervals [7]:
+            xmin = 2.660146488855006 
+            xmax = 2.9948618673761325 
+            text = "" 
+        intervals [8]:
+            xmin = 2.9948618673761325 
+            xmax = 3.317623125235791 
+            text = "o" 
+        intervals [9]:
+            xmin = 3.317623125235791 
+            xmax = 3.6642926244183864 
+            text = "" 
+        intervals [10]:
+            xmin = 3.6642926244183864 
+            xmax = 3.9571685806243724 
+            text = "u" 
+        intervals [11]:
+            xmin = 3.9571685806243724 
+            xmax = 4.397833333333334 
+            text = "" 
+    item [2]:
+        class = "TextTier" 
+        name = "puntos" 
+        xmin = 0 
+        xmax = 4.397833333333334 
+        points: size = 5 
+        points [1]:
+            number = 1.225652009478748 
+            mark = "a" 
+        points [2]:
+            number = 1.829335102882923 
+            mark = "e" 
+        points [3]:
+            number = 2.492788799594442 
+            mark = "i" 
+        points [4]:
+            number = 3.144288375644493 
+            mark = "o" 
+        points [5]:
+            number = 3.759925589710137 
+            mark = "u" 

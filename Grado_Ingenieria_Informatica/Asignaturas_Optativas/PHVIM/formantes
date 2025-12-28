@@ -1,0 +1,68 @@
+
+form Enter Info
+  word sound_file 
+  real start_point 0.0
+  real end_point 0.0
+  real min_pitch
+  real max_pitch
+endform
+
+##################################################
+#
+#  open sound file and extract portion specified
+#
+Open long sound file... 'sound_file$'
+Extract part... 'start_point' 'end_point' no
+Rename... sound
+
+##################################################
+#
+#  Initialize variables
+#
+f1  	      = undefined
+f2            = undefined
+f3            = undefined
+
+##################################################
+#
+#  Extract acoustic info from sound
+#
+
+# get the start, ending, and duration time of the sound
+select Sound sound
+start = Get starting time
+end = Get finishing time
+dur = end - start
+
+
+if dur > (6.4 / 'min_pitch')
+	# Query current F0 information
+	select Sound sound
+	To Pitch... 0 'min_pitch' 'max_pitch'
+	f1 = Get value at time: 1, midPoint, "Hertz", "Linear"
+	f2 = Get value at time: 2, midPoint, "Hertz", "Linear"
+	f3 = Get value at time: 3, midPoint, "Hertz", "Linear"
+	
+	f1$ = fixed$: f1, 0
+	f2$ = fixed$: f2, 0
+	f3$ = fixed$: f3, 0
+	# clean up
+	select Pitch sound
+	Remove
+
+else
+	f1= undefined
+	f2= undefined
+	f3= undefined
+
+endif
+
+# print the feature values
+printline SECONDS:'dur:3'
+printline F1:'f1:3'
+printline F2:'f2:3'
+printline F3:'f3:3'
+
+# clean up
+select Sound sound
+Remove

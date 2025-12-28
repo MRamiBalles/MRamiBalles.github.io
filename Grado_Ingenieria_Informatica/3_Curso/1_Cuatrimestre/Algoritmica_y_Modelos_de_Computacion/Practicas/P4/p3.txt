@@ -1,0 +1,1 @@
+sumar n = foldr (+) 1 [0..9]

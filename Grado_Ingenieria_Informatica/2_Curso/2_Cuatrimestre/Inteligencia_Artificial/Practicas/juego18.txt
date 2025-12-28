@@ -1,0 +1,58 @@
+public void AnalizarMapa(StateObservation mundo) {
+		// elementosMutables = so.getMovablePositions();
+		posplayer = mundo.getAvatarPosition();
+		posplayer.x /= tamBloq;
+		posplayer.y /= tamBloq;
+
+		posPlayerArr = true; posPlayerIzq = true;
+		posAvesBuenas = new ArrayList<Vector2d>();
+		posAvesMalas = new ArrayList<Vector2d>();
+
+		for (int j = 0; j < filas; j++) {
+			for (int i = 0; i < columnas; i++) {
+				ArrayList<Observation> contenido = entorno[i][j];
+				if (contenido.size() > 0) {
+				    
+					for (Observation obs : contenido) {
+						int tipo = obs.itype;//contenido.get(0).itype;
+						switch (tipo) {
+						case 0:
+							System.out.print(" #"); // Pared -> Inmovil : categoria = 4
+							break;
+						case 1:
+							System.out.println(" J"); // Jugador : categoria = 0
+						    /*if (entorno[i-1][j].get(0).itype == 0) { // Si tiene una pared a la izquierda
+						        posPlayerIzq = false;
+						    }
+
+						    if (entorno[i][j-1].get(0).itype == 0) { // Si tiene una pared arriba
+						        posPlayerArr = false;
+						    }*/
+							break;
+						case 6:
+							System.out.print(" A"); // Aves -> Movil : categoria = 3
+							Vector2d pos = new Vector2d(contenido.get(0).position.x / tamBloq, contenido.get(0).position.y / tamBloq);
+							double distancia = calculaDistancia(posplayer, minPosAve);
+							if(distancia <  distanciaMinima) {
+								minPosAve = pos;
+								distanciaMinima = distancia;
+								System.out.println("Ave mas cercana a " + minPosAve);
+							}
+							posAvesBuenas.add(pos);
+							break;
+						case 5:
+							System.out.println(" M"); // Aves -> Movil
+							Vector2d pos2 = new Vector2d(contenido.get(0).position.x / tamBloq, contenido.get(0).position.y / tamBloq);
+							posAvesMalas.add(pos2);
+						default:
+							System.out.print(" ?");
+							System.out.println("Categoria :" + contenido.get(0).category + ", tipo : " + contenido.get(0).itype);
+							break;
+						}
+					}
+				} else System.out.print("  ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}

@@ -1,0 +1,25 @@
+function pos_outliers = funcion_detecta_outliers_clase_interes_por_canal(X, Y, posClaseInteres, canal)
+    %% Modificar por canales!!
+    valoresY = unique(Y); %% valoresY = [0; 1]
+    filasoI = Y == valoresY(posClaseInteres);
+    pos_outliers = [];
+    color = X(filasoI, canal);
+    xCompleto = X(:, canal);
+      
+    % Sin percentiles :
+    colorOrd = sort(color);
+    numVal = length(color);
+    posQ1 = round(0.25*numVal);
+    posQ3 = round(0.75*numVal);
+    Q1 = colorOrd(posQ1)
+    Q3 = colorOrd(posQ3)
+    %Q1 = prctile(color, 25) %
+    %Q3 = prctile(color, 75) %
+    
+    RangoInter = Q3 - Q1;
+    vMinAcept = Q1 - 1.5*RangoInter;
+    vMaxAcept = Q3 + 1.5*RangoInter;
+
+    out = (xCompleto < vMinAcept | xCompleto > vMaxAcept) & Y == 1;
+    pos_outliers = [pos_outliers; find(out)];
+end

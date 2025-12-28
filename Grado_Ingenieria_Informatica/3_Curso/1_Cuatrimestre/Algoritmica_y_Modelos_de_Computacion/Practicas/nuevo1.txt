@@ -1,0 +1,4 @@
+funcionMapCurry [] _ = []
+
+
+filter2 f l = [f l | map f l]

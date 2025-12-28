@@ -1,0 +1,63 @@
+# depslib dependency file v1.0
+1638868412 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\main.cpp
+	<cstdlib>
+	<iostream>
+	<iomanip>
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	"Empresa.h"
+
+1638866638 c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\include\fecha.h
+	<iostream>
+
+1638866727 c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\include\cliente.h
+	"Fecha.h"
+
+1638868618 c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\include\contrato.h
+	<iostream>
+	"Fecha.h"
+	"Cliente.h"
+
+1638866854 c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\include\contratotp.h
+	<Contrato.h>
+
+1638866792 c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\include\contratomovil.h
+	<Contrato.h>
+	<cstring>
+
+1638866903 c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\include\empresa.h
+	"Fecha.h"
+	"Cliente.h"
+	"Contrato.h"
+	"ContratoTP.h"
+	"ContratoMovil.h"
+	<iostream>
+
+1638866688 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\src\cliente.cpp
+	"Cliente.h"
+	<cstring>
+
+1638866881 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\src\empresa.cpp
+	"Empresa.h"
+	<typeinfo>
+
+1638866617 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\src\fecha.cpp
+	"Fecha.h"
+	<iostream>
+
+1638867158 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\src\contratomovil.cpp
+	"ContratoMovil.h"
+	<cstring>
+	"Contrato.h"
+	<iostream>
+
+1638867166 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\src\contratotp.cpp
+	"ContratoTP.h"
+
+1638868601 source:c:\users\usuario\desktop\nueva carpeta\mod2_p1\m2_p1\src\contrato.cpp
+	"Contrato.h"
+	<iostream>
+

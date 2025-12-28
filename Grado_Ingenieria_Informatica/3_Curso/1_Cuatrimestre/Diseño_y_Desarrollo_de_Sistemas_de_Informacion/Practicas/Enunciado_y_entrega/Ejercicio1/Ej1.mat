@@ -1,0 +1,25 @@
+%% Ejercicio Examen 1 : 
+clc, clear, close all
+% imshow("Ej1.png")
+
+I = imread("Ej1.png");
+Ib = I > 10; 
+
+% Filtramos las dos agrupaciones menores:
+numPixUmbral = 50;
+IbFilt = funcion_filtra_objetos(Ib, numPixUmbral); 
+[Ie, Ne] = funcion_etiquetar(IbFilt); %% Etiqueta con vecindad 4
+
+areas = funcion_calcula_areas(Ie, Ne);
+[areasOrd, ind] = sort(areas);
+
+%% Sabemos que la otra region ruidosa es la mayor:
+% Por tanto los indices de interes son los de las posiciones 1 y 2:
+indInteres = [ind(1) ind(2)]
+
+Io = zeros(size(Ie)); 
+for i = 1:numel(indInteres)
+    Io(Ie == indInteres(i)) = indInteres(i); 
+end
+
+imshow(Io)
