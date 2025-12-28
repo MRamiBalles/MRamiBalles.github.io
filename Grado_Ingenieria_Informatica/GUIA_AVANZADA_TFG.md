@@ -26,5 +26,14 @@ Un TFG sin un buen estado del arte es solo un proyecto de programación.
 - [ ] ¿Se ha realizado un análisis de costes (Económico) y de impacto ambiental?
 - [ ] ¿El código fuente está debidamente documentado y alojado en un repo profesional?
 
+## 5. Ideas de Proyecto (Backlog de Usuario)
+
+Si aún no ha definido su línea de investigación, considere estas propuestas de alto valor técnico identificadas en sus borradores iniciales:
+
+- **Asistente de Estudio con IA**: Aplicación móvil multiplataforma que integre LLMs para la generación de resúmenes y cuestionarios automáticos.
+- **Monitorización de Red con Hardware de Bajo Coste**: Sistema de detección de intrusiones (IDS) y monitorización de tráfico basado en Raspberry Pi.
+- **Lenguaje Urium (DSL Transpiler)**: Desarrollo de un lenguaje de dominio específico orientado a la orquestación segura. Consulte la [especificación técnica](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Trabajo_Fin_de_Grado/URIUM_LANGUAGE_SPEC.md) para más detalles.
+- **Dashboard de Analítica Universitaria**: Plataforma de visualización de datos académicos para la detección temprana de abandono o seguimiento de rendimiento.
+
 ---
 *Escuela Técnica Superior de Ingeniería - Universidad de Huelva.*

@@ -13,7 +13,7 @@ El TFG es el boss final. Aquí tienes que demostrar que eres un Ingeniero.
 ### 📋 Ideas de Temas (Backlog)
 - [ ] Aplicación Móvil con IA integrada para ayuda al estudio.
 - [ ] Sistema de monitorización de red mediante Raspberry Pi.
-- [ ] Implementación de un compilador básico para un lenguaje inventado.
+- [ ] Implementación del transpilador **Urium** (DSL orquestación segura).
 - [ ] Dashboard de analítica de datos universitarios.
 
 ### 📁 Gestión de la Memoria

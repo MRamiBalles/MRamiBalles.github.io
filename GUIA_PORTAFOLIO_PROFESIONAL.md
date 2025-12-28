@@ -11,7 +11,8 @@ Al mostrar este repositorio, estás demostrando que:
 ## 2. Puntos Clave para Mencionar en una Entrevista
 - **"He estandarizado mi conocimiento"**: Menciona la creación de la [Guía Metodológica](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/GUIA_METODOLOGICA_ETSI.md) como tu propio marco de trabajo.
 - **"Análisis de Vulnerabilidades y QA"**: Destaca los laboratorios de [Seguridad](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/1_Cuatrimestre/Seguridad_Sistemas_Informacion/Practicas/Laboratorio_1_Analisis_Vulnerabilidades.md) y [Calidad](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/1_Cuatrimestre/Calidad_del_Software/Practicas/Plan_Auditoria_Codigo.md) como aplicaciones prácticas de alta demanda.
-- **"Resolución de Problemas Complejos"**: Los simulacros de examen demuestran que no solo conoces la teoría, sino que sabes aplicarla bajo presión.
+- **"Resolución de Problemas Complejos"**: El desarrollo del lenguaje **Urium** demuestra una capacidad única para diseñar soluciones desde cero, integrando gramáticas formales y seguridad.
+- **"Simulación de Alta Fidelidad"**: Los simulacros de examen demuestran que no solo conoces la teoría, sino que sabes aplicarla bajo presión.
 
 ## 3. Optimización para el Perfil de LinkedIn
 Añade el enlace a este repositorio en tu sección de "Proyectos" con la siguiente descripción:
