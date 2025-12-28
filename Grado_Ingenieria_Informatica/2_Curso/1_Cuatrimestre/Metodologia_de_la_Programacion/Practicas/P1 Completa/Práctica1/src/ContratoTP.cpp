@@ -47,6 +47,8 @@ void ContratoTP::setTarifaPlana(int limiteMinutos, float precio){
 
 
 ostream& operator<<(ostream& s, const ContratoTP &c) {
-    s << c.getDniContrato() << " (" << c.getIdContrato() << " - " << c.getFechaContrato() << ") " << c.getMinutosHablados() << "m, " << ContratoTP::getLimiteMinutos() << "(" << ContratoTP::getPrecio() << ") " << " - " << c.factura() << "e"; //TODO: Intentar imprimir el euro
+    s << c.getDniContrato() << " (" << c.getIdContrato() << " - " << c.getFechaContrato() << ") " 
+      << c.getMinutosHablados() << "m, " << ContratoTP::getLimiteMinutos() << "(" << ContratoTP::getPrecio() 
+      << "€) - Factura: " << c.factura() << "€";
     return s;
 }
