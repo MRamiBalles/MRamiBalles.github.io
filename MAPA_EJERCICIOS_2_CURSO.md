@@ -30,7 +30,6 @@ Este documento centraliza el acceso a todos los recursos de resolución de probl
 - [R1: Retardos y Capa de Aplicación](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/1_Cuatrimestre/Fundamentos_de_Redes_de_Computadores/Boletines/Relacion_1_Retardos_Aplicacion.md)
 - [R2: Capa de Transporte (TCP/UDP)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/1_Cuatrimestre/Fundamentos_de_Redes_de_Computadores/Boletines/Relacion_2_Transporte_TCP.md)
 - [R3: Capa de Red (IP/Routing)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/1_Cuatrimestre/Fundamentos_de_Redes_de_Computadores/Boletines/Relacion_3_Capa_Red.md)
-- 🏥 [Simulacro Final (Estilo Certificación)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/1_Cuatrimestre/Fundamentos_de_Redes_de_Computadores/Examenes/Simulacro_Final_Redes.md)
 
 ### 🛠️ Metodología de la Programación (MP)
 - [R1: Objetos y Clases](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/1_Cuatrimestre/Metodologia_de_la_Programacion/Boletines/Relacion_1_Objetos_Clases.md)
@@ -42,14 +41,34 @@ Este documento centraliza el acceso a todos los recursos de resolución de probl
 
 ## 📅 Segundo Cuatrimestre
 
+### 🍎 Admin. y Prog. de Sistemas (APSO)
+- [R1: Procesos y Señales (Avanzado)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Administracion_Programacion_Sistemas_Operativos/Boletines/Relacion_1_Procesos_Señales.md)
+- [R2: Hilos y Mutex (Prod/Cons)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Administracion_Programacion_Sistemas_Operativos/Boletines/Relacion_2_Hilos_Sincronizacion.md)
+- [R3: Memoria Compartida y mmap](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Administracion_Programacion_Sistemas_Operativos/Boletines/Relacion_3_Memoria_Proyectada.md)
+- [R4: Sistemas de Archivos e Inodos](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Administracion_Programacion_Sistemas_Operativos/Boletines/Relacion_4_Sistemas_Archivos.md)
+
 ### 🏗️ Arquitectura de Computadores (AC)
-- [Relación 2: Algoritmo de Tomasulo](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Arquitectura_de_Computadores/Boletines/Relacion_2_Tomasulo.md)
+- [R1: Rendimiento y Segmentación](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Arquitectura_de_Computadores/Boletines/Relacion_1_Rendimiento_Segmentacion.md)
+- [R2: Algoritmo de Tomasulo (Traza)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Arquitectura_de_Computadores/Boletines/Relacion_2_Tomasulo.md)
+- [R3: Paralelismo y Superescalares](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Arquitectura_de_Computadores/Boletines/Relacion_3_ILP.md)
+- [R4: Coherencia de Caché (MSI)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Arquitectura_de_Computadores/Boletines/Relacion_4_Coherencia_Cache.md)
 
 ### 🌳 Estructuras de Datos II (ED II)
-- [Relación 1: Árboles AVL y Balanceo](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Estructuras_de_Datos_II/Boletines/Relacion_1_Arboles_AVL.md)
+- [R1: Árboles AVL y Balanceo](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Estructuras_de_Datos_II/Boletines/Relacion_1_Arboles_AVL.md)
+- [R2: Montículos y Colas Prioridad](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Estructuras_de_Datos_II/Boletines/Relacion_2_Monticulos.md)
+- [R3: Grafos y Dijkstra](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Estructuras_de_Datos_II/Boletines/Relacion_3_Grafos_Implementacion.md)
+- [R4: Tablas Hash y Rehash](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Estructuras_de_Datos_II/Boletines/Relacion_4_Tablas_Hash.md)
 
 ### 🤖 Inteligencia Artificial (IA)
-- [Relación 1: Búsqueda y Heurísticas](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Inteligencia_Artificial/Boletines/Relacion_1_Busqueda.md)
+- [R1: Búsqueda y A*](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Inteligencia_Artificial/Boletines/Relacion_1_Busqueda.md)
+- [R2: Lógica y Resolución](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Inteligencia_Artificial/Boletines/Relacion_2_Logica.md)
+- [R3: Juegos y Minimax (Poda)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Inteligencia_Artificial/Boletines/Relacion_3_Juegos_Minimax.md)
+- [R4: Conocimiento y ML](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Inteligencia_Artificial/Boletines/Relacion_4_Conocimiento_ML.md)
+
+### 🛠️ Ingeniería del Software (PFIS)
+- [R1: Ciclos de Vida y Requisitos](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Principios_Fundamentos_Ingenieria_Software/Boletines/Relacion_1_Requisitos.md)
+- [R2: Modelado UML Avanzado](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Principios_Fundamentos_Ingenieria_Software/Boletines/Relacion_2_UML_Analisis.md)
+- [R3: Patrones de Diseño](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/2_Curso/2_Cuatrimestre/Principios_Fundamentos_Ingenieria_Software/Boletines/Relacion_3_Patrones_Diseño.md)
 
 ---
 *Cortex Lab - Academic Excellence Initiative.*
