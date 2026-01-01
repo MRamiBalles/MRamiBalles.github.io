@@ -1,54 +1,59 @@
 # PCD - Relación 1: Concurrencia y Sincronización (Oficial UHU)
 
-La Programación Concurrente permite la ejecución simultánea de múltiples flujos de control dentro de un mismo espacio de direcciones o en sistemas distribuidos. El desafío fundamental radica en la coordinación y sincronización de dichos flujos para evitar condiciones de carrera y garantizar la consistencia de los datos.
+La Programación Concurrente permite la ejecución simultánea de múltiples flujos de control dentro de un mismo espacio de direcciones o en sistemas distribuidos.
 
 ## 1. Abstracciones de Sincronización
-- **Semáforos (Dijkstra)**: Variable entera con operaciones atómicas `wait()` ($P$) y `signal()` ($V$). Permiten la exclusión mutua y la señalización entre procesos.
-- **Monitores (Hoare/Hansen)**: Abstracción de alto nivel que encapsula variables compartidas y procedimientos de acceso exclusivo, junto con variables de condición para la sincronización.
+- **Semáforos**: Abstracción de bajo nivel basada en contadores atómicos (`wait`/`signal`).
+- **Monitores**: Abstracción de alto nivel que encapsula exclusión mutua y variables de condición.
 
-## 2. Java Concurrency: Entorno de Implementación
-En la UHU se utiliza Java por su modelo nativo de hilos y monitores.
-- **`synchronized`**: Garantiza la exclusión mutua en métodos o bloques de código.
-- **`wait()` / `notifyAll()`**: Mecanismos de comunicación entre hilos para la gestión de condiciones lógicas.
-- **`java.util.concurrent`**: Librería avanzada que incluye semáforos, barreras y pools de hilos.
+## 📝 Ejercicio Técnico: Lectores-Escritores con Semáforos
+**Problema**: Implementar la sincronización de lectores-escritores (prioridad lectores) usando semáforos en C/Java.
 
-## 3. El Problema de la Exclusión Mutua
-Garantiza que en un instante dado, un único hilo accede a la **Sección Crítica**. La violación de este principio conduce a estados de inconsistencia no deterministas.
+```c
+sem_t mutex;    // Controla el acceso a la variable 'lectores'
+sem_t rw_mutex; // Controla el acceso al recurso (escritura/lectura exclusiva)
+int lectores = 0;
 
-## 📝 Ejercicio Técnico: Lectores y Escritores
-Considere un recurso compartido accedido por múltiples hilos lectores (concurrentes) y escritores (exclusivos).
-- **Problema**: Diseñar un monitor que priorice a los escritores para evitar la inanición (*starvation*) si el flujo de lectores es ininterrumpido.
+void lector() {
+    sem_wait(&mutex);
+    lectores++;
+    if (lectores == 1) sem_wait(&rw_mutex); // El primer lector bloquea a escritores
+    sem_post(&mutex);
+    
+    // --- LECTURA ---
+    
+    sem_wait(&mutex);
+    lectores--;
+    if (lectores == 0) sem_post(&rw_mutex); // El último lector desbloquea
+    sem_post(&mutex);
+}
 
-*Metodología de Resolución*:
-```java
-public class RecursoCompartido {
-    private int lectores = 0;
-    private int escritoresEsperando = 0;
-    private boolean escribiendo = false;
-
-    public synchronized void entraLector() throws InterruptedException {
-        while (escribiendo || escritoresEsperando > 0) wait();
-        lectores++;
-    }
-
-    public synchronized void saleLector() {
-        lectores--;
-        if (lectores == 0) notifyAll();
-    }
-
-    public synchronized void entraEscritor() throws InterruptedException {
-        escritoresEsperando++;
-        while (lectores > 0 || escribiendo) wait();
-        escritoresEsperando--;
-        escribiendo = true;
-    }
-
-    public synchronized void saleEscritor() {
-        escribiendo = false;
-        notifyAll();
-    }
+void escritor() {
+    sem_wait(&rw_mutex); // Bloqueo total
+    // --- ESCRITURA ---
+    sem_post(&rw_mutex);
 }
 ```
 
-## 4. Inanición y Deadlock
-- **Deadlock (Interbloqueo)**: Conjunto de procesos bloqueados permanentemente esperando recursos poseídos por otros procesos del mismo conjunto. Requiere cuatro condiciones simultáneas: exclusión mutua, retención y espera, no expropiación y espera circular (Condiciones de Coffman).
+## 📝 Ejercicio Técnico: Monitor en Java (Estructura de Examen)
+En Java, los monitores se implementan con la keyword `synchronized` y los métodos `wait()` / `notifyAll()`.
+
+**Regla de Oro**: Siempre use un `while` alrededor del `wait()` para re-comprobar la condición tras ser despertado (evitar activaciones espurias).
+
+```java
+public synchronized void entrar() throws InterruptedException {
+    while (!condicion) {
+        wait();
+    }
+    // Modificar estado
+    notifyAll();
+}
+```
+
+---
+## 3. Condiciones de Deadlock (Coffman)
+Para que ocurra un interbloqueo deben darse cuatro condiciones:
+1. **Exclusión Mutua**: Al menos un recurso no es compartible.
+2. **Retención y Espera**: Un proceso tiene un recurso y espera otro.
+3. **No Expropiación**: Los recursos solo se liberan voluntariamente.
+4. **Espera Circular**: Cadena de procesos donde cada uno espera al siguiente.

@@ -3,23 +3,34 @@
 Esta unidad analiza los límites de la computación, distinguiendo entre lo que es computable y lo que es eficiente desde el punto de vista algorítmico.
 
 ## 1. La Máquina de Turing (MT)
-Es el modelo general de computación. Define la noción de **Algoritmo** según la Tesis de Church-Turing.
-- Tipos de lenguajes: 
-  - **Recursivos**: La MT siempre se detiene (lenguajes decidibles).
-  - **Recursivamente Enumerables**: La MT se acepta para palabras del lenguaje, pero puede no detenerse para palabras fuera del mismo.
+Es el modelo general de computación. Una MT se define como $M = (Q, \Sigma, \Gamma, \delta, q_0, B, F)$.
+- $\Gamma$: Alfabeto de cinta (incluye al blanco $B$).
+- $\delta$: $Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$ (Dirección de movimiento).
 
-## 2. Decidibilidad y el Problema de la Parada (Halting Problem)
-Existen problemas para los cuales no es posible construir un algoritmo general. El Problema de la Parada es el ejemplo clásico de indecidibilidad: no existe un programa que determine si otro programa arbitrario se detendrá para una entrada dada.
+## 📝 Ejercicio Técnico: Diseño de una MT
+**Enunciado**: Diseñe una MT que reconozca el lenguaje $L = \{0^n 1^n \mid n \ge 1\}$. Este es un lenguaje no regular que requiere memoria de cinta.
 
-## 3. Clases de Complejidad
-- **P**: Problemas resolubles en tiempo polinómico por una MT determinista (eficientes).
-- **NP**: Problemas cuya solución puede verificarse en tiempo polinómico por una MT determinista (o resolubles en tiempo polinómico por una MT no determinista).
-- **NP-Completo**: Los problemas más difíciles dentro de NP. Si se hallara un algoritmo polinómico para un problema NP-completo, entonces $P = NP$.
+**Estrategia de Resolución**:
+1. Marcar un `0` con una `X` y moverse a la derecha hasta encontrar el primer `1`.
+2. Marcar el `1` con una `Y` y moverse a la izquierda hasta encontrar la última `X`.
+3. Repetir hasta que todos los `0` y `1` estén marcados.
+4. Si sobran símbolos de un tipo, rechazar. Si todo está marcado, aceptar.
 
-## 📝 Análisis de Reducción
-La técnica de **Reducción Polinómica** permite demostrar que un problema es al menos tan difícil como otro. 
-*Ejercicio*: Explique el concepto de "Reducción de Cook-Levin" y su relevancia en la definición de la clase NP-Completo.
-*Respuesta*: Demostró que el problema de satisfacibilidad booleana (SAT) es NP-completo, estableciendo la base para probar la pertenencia a esta clase de cientos de otros problemas (cliques, ciclos hamiltonianos, mochila 0/1, etc.) mediante reducciones sucesivas desde SAT.
+**Transiciones Clave**:
+- $\delta(q_0, 0) = (q_1, X, R)$ (Marco 0)
+- $\delta(q_1, 0) = (q_1, 0, R)$; $\delta(q_1, Y) = (q_1, Y, R)$ (Salto 0s e Ys)
+- $\delta(q_1, 1) = (q_2, Y, L)$ (Marco 1 y vuelvo)
+- $\delta(q_2, 0) = (q_2, 0, L)$; $\delta(q_2, Y) = (q_2, Y, L)$ (Busco X)
+- $\delta(q_2, X) = (q_0, X, R)$ (Encontrado, reinicio ciclo)
+
+## 2. Clases de Complejidad (P vs NP)
+- **P**: Resolubles en tiempo polinómico (ej. Encontrar el camino más corto).
+- **NP**: Verificables en tiempo polinómico (ej. Problema del Viajante).
+- **NP-Completo**: Si resuelves uno en tiempo polinómico, resuelves todos ($P=NP$).
+
+## 📝 Ejercicio de Complejidad
+Demuestre por qué el problema del **Ciclo Hamiltoniano** es NP.
+*Respuesta*: Dado un grafo y una secuencia de vértices (certificado), podemos verificar en tiempo polinómico $O(V)$ si: 1) Todos los vértices están en la lista exactamente una vez. 2) Existe una arista entre cada par consecutivo. 3) Existe una arista entre el último y el primero. Como la verificación es polinómica, el problema pertenece a la clase **NP**.
 
 ---
 *Escuela Técnica Superior de Ingeniería - Universidad de Huelva.*

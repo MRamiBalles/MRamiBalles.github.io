@@ -19,15 +19,20 @@ Dada la gramática:
 2. $E' \to + T E' \mid \epsilon$
 3. $T \to id$
 
-*Resolución*:
-- $FIRST(E) = \{id\}$
-- $FIRST(E') = \{+, \epsilon\}$
-- $FOLLOW(E) = \{\$\}$
-- $FOLLOW(E') = \{\$\}$
-- **Tabla M**:
-  - `M[E, id] = 1`
-  - `M[E', +] = 2`
-  - `M[E', $] = 3`
+### Paso 1: Conjuntos Primeros y Siguientes
+- **FIRST(E)** = {id}
+- **FIRST(E')** = {+, $\epsilon$}
+- **FIRST(T)** = {id}
+- **FOLLOW(E)** = {$}
+- **FOLLOW(E')** = {$}
+- **FOLLOW(T)** = {+, $}
+
+### Paso 2: Tabla de Análisis M
+| No Terminal | `id` | `+` | `$` |
+| :--- | :--- | :--- | :--- |
+| **E** | $E \to T E'$ (1) | | |
+| **E'** | | $E' \to + T E'$ (2) | $E' \to \epsilon$ (3) |
+| **T** | $T \to id$ (4) | | |
 
 ## 3. Analizadores de Descenso Recíproco
 Implementación manual mediante funciones que se llaman recursivamente siguiendo las reglas de producción. Crítico para gramáticas sencillas y rápidas.
