@@ -1,16 +1,39 @@
 # Mat III - Relación 4: Integración Múltiple (Oficial UHU)
 
-## 🧠 Contexto Teórico
-Extensión de la integral a funciones de varias variables para calcular volúmenes y masas.
+## 🧠 Integrales Triples y Cambios de Variable
+La integración múltiple nos permite calcular volúmenes, centros de masa y momentos de inercia de sólidos complejos.
 
-*   **Teorema de Fubini**: Permite calcular una integral doble como integrales iteradas si el dominio es regular.
-*   **Cambio de Variable**: $dx dy = |J| du dv$, donde $|J|$ es el determinante jacobiano.
-*   **Coordenadas Polares**: $x = r \cos \theta, y = r \sin \theta$. Jacoviano $|J| = r$.
+### 1. Coordenadas Cilíndricas
+Ideal para sólidos con simetría axial (cilindros, paraboloides).
+- $x = \rho \cos \theta, y = \rho \sin \theta, z = z$
+- **Jacoviano**: $|J| = \rho$
+- $dV = \rho \, d\rho \, d\theta \, dz$
 
-## 📝 Ejercicios de la Relación
-1.  **Integral Doble en Rectángulo**: Calcula $\iint_R xy^2 dA$ donde $R = [0,1] \times [0,2]$.
-    *   *Resolución:* $\int_0^1 x dx \cdot \int_0^2 y^2 dy = [\frac{x^2}{2}]_0^1 \cdot [\frac{y^3}{3}]_0^2 = \frac{1}{2} \cdot \frac{8}{3} = 4/3$.
-2.  **Cambio a Polares**: Calcula el área de un círculo de radio $R$ usando integrales dobles.
-    *   *Resolución:* $\int_0^{2\pi} \int_0^R r dr d\theta = \int_0^{2\pi} \frac{R^2}{2} d\theta = \frac{R^2}{2} \cdot 2\pi = \pi R^2$.
-3.  **Volumen**: Halla el volumen bajo el plano $z = 1-x-y$ en el primer octante.
-    *   *Resolución:* $\int_0^1 \int_0^{1-x} (1-x-y) dy dx = \dots = 1/6 u^3$.
+### 2. Coordenadas Esféricas
+Ideal para esferas o conos.
+- $x = r \sin \phi \cos \theta$
+- $y = r \sin \phi \sin \theta$
+- $z = r \cos \phi$
+- **Jacoviano**: $|J| = r^2 \sin \phi$
+- $dV = r^2 \sin \phi \, dr \, d\phi \, d\theta$
+
+## 📝 Ejercicios Resueltos
+
+1. **Volumen de una Esfera**: Calcula el volumen de una esfera de radio $R$ usando integrales triples.
+   *Resolución*: 
+   - Límites: $r \in [0, R], \phi \in [0, \pi], \theta \in [0, 2\pi]$.
+   - $V = \int_0^{2\pi} \int_0^\pi \int_0^R r^2 \sin \phi \, dr \, d\phi \, d\theta$
+   - $V = 2\pi \cdot [-\cos \phi]_0^\pi \cdot [\frac{r^3}{3}]_0^R = 2\pi \cdot 2 \cdot \frac{R^3}{3} = \frac{4}{3}\pi R^3$.
+
+2. **Cilindro Recortado**: Halla el volumen del sólido limitado por $x^2 + y^2 = 4$ y los planos $z=0$ y $z=5$.
+   *Resolución*: 
+   - Usamos cilíndricas: $\rho \in [0, 2], \theta \in [0, 2\pi], z \in [0, 5]$.
+   - $V = \int_0^{2\pi} \int_0^2 \int_0^5 \rho \, dz \, d\rho \, d\theta = 5 \cdot \frac{2^2}{2} \cdot 2\pi = 20\pi u^3$.
+
+3. **Masa de un Sólido**: Un cubo de lado 1 tiene una densidad variable $\sigma(x,y,z) = x+y+z$. Halla su masa.
+   *Resolución*: 
+   - $M = \int_0^1 \int_0^1 \int_0^1 (x+y+z) dx dy dz = \dots = 3/2$ unidades de masa.
+
+---
+> [!TIP]
+> Si el dominio tiene $x^2+y^2$ piensa en cilíndricas. Si aparece $x^2+y^2+z^2$ usa esféricas directamente para simplificar el integrando.
