@@ -26,3 +26,23 @@ El diseño combinacional se enfoca en circuitos cuyas salidas dependen exclusiva
 3. **Decodificadores de Siete Segmentos**
    *Problema*: Diseño de la lógica para el segmento 'a' de un visualizador LED basado en una entrada BCD de 4 bits.
    *Resolución*: Definición de minitérminos para los dígitos 0-9 y tratamiento como "don't care" (X) para los valores 10-15 para optimizar el área del circuito.
+
+## 📝 Proyecto de Diseño: Implementación de una ALU de 4 Bits
+**Objetivo**: Diseñar una Unidad Lógica Aritmética capaz de realizar 4 operaciones básicas (SUMA, RESTA, AND, OR) mediante el uso de sumadores y multiplexores.
+
+### Especificaciones Técnicas
+- **Entradas**: Dos palabras de 4 bits ($A, B$).
+- **Seleccion de Operación ($S_1, S_0$)**:
+  - `00`: AND ($A \cdot B$)
+  - `01`: OR ($A + B$)
+  - `10`: SUMA ($A + B$)
+  - `11`: RESTA ($A - B$)
+
+### Metodología de Diseño
+1. **Unidad Aritmética**: Uso de un Sumador de 4 bits. Para la resta, se utiliza una puerta XOR para negar $B$ y se introduce un 1 en el acarreo inicial ($C_{in}$) para realizar el Complemento a 2.
+2. **Unidad Lógica**: Implementación en paralelo de las puertas AND y OR para cada bit.
+3. **Selector de Salida**: Un Multiplexor de 4 a 1 por cada bit de salida para escoger entre los resultados lógico y aritmético.
+
+---
+> [!TIP]
+> En Logisim, puedes agrupar este diseño en un solo bloque (Subcircuit) para simplificar el diseño de una CPU completa más adelante.

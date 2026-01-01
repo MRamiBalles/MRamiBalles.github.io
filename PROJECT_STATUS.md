@@ -8,6 +8,11 @@ Este documento centraliza el estado de los proyectos técnicos encontrados en el
 | **Metodología Prog.** | Sistema de Gestión (Empresa, Cliente, Contrato) | C++ | Finalizado (con Entrega) |
 | **Bases de Datos** | Script Integral de Gestión Académica | SQL | Finalizado |
 | **Inteligencia Artificial** | Redes Neuronales (Carreteras) / Alg. Genético | Python | Finalizado |
+| **Matemáticas I** | Relaciones 1-5 (Complejos a Integral) | LaTeX/MD | 🟢 Finalizado |
+| **Fund. Programación** | Relaciones 1-4 (C Procedural a Ficheros) | C | 🟢 Finalizado |
+| **Fund. Computadores** | Diseño de ALU y Contadores Síncronos | Logisim/MD | 🟢 Finalizado |
+| **Física I** | Cinemática a Electromagnetismo | MD | 🟢 Finalizado |
+| **Empresa (AEE)** | VAN/TIR, Punto Muerto y Mercados | MD | 🟢 Finalizado |
 | **Sistemas de Percepción** | Clasificador de Esferas (Práctica Final) | Matlab | Finalizado |
 | **Aprendizaje Automático** | Experimentos de Clustering (Propio y Librería) | Python | Finalizado |
 | **PCD** | Solución P5 (2022/23) y Ejemplos de Concurrencia | Java | Finalizado |

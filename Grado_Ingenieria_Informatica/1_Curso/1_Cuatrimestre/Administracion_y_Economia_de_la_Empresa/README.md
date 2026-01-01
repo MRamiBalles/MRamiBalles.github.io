@@ -17,12 +17,15 @@ Introducción a la gestión empresarial, organización y entorno económico para
    - **Finanzas**: Análisis de inversiones y financiación.
    - **Recursos Humanos**: Gestión del talento.
 
-## 🛠️ Plan de Desarrollo y Estados
-### 📂 Inventario de Contenido
-- [ ] **Ejercicios de Teoría**: Muchos en **PAPEL** (Análisis de balances, cálculos de productividad).
+## 📝 Relación de Boletines (Ejercicios Resueltos)
+- [Relación 1: Análisis de Inversiones (VAN/TIR)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/1_Curso/1_Cuatrimestre/Administracion_y_Economia_de_la_Empresa/Boletines/Relacion_1_Inversiones.md)
+- [Relación 2: Producción, Costes y Punto Muerto](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/1_Curso/1_Cuatrimestre/Administracion_y_Economia_de_la_Empresa/Boletines/Relacion_2_Produccion_Costes.md)
+- [Relación 3: Mercados, Oferta y Demanda](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/1_Curso/1_Cuatrimestre/Administracion_y_Economia_de_la_Empresa/Boletines/Relacion_3_Mercados.md)
+
+## 📂 Inventario y Estado
+- [x] **Boletines Técnicos**: Centralizados y resueltos.
+- [ ] **Ejercicios de Teoría**: Digitalizar esquemas de los procesos administrativos (FODA/DAFO).
 - [ ] **Prácticas**: Casos de estudio y análisis de coyuntura.
 
-### 🚀 Etapas de Trabajo
-- **Etapa 1**: Digitalizar esquemas de los procesos administrativos (FODA/DAFO).
-- **Etapa 2**: Resolver casos de finanzas (VAN/TIR) incompletos de las sesiones prácticas.
-- **Etapa 3**: Preparar glosario de términos económicos para la Mención en Computación (estimación de costes de software).
+---
+*Escuela Técnica Superior de Ingeniería - Universidad de Huelva.*
