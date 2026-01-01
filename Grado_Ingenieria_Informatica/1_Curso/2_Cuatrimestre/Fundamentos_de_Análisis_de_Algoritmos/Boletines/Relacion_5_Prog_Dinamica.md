@@ -16,9 +16,30 @@ El objetivo es determinar el orden óptimo de paréntesis para minimizar el núm
   $m[i,j] = \min_{i \le k < j} \{ m[i,k] + m[k+1,j] + p_{i-1}p_kp_j \}$
   Donde $p$ define las dimensiones de las matrices.
 
-## 📝 Ejercicio de Examen
-Dada una secuencia de matrices con dimensiones $10 \times 100$, $100 \times 5$ y $5 \times 50$, calcule el coste mínimo de multiplicación.
-*Resolución*:
-1. Multiplicar $(A_1 A_2) A_3$: $(10 \cdot 100 \cdot 5) + (10 \cdot 5 \cdot 50) = 5000 + 2500 = 7500$ operaciones.
-2. Multiplicar $A_1 (A_2 A_3)$: $(100 \cdot 5 \cdot 50) + (10 \cdot 100 \cdot 50) = 25000 + 50000 = 75000$ operaciones.
-*Conclusión*: La primera opción es el orden óptimo.
+## 📝 Problema Clásico: El Cambio de Monedas
+**Enunciado**: Dado un sistema de monedas con valores $V = \{v_1, v_2, \dots, v_n\}$ y una cantidad $C$, determine el número mínimo de monedas necesarias para obtener el cambio exacto.
+
+### Ecuación de Recurrencia
+Sea $f(i, j)$ el número mínimo de monedas para obtener la cantidad $j$ utilizando las $i$ primeras monedas:
+$$
+f(i, j) = \begin{cases} 
+f(i-1, j) & \text{si } v_i > j \\
+\min(f(i-1, j), 1 + f(i, j - v_i)) & \text{si } v_i \le j 
+\end{cases}
+$$
+
+### Ejercicio Práctico
+Sistema de monedas: $\{1, 4, 6\}$. Cantidad a devolver: $8$.
+**Tabla de resolución**:
+
+| Moneda / Cant | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **{1}** | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| **{1, 4}** | 0 | 1 | 2 | 3 | 1 | 2 | 3 | 4 | 2 |
+| **{1, 4, 6}** | 0 | 1 | 2 | 3 | 1 | 2 | 1 | 2 | 2 |
+
+**Resultado**: Se necesitan **2 monedas** (dos monedas de 4, o una de 6 y dos de 1... espera, revisemos: $4+4=8$ (2 monedas); $6+1+1=8$ (3 monedas). El óptimo es con dos de 4).
+
+---
+> [!TIP]
+> En los exámenes de la UHU, si te piden reconstruir la solución (qué monedas has usado), debes guardar en una tabla auxiliar los índices de las decisiones tomadas o recorrer la tabla principal hacia atrás.
