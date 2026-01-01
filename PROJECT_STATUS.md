@@ -21,7 +21,11 @@ Este documento centraliza el estado de los proyectos técnicos encontrados en el
 | **Sistemas de Percepción** | Clasificador de Esferas (Práctica Final) | Matlab | Finalizado |
 | **Aprendizaje Automático** | Experimentos de Clustering (Propio y Librería) | Python | Finalizado |
 | **PCD** | Solución P5 (2022/23) y Ejemplos de Concurrencia | Java | Finalizado |
-| **Fund. Redes** | Laboratorios de Packet Tracer (VLAN/RIP) | PKT | Finalizado |
+| **Sistemas Operativos** | Procesos a Gestión de Memoria | C/MD | 🟢 Finalizado |
+| **Bases de Datos** | E/R, Relacional y SQL completo | MD/SQL | 🟢 Finalizado |
+| **Estructura Comp.** | MIPS, Control, Pipeline y Caché Avanzada | MD/ASM | 🟢 Finalizado |
+| **Redes (FRC)** | Retardos, OSI, TCP/IP y DNS | MD | 🟢 Finalizado |
+| **Metodología Prog.** | POO C++ Avanzado y Gestión de Memoria | C++ | 🟢 Finalizado |
 
 ## 🟡 Proyectos Incompletos / En Desarrollo
 | Asignatura | Proyecto/Contenido | Lenguaje | Gap Identificado |
