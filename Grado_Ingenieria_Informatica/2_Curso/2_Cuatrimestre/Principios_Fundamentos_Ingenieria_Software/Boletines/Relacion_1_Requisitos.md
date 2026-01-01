@@ -4,21 +4,18 @@ La Ingeniería del Software aplica un enfoque sistemático, disciplinado y cuant
 
 ## 1. Procesos y Ciclos de Vida
 Modelos para organizar las actividades de ingeniería:
-- **Modelo en Cascada (Waterfall)**: Enfoque secuencial y rígido. Adecuado para requisitos bien definidos.
-- **Modelos Iterativos e Incrementales**: Desarrollo en ciclos con entregas parciales.
-- **Metodologías Ágiles (Scrum, Kanban)**: Enfoque en la adaptabilidad, la colaboración con el cliente y la entrega continua de valor.
+
+| Modelo | Ventajas | Desventajas | Escenario Ideal |
+| :--- | :--- | :--- | :--- |
+| **Cascada** | Estructurado, fácil de gestionar | Inflexible, feedback tardío | Requisitos muy claros y fijos |
+| **Incremental** | Entregas tempranas | Difícil de planificar a largo plazo | Sistemas de gran tamaño |
+| **Agile** | Adaptabilidad total | Requiere mucha implicación del cliente | Startups, requisitos cambiantes |
+| **Espiral** | Gestión de riesgos | Caro y complejo | Proyectos críticos (militar, médico) |
 
 ## 2. Ingeniería de Requisitos
-Fase crítica para el éxito del proyecto.
-- **Requisitos Funcionales**: Definen *qué* debe hacer el sistema.
-- **Requisitos No Funcionales (Atributos de Calidad)**: Definen *cómo* debe comportarse el sistema (ej. rendimiento, seguridad, usabilidad).
-- **Técnicas de Elicitación**: Entrevistas, cuestionarios, observación, JAD (Joint Application Development).
-
-## 3. Modelado Funcional: Casos de Uso
-Permiten capturar los requisitos funcionales desde la perspectiva del actor externo.
-- **Actores**: Roles que interactúan con el sistema.
-- **Escenarios**: Secuencia de pasos con flujos principales y alternativos.
+- **Funcionales**: "El cajero debe dar dinero".
+- **No Funcionales**: "El cajero debe ser seguro" (Usabilidad, Rendimiento, Mantenibilidad).
 
 ## 📝 Ejercicio de Ingeniería: Especificación de Requisitos
 Diferencie entre un error de requisito y un defecto de implementación.
-*Respuesta*: Un error de requisito es una divergencia entre las necesidades reales del usuario y lo documentado en la especificación (construir el producto equivocado). Un defecto de implementación es una discrepancia entre lo especificado y lo construido (construir mal el producto). El coste de corrección de un error de requisito en fases tardías es exponencialmente superior al de un defecto de código.
+*Respuesta*: Un error de requisito es construir el producto equivocado (fallo en la fase inicial). Un defecto de implementación es construir mal el producto (fallo en la fase de construcción). El coste de corregir un error de requisito tras el despliegue es hasta 100 veces superior.

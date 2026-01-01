@@ -2,104 +2,38 @@
 
 Las estructuras de datos avanzadas permiten la optimización de las operaciones de búsqueda, inserción y borrado, garantizando complejidades temporales logarítmicas incluso en el peor de los casos.
 
-## 1. Árboles Binarios de Búsqueda (BST)
-Estructura donde para cada nodo, los valores del subárbol izquierdo son menores y los del derecho mayores. Su principal limitación es la degradación a listas enlazadas ($O(n)$) si no están balanceados.
-
-## 2. Árboles AVL (Adelson-Velsky y Landis)
-Son árboles auto-balanceados donde, para cada nodo, la diferencia de alturas entre sus subárboles (Factor de Equilibrio) es como máximo 1.
-- **Balanceo**: Se realiza mediante rotaciones simples (L, R) o dobles (LR, RL).
-- **Complejidad**: Garantiza $O(\log n)$ para todas las operaciones fundamentales.
-
-## 📝 Implementación de Referencia: Árbol AVL en C++
-
-A continuación se presenta una implementación robusta que incluye las funciones de rotación y el cálculo dinámico de la altura para mantener el balanceo.
-
-```cpp
-#include <iostream>
-#include <algorithm>
-
-template <typename T>
-struct Nodo {
-    T dato;
-    Nodo* izq;
-    Nodo* der;
-    int altura;
-
-    Nodo(T v) : dato(v), izq(nullptr), der(nullptr), altura(1) {}
-};
-
-template <typename T>
-class ArbolAVL {
-private:
-    Nodo<T>* raiz;
-
-    int obtenerAltura(Nodo<T>* n) { return n ? n->altura : 0; }
-
-    int obtenerBalance(Nodo<T>* n) {
-        return n ? obtenerAltura(n->izq) - obtenerAltura(n->der) : 0;
-    }
-
-    Nodo<T>* rotarDerecha(Nodo<T>* y) {
-        Nodo<T>* x = y->izq;
-        Nodo<T>* T2 = x->der;
-        x->der = y;
-        y->izq = T2;
-        y->altura = std::max(obtenerAltura(y->izq), obtenerAltura(y->der)) + 1;
-        x->altura = std::max(obtenerAltura(x->izq), obtenerAltura(x->der)) + 1;
-        return x;
-    }
-
-    Nodo<T>* rotarIzquierda(Nodo<T>* x) {
-        Nodo<T>* y = x->der;
-        Nodo<T>* T2 = y->izq;
-        y->izq = x;
-        x->der = T2;
-        x->altura = std::max(obtenerAltura(x->izq), obtenerAltura(x->der)) + 1;
-        y->altura = std::max(obtenerAltura(y->izq), obtenerAltura(y->der)) + 1;
-        return y;
-    }
-
-    Nodo<T>* insertar(Nodo<T>* nodo, T dato) {
-        if (!nodo) return new Nodo<T>(dato);
-
-        if (dato < nodo->dato) nodo->izq = insertar(nodo->izq, dato);
-        else if (dato > nodo->dato) nodo->der = insertar(nodo->der, dato);
-        else return nodo;
-
-        nodo->altura = 1 + std::max(obtenerAltura(nodo->izq), obtenerAltura(nodo->der));
-        int balance = obtenerBalance(nodo);
-
-        // Caso Simple Derecha (LL)
-        if (balance > 1 && dato < nodo->izq->dato) return rotarDerecha(nodo);
-        // Caso Simple Izquierda (RR)
-        if (balance < -1 && dato > nodo->der->dato) return rotarIzquierda(nodo);
-        // Caso Doble Izquierda-Derecha (LR)
-        if (balance > 1 && dato > nodo->izq->dato) {
-            nodo->izq = rotarIzquierda(nodo->izq);
-            return rotarDerecha(nodo);
-        }
-        // Caso Doble Derecha-Izquierda (RL)
-        if (balance < -1 && dato < nodo->der->dato) {
-            nodo->der = rotarDerecha(nodo->der);
-            return rotarIzquierda(nodo);
-        }
-        return nodo;
-    }
-
-public:
-    ArbolAVL() : raiz(nullptr) {}
-    void insertar(T dato) { raiz = insertar(raiz, dato); }
-};
-```
+## 1. Árboles AVL (Adelson-Velsky y Landis)
+Son árboles auto-balanceados donde el Factor de Equilibrio ($FE = Altura_{izq} - Altura_{der}$) de cada nodo es $\{-1, 0, 1\}$.
 
 ## 📝 Ejercicio de Examen: Seguimiento de Inserciones
 **Enunciado**: Dibuje el estado final de un árbol AVL tras insertar la secuencia: `10, 20, 30, 40, 50, 25`.
 
 **Resolución Paso a Paso**:
-1.  **Inserción 10, 20, 30**: Al insertar 30, el nodo 10 tiene un balance de -2. Rotación simple a la izquierda sobre 10. Raíz: 20, hijos 10 y 30.
-2.  **Inserción 40, 50**: Al insertar 50, el nodo 30 tiene un balance de -2. Rotación simple a la izquierda sobre 30.
-3.  **Inserción 25**: Provoca un desequilibrio en la raíz (20). Se requiere un análisis de balanceo global para restaurar la propiedad AVL.
+1.  **Inserción 10, 20, 30**:
+    - Se forma una línea derecha. El nodo 10 tiene $FE = -2$.
+    - **Rotación Simple Izquierda (RSI)** sobre 10.
+    - Árbol: `[20]` con hijos `(10, 30)`.
+2.  **Inserción 40, 50**:
+    - Se insertan a la derecha de 30. El nodo 30 queda con $FE = -2$.
+    - **RSI** sobre 30.
+    - Árbol: `[20]` con hijos `(10, 40)`. El 40 tiene hijos `(30, 50)`.
+3.  **Inserción 25**:
+    - Se inserta a la izquierda de 30.
+    - Check de balances: 30(1), 40(2), 20(-2).
+    - El primer nodo desequilibrado es 40 ($FE = 2$). Como 25 es menor que 30, es un caso **Izquierda-Izquierda** en el subárbol.
+    - **Rotación Simple Derecha** sobre 40.
+    - **Estado Final**: Raíz `20`, subárbol derecho `[30]` con hijos `(25, 40)`, y 40 tiene a `50` a su derecha.
 
 ---
-> [!IMPORTANT]
-> Recuerda que en un árbol AVL, el factor de equilibrio $FE$ siempre debe cumplir $|FE| \leq 1$. Si $|FE| = 2$, el árbol debe rotar inmediatamente.
+## 📝 Implementación de Referencia (Extracto)
+```cpp
+int obtenerBalance(Nodo<T>* n) {
+    return n ? obtenerAltura(n->izq) - obtenerAltura(n->der) : 0;
+}
+
+Nodo<T>* balancear(Nodo<T>* nodo, T dato) {
+    int balance = obtenerBalance(nodo);
+    // Casos de rotación: LL, RR, LR, RL...
+    // [Implementación detallada en el código fuente del repositorio]
+}
+```

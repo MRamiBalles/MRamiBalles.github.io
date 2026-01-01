@@ -4,15 +4,28 @@
 En estos problemas no estamos solos, hay un "enemigo" que quiere fastidiarnos. Por eso usamos algoritmos de Minimax.
 
 *   **Minimax**: Yo quiero MAXimizar mi beneficio, el rival quiere MINimizarlo.
-    - Se explora el árbol de estados hasta una profundidad $D$.
-    - Se aplica una **Función de Evaluación** a las hojas (ej. "¿quién tiene más piezas?").
-*   **Poda Alfa-Beta**: Es la magia que hace que Minimax sea rápido.
-    - Si ya sabemos que una rama es peor que lo que ya hemos encontrado, dejamos de mirarla. **No cambia el resultado**, solo ahorra tiempo.
+*   **Poda Alfa-Beta**: Permite ignorar ramas que no afectan al resultado final.
 
-## 📝 Ejercicios de la ETSI
-1.  **Simular Minimax**: Te dan un árbol con valores en las hojas y tienes que decir qué movimiento elige el jugador MAX.
-    *   *Ojo*: Hacedlo de abajo a arriba. Los nodos MIN cogen el valor más pequeño de sus hijos, los MAX el más grande.
-2.  **¿Dónde se poda?**: Marca en el árbol anterior dónde actuaría la poda Alfa-Beta.
-    *   *Regla de oro*: Si $\alpha \ge \beta$, ¡corta! (Podas por debajo de un nodo si el valor que viene de ahí ya no puede mejorar lo que ya tienes garantizado).
-3.  **Heurísticas en Juegos**: ¿Cómo evaluarías una partida de Damas a mitad de juego?
-    *   *Organic Tip*: No cuentes solo fichas. Cuenta fichas, cuántas son "reinas", y la posición central. Una IA que solo cuenta fichas es muy fácil de engañar.
+## 📝 Ejercicio Resuelto: Árbol Minimax con Poda
+A continuación se visualiza el proceso de toma de decisiones en un árbol de profundidad 2.
+
+```mermaid
+graph TD
+    MAX[MAX: 3] --> MIN1[MIN A: 3]
+    MAX --> MIN2[MIN B: 2]
+    MIN1 --> H1[Leaf: 3]
+    MIN1 --> H2[Leaf: 12]
+    MIN2 --> H3[Leaf: 2]
+    MIN2 --> H4[Leaf: X - Poda]
+```
+
+**Análisis**:
+1. El primer hijo de MIN A es 3. El segundo es 12. MIN A elige el menor: **3**.
+2. El primer hijo de MIN B es 2. Como MAX ya tiene garantizado un 3 (vía MIN A), y sabe que MIN B elegirá "como mucho un 2" (porque 2 es menor que 3), MAX ya no necesita mirar el resto de hijos de MIN B.
+3. Se produce una **Poda Alfa-Beta** en el nodo H4.
+
+## 📝 Heurísticas en Juegos
+¿Cómo evaluarías una partida de Damas a mitad de juego?
+- **Material**: Diferencia de piezas (Peones: 1, Reinas: 3).
+- **Posición**: Control del centro y avance de peones.
+- **Movilidad**: Número de movimientos legales disponibles (evitar bloqueos).
