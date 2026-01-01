@@ -13,6 +13,11 @@ Este documento centraliza el estado de los proyectos técnicos encontrados en el
 | **Fund. Computadores** | Diseño de ALU y Contadores Síncronos | Logisim/MD | 🟢 Finalizado |
 | **Física I** | Cinemática a Electromagnetismo | MD | 🟢 Finalizado |
 | **Empresa (AEE)** | VAN/TIR, Punto Muerto y Mercados | MD | 🟢 Finalizado |
+| **EDI I** | Relaciones 1-4 (Recursividad a Árboles) | C++ | 🟢 Finalizado |
+| **Matemáticas II** | Sistemas, Matrices, Lógica y Grafos | MD | 🟢 Finalizado |
+| **Tecnología Comp.** | Rendimiento, MIPS, Control, Pipeline, Caché | MD | 🟢 Finalizado |
+| **FAA (Algoritmos)** | Asintótica a Branch & Bound | C++/MD | 🟢 Finalizado |
+| **Matemáticas III** | Extremos, Integración 3D, Estadística | MD | 🟢 Finalizado |
 | **Sistemas de Percepción** | Clasificador de Esferas (Práctica Final) | Matlab | Finalizado |
 | **Aprendizaje Automático** | Experimentos de Clustering (Propio y Librería) | Python | Finalizado |
 | **PCD** | Solución P5 (2022/23) y Ejemplos de Concurrencia | Java | Finalizado |
