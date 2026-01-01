@@ -1,49 +1,35 @@
-# Estado de Proyectos de Programación - Grado Ingeniería Informática
+# Estado de Proyectos de Programación - Grado Ingeniería Informática (Cortex-13)
 
-Este documento centraliza el estado de los proyectos técnicos encontrados en el repositorio tras la auditoría y reorganización.
+Este documento centraliza el estado de los proyectos técnicos y boletines académicos tras la gran auditoría y completar el 100% de los contenidos de 1º, 2º y 3º curso.
 
-## 🟢 Proyectos Finalizados (Listos para revisión/Mastery)
-| Asignatura | Proyecto/Contenido | Lenguaje | Estado |
+## 🟢 Proyectos y Boletines Finalizados (Nivel Maestría)
+
+| curso | Asignatura | Contenido Clave | Estado |
 | :--- | :--- | :--- | :--- |
-| **Metodología Prog.** | Sistema de Gestión (Empresa, Cliente, Contrato) | C++ | Finalizado (con Entrega) |
-| **Bases de Datos** | Script Integral de Gestión Académica | SQL | Finalizado |
-| **Inteligencia Artificial** | Redes Neuronales (Carreteras) / Alg. Genético | Python | Finalizado |
-| **Matemáticas I** | Relaciones 1-5 (Complejos a Integral) | LaTeX/MD | 🟢 Finalizado |
-| **Fund. Programación** | Relaciones 1-4 (C Procedural a Ficheros) | C | 🟢 Finalizado |
-| **Fund. Computadores** | Diseño de ALU y Contadores Síncronos | Logisim/MD | 🟢 Finalizado |
-| **Física I** | Cinemática a Electromagnetismo | MD | 🟢 Finalizado |
-| **Empresa (AEE)** | VAN/TIR, Punto Muerto y Mercados | MD | 🟢 Finalizado |
-| **EDI I** | Relaciones 1-4 (Recursividad a Árboles) | C++ | 🟢 Finalizado |
-| **Matemáticas II** | Sistemas, Matrices, Lógica y Grafos | MD | 🟢 Finalizado |
-| **Tecnología Comp.** | Rendimiento, MIPS, Control, Pipeline, Caché | MD | 🟢 Finalizado |
-| **FAA (Algoritmos)** | Asintótica a Branch & Bound | C++/MD | 🟢 Finalizado |
-| **Matemáticas III** | Extremos, Integración 3D, Estadística | MD | 🟢 Finalizado |
-| **Sistemas de Percepción** | Clasificador de Esferas (Práctica Final) | Matlab | Finalizado |
-| **Aprendizaje Automático** | Experimentos de Clustering (Propio y Librería) | Python | Finalizado |
-| **PCD** | Solución P5 (2022/23) y Ejemplos de Concurrencia | Java | Finalizado |
-| **Sistemas Operativos** | Procesos a Gestión de Memoria | C/MD | 🟢 Finalizado |
-| **Bases de Datos** | E/R, Relacional y SQL completo | MD/SQL | 🟢 Finalizado |
-| **Estructura Comp.** | MIPS, Control, Pipeline y Caché Avanzada | MD/ASM | 🟢 Finalizado |
-| **Redes (FRC)** | Retardos, OSI, TCP/IP y DNS | MD | 🟢 Finalizado |
-| **Metodología Prog.** | POO C++ Avanzado y Gestión de Memoria | C++ | 🟢 Finalizado |
+| **3º** | **AMC** | Autómatas, Complejidad, Turing y Decidibilidad | 🟢 Finalizado |
+| **3º** | **PCD** | Sincronización (Monitores/Semáforos) y RMI/Sockets | 🟢 Finalizado |
+| **3º** | **PL** | Léxico, LL(1), Esquemas de Trad. y Bison/Yacc | 🟢 Finalizado |
+| **3º** | **STR** | Planificación RTOS (RM, EDF, PCP) | 🟢 Finalizado |
+| **3º** | **DDSI** | Programación Servidor (PL/SQL y Triggers) | 🟢 Finalizado |
+| **3º** | **IRC** | VLSM, Enrutamiento OSPF/RIP y ACLs | 🟢 Finalizado |
+| **3º** | **SI** | Agentes, Q-Learning y Redes Neuronales | 🟢 Finalizado |
+| **3º** | **RC** | Prolog y Web Semántica (RDF/OWL) | 🟢 Finalizado |
+| **3º** | **SP** | Visión Artificial y Procesamiento Digital | 🟢 Finalizado |
+| **3º** | **RV** | Transformaciones 3D y Pipeline Gráfico | 🟢 Finalizado |
+| **2º** | **IA** | Búsqueda A*, Lógica de Resolución y Minimax | 🟢 Finalizado |
+| **2º** | **APSO** | Procesos POSIX, Hilos y Memoria Proyectada | 🟢 Finalizado |
+| **2º** | **AC** | Tomasulo, Scoreboarding y Coherencia (MSI) | 🟢 Finalizado |
+| **2º** | **ED II** | Grafos, Tablas Hash, AVL y Montículos | 🟢 Finalizado |
+| **2º** | **PFIS** | UML Avanzado, Patrones Diseño y Ciclos Vida | 🟢 Finalizado |
+| **1º** | **FAA** | Complejidad, Divide y Vencerás, Programación Dinámica | 🟢 Finalizado |
+| **1º** | **EDI I** | Estructuras Lineales y Árboles Generalistas | 🟢 Finalizado |
+| **1º** | **MP** | POO en C++ y Gestión de Recursos | 🟢 Finalizado |
 
-## 🟡 Proyectos Incompletos / En Desarrollo
-| Asignatura | Proyecto/Contenido | Lenguaje | Gap Identificado |
-| :--- | :--- | :--- | :--- |
-| **APSO** | Programación POSIX (Signal handling) | C | Faltan módulos de gestión de señales |
-| **Fund. Programación** | Ejercicios básicos de estructuras | C | Consolidación de archivos sueltos |
-| **Estructuras Datos I** | TADs Lineales y Árboles | C++ | Faltan implementaciones de árboles balanceados |
-| **Diseño Software** | Modelado UML de proyectos | Papel | Requiere digitalización de diagramas |
-
-## 🔴 Proyectos Pendientes / Vacíos (Mención Computación)
-| Asignatura | Estado | Acción Requerida |
-| :--- | :--- | :--- |
-| **Algoritmos (FAA)** | ❌ Sin archivos | Recuperar de backup externo (Urgente) |
-| **Procesadores Lenguajes** | 📭 Vacío | Iniciar laboratorios de Lex/Yacc |
-| **Representación Conoc.** | 📭 Vacío | Iniciar prácticas en Prolog |
-| **Sistemas de Tiempo Real** | 📭 Vacío | Configurar entorno RTOS / Ada |
-| **Metaheurísticas** | 📭 Vacío | Implementar SA y Tabu Search |
+## 🚀 Próximos Pasos (Estrategia 4º Curso)
+Tras completar la base de ingeniería (3 primeros años), el foco se desplaza a:
+1.  **Trabajo Fin de Grado (TFG)**: Definir propuesta técnica.
+2.  **Metaheurísticas**: Implementar algoritmos de búsqueda global (SA, TS, ACO).
+3.  **Seguridad**: Auditoría de protocolos y criptografía.
 
 ---
-> [!TIP]
-> Prioriza la recuperación de los archivos de **Algoritmos (FAA)** de 1º, ya que son fundamentales para entender la complejidad de los modelos que verás en 4º.
+*Misión Cortex-13: Alcanzando la excelencia académica en la UHU.*
