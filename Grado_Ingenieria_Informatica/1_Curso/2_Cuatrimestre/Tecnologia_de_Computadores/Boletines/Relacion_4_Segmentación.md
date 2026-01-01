@@ -20,3 +20,12 @@ Técnica de implementación para que varias instrucciones se solapen en su ejecu
     *   *Resolución:* En el caso ideal (sin paradas), el speedup es igual al número de etapas: 5.
 3.  **Saltos**: ¿Cómo afecta un salto mal predicho al pipeline?
     *   *Resolución:* Obliga a vaciar las etapas de IF e ID que ya habían cargado instrucciones incorrectas, provocando una penalización de ciclos.
+
+## 📝 Ejercicio Avanzado: Predicción de Saltos
+**Enunciado**: En un bucle que se ejecuta 100 veces, un salto condicional al final (BEQ) se predice siempre como "No Tomado" (Static Prediction). ¿Cuántos ciclos de penalización tiene el bucle si el salto se resuelve en la etapa EX y se toma 99 veces?
+
+**Resolución**: 
+- En 99 iteraciones el salto se toma, fallando la predicción.
+- Si se resuelve en EX (etapa 3), se han cargado 2 instrucciones erróneas (IF e ID).
+- Penalización Total = $99 \times 2 = 198$ ciclos perdidos.
+- **Conclusión**: Con un predictor dinámico (BHT de 1 bit), solo fallaríamos la primera y la última vez, reduciendo drásticamente la penalización.

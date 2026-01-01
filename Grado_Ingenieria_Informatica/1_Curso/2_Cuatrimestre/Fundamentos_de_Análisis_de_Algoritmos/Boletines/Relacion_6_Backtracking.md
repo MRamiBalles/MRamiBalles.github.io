@@ -1,24 +1,46 @@
-# FAA - Relación 6: Vuelta Atrás / Backtracking (Oficial UHU)
+# FAA - Relación 6: Diseño por Backtracking (Oficial UHU)
 
-## 🧠 La idea "fuerza bruta inteligente"
-Es una búsqueda en profundidad (DFS) en un árbol de estados. Si una rama no sirve, "cortas" (poda) y vuelves atrás.
+La técnica de Backtracking (Vuelta Atrás) se basa en la exploración sistemática del espacio de soluciones mediante un árbol de búsqueda (espacio de estados).
 
-*   **Espacio de búsqueda**: Árbol con todas las combinaciones.
-*   **Funciones**:
-    1.  `Solucion(n)`: ¿Hemos llegado al final?
-    2.  `Criterio(n)`: ¿Esta rama sigue siendo prometedora?
+## 🧠 Esquema General (Template C++)
+Para resolver un problema por Backtracking, solemos seguir este patrón:
 
-## 📝 Problemas de examen
-1.  **Las N Reinas**: Colocar N reinas en un tablero $N \times N$ sin que se amenacen.
-    *   *Cómo se resuelve*: Pones una reina en la fila 1. Miras dónde puedes poner la de la fila 2. Si no hay hueco, vuelves a la 1 y la mueves.
-    *   *Vector solución*: $V = [c_1, c_2, ..., c_n]$ donde $c_i$ es la columna de la reina en la fila $i$.
+```cpp
+void backtracking(Estado actual, int nivel) {
+    if (esSolucion(actual)) {
+        tratarSolucion(actual);
+    } else {
+        for (auto opcion : opcionesPosibles) {
+            if (esPrometedor(opcion, actual)) {
+                aplicar(opcion, actual);
+                backtracking(actual, nivel + 1);
+                deshacer(opcion, actual); // ¡CRÍTICO!
+            }
+        }
+    }
+}
+```
 
-2.  **Suma de Subconjuntos**: Tienes $\{2, 4, 6, 8\}$ y buscas que sumen 10.
-    *   *Árbol binario*: En cada nodo decides "meto el 2" o "no meto el 2".
-    *   *Poda*: Si la suma actual ya se pasa de 10, dejas de bajar por ahí. Ahorras mil millones de cálculos.
+## 📝 Ejercicios de la Relación
 
-3.  **Coloreado de Grafos**: Colorear con $m$ colores sin que dos nodos adyacentes tengan el mismo.
-    *   Asignas color 1 al nodo A. Al nodo B le intentas dar el 1, si falla, el 2... y así.
+1. **El Problema de las N-Reinas**
+   *Objetivo*: Colocar $N$ reinas en un tablero $N \times N$ sin que se amenacen.
+   *Estrategia*:
+   - Una reina por fila.
+   - Guardar columnas y diagonales ocupadas en arrays booleanos para `esPrometedor` en $O(1)$.
+
+2. **Suma de Subconjuntos**
+   *Enunciado*: Dado un conjunto de números, busca un subconjunto que sume exactamente $M$.
+   *Poda*: Si la suma actual más el siguiente elemento supera $M$, no seguimos por esa rama (solo si los números son positivos).
+
+3. **Ciclo Hamiltoniano**
+   *Enunciado*: En un grafo, encontrar un camino que visite cada vértice exactamente una vez y vuelva al inicio.
+   *Coste*: En el peor caso, la complejidad es exponencial $O(2^n)$ o $O(n!)$, ya que exploramos todas las combinaciones.
+
+## 📝 Caso Práctico: Mochila 0/1 (Backtracking)
+**Enunciado**: Tenemos objetos con peso y valor. Queremos maximizar el valor sin superar el peso $W$.
+**Diferencia con Greedy**: Aquí probamos todas las combinaciones reales (meter/no meter) devolviendo la mejor encontrada.
+
 ---
-> [!TIP]
-> **Diferencia con P. Dinámica**: Backtracking busca "caminos" o "soluciones concretas" (todas o una), Dinámica busca "el mejor valor" optimizando.
+> [!IMPORTANT]
+> El Backtracking siempre garantiza encontrar la solución óptima (si existe), pero su coste temporal suele ser inasumible para entradas grandes. Es fundamental aplicar buenas **punciones** (podas) para reducir el espacio de búsqueda.
