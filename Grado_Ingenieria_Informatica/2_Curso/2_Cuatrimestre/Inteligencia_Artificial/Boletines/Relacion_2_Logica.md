@@ -1,22 +1,38 @@
-# IA - Relación 2: Lógica Proposicional y de Predicados (Oficial UHU)
+# IA - Relación 2: Lógica de Predicados y Resolución (Oficial UHU)
 
-## 🧠 Formalizando el pensamiento
-La IA no solo busca caminos, también "razona". Para ello usamos la lógica.
+## 🧠 El Salto a Primer Orden (FOPL)
+A diferencia de la proposicional, en Primer Orden podemos hablar de objetos y sus propiedades.
 
-1.  **Lógica Proposicional**: Variables ($P, Q$) que son verdad o mentira. 
-    - Conectivas: $\neg$ (no), $\land$ (y), $\lor$ (o), $\rightarrow$ (implica).
-    - **Resolución**: Es el motor de inferencia. Para demostrar que $G$ es verdad, demostramos que (Base de Conocimientos $\land \neg G$) es una contradicción (insatisfacible).
-2.  **Lógica de Predicados (Primer Orden)**: Añadimos objetos y cuantificadores ($\forall x, \exists y$).
-    - "Todos los alumnos de la ETSI son cracks": $\forall x (Alumno(x) \land ETSI(x) \rightarrow Crack(x))$.
+## 📝 Ejercicio de Examen: Demostración por Resolución
 
-## 📝 Ejercicios "de examen"
-1.  **Forma normal conjuntiva (FNC)**: Pasa $(P \rightarrow Q) \land (Q \rightarrow R)$ a cláusulas.
-    *   *Pasos*: Quitas las implicaciones ($\neg P \lor Q$), ($\neg Q \lor R$). Ya está en FNC. Son dos cláusulas: $\{\neg P, Q\}$ y $\{\neg Q, R\}$.
-2.  **Algoritmo de Resolución**: Si sabemos que "Si llueve, el suelo se moja" ($P \rightarrow Q$) y "Está lloviendo" ($P$), demuestra que "El suelo se moja" ($Q$).
-    *   *Base*: $\{\neg P, Q\}, \{P\}$.
-    *   *Negamos objetivo*: $\{\neg Q\}$.
-    *   *Resolución*: 
-        - Combinamos $\{\neg P, Q\}$ con $\{P\} \Rightarrow \{Q\}$.
-        - Combinamos $\{Q\}$ con $\{\neg Q\} \Rightarrow \emptyset$ (Cláusula vacía).
-    *   *Conclusión*: Como hemos llegado al vacío, $Q$ es cierto. ¡Fácil!
-3.  **Skolemización**: Quitar los $\exists$ sustituyéndolos por constantes o funciones de Skolem. Típico ejercicio para ver si has ido a clase.
+**Enunciado**: Demuestra que "A Juan le gustan los cacahuetes" a partir de:
+1. "Juan es una persona".
+2. "A todas las personas les gusta la comida".
+3. "Todo lo que se come es comida".
+4. "Los cacahuetes se comen y no matan a nadie".
+
+### Paso 1: Formalización
+- $Per(juan)$
+- $\forall x (Per(x) \rightarrow Gusta(x, Comida))$  -- *Simplificando: Gusta(x, comida)*
+- $\forall x (SeCome(x) \rightarrow EsComida(x))$
+- $SeCome(cacahuetes) \land \neg Mata(cacahuetes, y)$
+
+### Paso 2: Paso a Cláusulas (FNC) e Inclusión de la Negación del Objetivo
+- C1: $\{Per(juan)\}$
+- C2: $\{\neg Per(x), Gusta(x, Comida(x))\}$ -- *Nota: Comida se convierte en función si depende de x*
+- C3: $\{\neg SeCome(y), EsComida(y)\}$
+- C4: $\{SeCome(cacahuetes)\}$
+- **Objetivo Negado**: $\{\neg Gusta(juan, cacahuetes)\}$
+
+### Paso 3: Resolución (Búsqueda de la Contradicción)
+1. Unificamos C1 y C2 con $x=juan \implies \{Gusta(juan, Comida(juan))\}$
+2. ... (aquí el proceso se complica con la unificación de "cacahuetes" y "comida")
+
+---
+### 🧠 Concepto Clave: Unificación
+Para combinar dos cláusulas, debemos encontrar una sustitución de variables que las haga iguales. Ejemplo:
+- $\{Gusta(x, pizza)\}$ y $\{\neg Gusta(juan, y)\}$
+- Unificador: $x/juan, y/pizza \implies \emptyset$ (Vacío).
+
+> [!TIP]
+> En los exámenes de la UHU, asegúrate de **estandarizar las variables** (que cada cláusula tenga sus propias letras x, y, z) antes de empezar a resolver.

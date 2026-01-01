@@ -17,3 +17,19 @@ Si en un árbol tardamos $\log n$, en una Tabla Hash tardamos (idealmente) tiemp
     *   *Problema*: Se forman "racimos" (clustering) que ralentizan todo.
 2.  **Buenas Funciones Hash**: Deben ser rápidas de calcular y distribuir los datos uniformemente. Usar números primos para el tamaño de la tabla suele ayudar.
 3.  **Borrado en Direccionamiento Abierto**: Ojo, no puedes dejar el hueco vacío (null), tienes que marcarlo como "borrado" (`DELETED`) para que las búsquedas de elementos que chocaron después sigan funcionando.
+
+## 📝 Ejercicio Técnico: El Proceso de Rehash
+**Enunciado**: Tenemos una tabla hash de tamaño 5 con direccionamiento abierto (prueba lineal) y $h(k) = k \mod 5$. Actualmente contiene los elementos {5, 11}. Si el umbral del factor de carga es $\alpha > 0.5$, ¿qué ocurre al insertar el 7?
+
+**Resolución**: 
+1. **Estado inicial**: $\alpha = 2/5 = 0.4$. (5 en pos 0, 11 en pos 1).
+2. **Intento de inserción de 7**: 
+   - $h(7) = 2$.
+   - Al insertar el 7, $\alpha$ pasaría a ser $3/5 = 0.6 > 0.5$.
+3. **Rehash**: 
+   - Creamos una nueva tabla (típico: el siguiente número primo mayor al doble, ej. 11).
+   - Recalculamos posiciones para todos:
+     - $5 \mod 11 = 5$.
+     - $11 \mod 11 = 0$.
+     - $7 \mod 11 = 7$.
+- **Conclusión**: El Rehash elimina colisiones previas y mantiene el tiempo de acceso $O(1)$ a costa de una operación costosa puntual $O(n)$.

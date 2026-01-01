@@ -1,22 +1,37 @@
-# AC - Relación 2: Planificación Dinámica de Instrucciones (Algoritmo de Tomasulo)
+# AC - Relación 2: Planificación Dinámica (Tomasulo) (Oficial UHU)
 
-El Algoritmo de Tomasulo permite la ejecución de instrucciones fuera de orden (Out-of-Order Execution), maximizando el paralelismo a nivel de instrucción (ILP) mediante el renombramiento de registros y la eliminación de riesgos de datos.
+## 🧠 El Algoritmo de Tomasulo: Explicado
+Tomasulo es la base de los procesadores modernos. Permite que las instrucciones se ejecuten en cuanto sus operandos estén listos, sin importar el orden del programa original.
 
-## 1. Mecanismos Fundamentales
-- **Estaciones de Reserva (RS)**: Buffers que almacenan instrucciones pendientes, sus operandos (si están disponibles) o el identificador de la unidad funcional que producirá el operando.
-- **Common Data Bus (CDB)**: Bus de difusión que permite la propagación de resultados directamente a todas las RS que los requieran, evitando cuellos de botella en el banco de registros.
-- **Renombramiento de Registros**: Mitiga riesgos WAR (Write After Read) y WAW (Write After Write) al desacoplar los nombres de los registros lógicos de sus valores físicos.
+## 📝 Ejercicio de Examen: Traza de Ejecución
 
-## 2. Etapas del Algoritmo
-1. **Emisión (Issue)**: La instrucción se traslada a una RS libre. Se realiza el renombramiento de registros.
-2. **Ejecución (Execute)**: Cuando los operandos son válidos, la unidad funcional inicia la operación.
-3. **Escritura (Write Result)**: El resultado se difunde por el CDB y se actualiza el banco de registros y las RS dependientes.
+Dada la siguiente secuencia de instrucciones y latencias (Suma: 2 ciclos, Carga: 3 ciclos):
+1. `L.D F6, 32(R2)`
+2. `L.D F2, 44(R3)`
+3. `ADD.D F0, F2, F4`
+4. `SUB.D F8, F6, F2`
 
-## 📝 Análisis de Estado (RS Table)
-En un ciclo de reloj determinado, la tabla de Estaciones de Reserva permite visualizar la telemetría del procesador:
-- `Busy`: Indica si la RS está ocupada.
-- `Op`: Operación a realizar.
-- `Vj, Vk`: Valores de los operandos.
-- `Qj, Qk`: Unidades funcionales de las que se espera un resultado.
+### Estado de las Estaciones de Reserva (Ciclo 4)
 
-*Nota Técnica*: El uso del CDB permite la resolución de riesgos RAW (Read After Write) mediante el "forwarding" hardware, reduciendo los ciclos de parada (stalls) en comparación con técnicas de planificación estática.
+| Nombre | Busy | Op | Vj | Vk | Qj | Qk |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Add1** | Yes | ADD.D | | F4_val | Load2 | |
+| **Add2** | Yes | SUB.D | | | Load1 | Load2 |
+| **Mult1**| No | | | | | |
+
+### Estado del Banco de Registros (Ciclo 4)
+
+| Registro | F0 | F2 | F4 | F6 | F8 | ... |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Qi** | Add1 | Load2 | | Load1 | Add2 | |
+
+### 🧠 ¿Qué está pasando aquí? (Análisis)
+- **F6** está esperando a que termine la primera carga (`Load1`).
+- **F2** está esperando a la segunda carga (`Load2`).
+- El `ADD.D` depende de **F2**, por lo que su `Qj` apunta a `Load2`.
+- El `SUB.D` depende tanto de **F6** como de **F2**, por lo que espera a ambos (`Load1` y `Load2`).
+- **Renombramiento**: Gracias a las RS, hemos eliminado el riesgo de que una instrucción posterior escriba en F2 y pise el valor que `ADD.D` todavía no ha leído.
+
+---
+> [!TIP]
+> En el examen, un error común es olvidar poner el `Lazy Update`: cuando una instrucción escribe en el CDB, TODAS las estaciones de reserva que esperaban ese dato (`Qj` o `Qk`) deben capturarlo y limpiar el campo Qi.
