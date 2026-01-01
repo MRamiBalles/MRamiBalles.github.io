@@ -1,24 +1,70 @@
 # PFIS - Relación 3: Patrones de Diseño (Oficial UHU)
 
-## 🧠 No inventes la rueda
-Los Patrones de Diseño son soluciones probadas a problemas que ocurren una y otra vez en el software.
+## 🧠 Soluciones Probadas
+Los Patrones de Diseño son soluciones estándar a problemas comunes en el desarrollo de software, facilitando la comunicación entre desarrolladores y la mantenibilidad del código.
 
-1.  **Singleton**: Asegura que una clase solo tiene una instancia (ej. la conexión a la Base de Datos o el Logger).
-2.  **Factory Method**: Creas objetos sin especificar la clase exacta de lo que estás creando. "Dame un Guerrero" y el Factory decide si es un `Orco` o un `Humano`.
-3.  **Observer (Observador)**: El patrón de las notificaciones. Un objeto cambia estado y avisa a todos sus suscriptores automáticamente. Muy usado en interfaces gráficas (GUI).
-4.  **Strategy**: Permite cambiar el algoritmo en tiempo de ejecución. Ej: Un navegador que elige entre "Cálculo ruta corta" o "Cálculo ruta rápida".
+### 1. Patrones Creacionales (Creación de Objetos)
+- **Singleton**: Garantiza una única instancia de una clase.
+- **Factory Method**: Delega la creación de objetos a las subclases.
+
+### 2. Patrones Estructurales (Composición de Clases)
+- **Adapter**: Permite que clases con interfaces incompatibles trabajen juntas.
+- **Composite**: Trata objetos individuales y composiciones de objetos de manera uniforme.
+
+### 3. Patrones de Comportamiento (Interacción de Objetos)
+- **Observer**: Define una dependencia uno-a-muchos para notificar cambios de estado.
+- **Strategy**: Permite intercambiar algoritmos en tiempo de ejecución.
+
+---
+
+## 📝 Caso Práctico: Implementación de Factoría (Factory Method)
+
+**Escenario**: Sistema de logística con diferentes medios de transporte.
+
+```cpp
+#include <iostream>
+#include <string>
+
+// Interfaz común
+class Transporte {
+public:
+    virtual void entregar() = 0;
+    virtual ~Transporte() {}
+};
+
+// Productos concretos
+class Camion : public Transporte {
+    void entregar() override { std::cout << "Entrega por carretera.\n"; }
+};
+
+class Barco : public Transporte {
+    void entregar() override { std::cout << "Entrega por mar.\n"; }
+};
+
+// Fábrica
+class Logistica {
+public:
+    virtual Transporte* crearTransporte() = 0;
+    void ejecutar() {
+        Transporte* t = crearTransporte();
+        t->entregar();
+        delete t;
+    }
+};
+
+class LogisticaTerrestre : public Logistica {
+    Transporte* crearTransporte() override { return new Camion(); }
+};
+
+int main() {
+    Logistica* l = new LogisticaTerrestre();
+    l->ejecutar();
+    delete l;
+    return 0;
+}
+```
 
 ## 📝 Ejercicios de Examen
-1.  **Identificar el Patrón**: Te dan un diagrama de clases o un trozo de código y tienes que adivinar qué patrón es.
-    *   *Tip*: Si ves una clase con constructor privado y un método `getInstance()`, es un `Singleton` de manual.
-2.  **Implementar un Observer**:
-    ```cpp
-    class Sujeto {
-        vector<Observador*> lista;
-    public:
-        void notificar() {
-            for(auto o : lista) o->update();
-        }
-    };
-    ```
-3.  **Ventaja de los patrones**: Mejoran la reusabilidad y hacen que el código sea más fácil de mantener por otros ingenieros (lenguaje común).
+1. **Identificar Singleton**: Constructor privado, instancia estática y método `getInstance()`.
+2. **Uso de Observer**: Ideal para sistemas de eventos y actualizaciones de interfaz de usuario.
+3. **Drafting Strategy**: Útil para sistemas que requieren diferentes métodos de ordenación o cálculo según el contexto.
