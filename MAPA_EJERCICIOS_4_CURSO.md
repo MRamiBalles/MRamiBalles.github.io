@@ -27,8 +27,19 @@
 - [R1: Trayectorias (Simulated Annealing/Tabu)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_1_Trayectorias.md) - 🟢 Resuelto
 - [R2: Algoritmos Genéticos y Esquemas](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_2_Geneticos.md) - 🟢 Resuelto
 - [R3: Inteligencia de Enjambre (ACO/PSO)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_3_Enjambre.md) - 🟢 Resuelto
+- [R3: Inteligencia de Enjambre (ACO/PSO)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_3_Enjambre.md) - 🟢 Resuelto
 
-*Nota: Los laboratorios de Haskell y el proyecto Blockchain se abordarán en una fase posterior.*
+## 🎓 Asignaturas Optativas (Mención Computación)
 
----
-*Cortex Lab - Specialization: Computing & AI.*
+### ⛏️ Minería de Datos - 🟢 100% Completado
+- [Guía de Modelos Weka (J48, NaiveBayes)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/Asignaturas_Optativas/Mineria%20de%20Datos/Guia_Modelos_Weka.md) - 🟢 Documentado
+- [Boletín Teórico: KDD y Algoritmos](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/Asignaturas_Optativas/Mineria%20de%20Datos/Boletin_Teoria_Mineria.md) - 🟢 Resuelto
+
+### 🤖 Robótica
+- [En Proceso]
+
+### 👁️ Visión por Computador
+- [En Proceso]
+
+### 🧠 IAAR (IA Aplicada a Robótica)
+- [En Proceso]
