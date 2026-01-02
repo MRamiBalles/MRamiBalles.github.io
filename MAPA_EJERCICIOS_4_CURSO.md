@@ -21,6 +21,13 @@
 - [Relación 5: Máquinas de Turing](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/1_Cuatrimestre/Modelos_Avanzados_de_Computacion/Boletines/Relacion_5_Maquinas_Turing.md) - 🟢 Resuelto
 - [Relación 7: Funciones Recursivas](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/1_Cuatrimestre/Modelos_Avanzados_de_Computacion/Boletines/Relacion_7_Funciones_Recursivas.md) - 🟢 Resuelto
 
+## 📅 Segundo Cuatrimestre
+
+### 🧬 Metaheurísticas (MH) - 🟢 100% Completado
+- [R1: Trayectorias (Simulated Annealing/Tabu)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_1_Trayectorias.md) - 🟢 Resuelto
+- [R2: Algoritmos Genéticos y Esquemas](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_2_Geneticos.md) - 🟢 Resuelto
+- [R3: Inteligencia de Enjambre (ACO/PSO)](file:///D:/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso/2_Cuatrimestre/Metaheuristicas/Boletines/Relacion_3_Enjambre.md) - 🟢 Resuelto
+
 *Nota: Los laboratorios de Haskell y el proyecto Blockchain se abordarán en una fase posterior.*
 
 ---

@@ -6,7 +6,10 @@ Este documento centraliza el estado de los proyectos técnicos y boletines acad�
 
 | curso | Asignatura | Contenido Clave | Estado |
 | :--- | :--- | :--- | :--- |
-| **3º** | **AMC** | Autómatas, Complejidad, Turing y Decidibilidad | 🟢 Finalizado |
+| 4º | **MH** | Genéticos, Enjambre (ACO/PSO) y Trayectorias | 🟢 Finalizado |
+| 4º | **AA** | Deep Learning, SVM, Árboles y Evaluación | 🟢 Finalizado |
+| 4º | **MAC** | Autómatas, TM, Recursión y Master Theory | 🟢 Finalizado |
+| 3º | **AMC** | Autómatas, Complejidad, Turing y Decidibilidad | 🟢 Finalizado |
 | **3º** | **PCD** | Sincronización (Monitores/Semáforos) y RMI/Sockets | 🟢 Finalizado |
 | **3º** | **PL** | Léxico, LL(1), Esquemas de Trad. y Bison/Yacc | 🟢 Finalizado |
 | **3º** | **STR** | Planificación RTOS (RM, EDF, PCP) | 🟢 Finalizado |
@@ -25,11 +28,10 @@ Este documento centraliza el estado de los proyectos técnicos y boletines acad�
 | **1º** | **EDI I** | Estructuras Lineales y Árboles Generalistas | 🟢 Finalizado |
 | **1º** | **MP** | POO en C++ y Gestión de Recursos | 🟢 Finalizado |
 
-## 🚀 Próximos Pasos (Estrategia 4º Curso)
-Tras completar la base de ingeniería (3 primeros años), el foco se desplaza a:
-1.  **Trabajo Fin de Grado (TFG)**: Definir propuesta técnica.
-2.  **Metaheurísticas**: Implementar algoritmos de búsqueda global (SA, TS, ACO).
-3.  **Seguridad**: Auditoría de protocolos y criptografía.
+## 🚀 Próximos Pasos (Fase Final: Aplicación y TFG)
+Tras completar toda la base teórica del grado (1º a 4º):
+1.  **Laboratorios Haskell (MAC)**: Implementar Prácticas 1-9 y proyecto Blockchain.
+2.  **TFG (Trabajo Fin de Grado)**: Desarrollo del proyecto final.
 
 ---
 *Misión Cortex-13: Alcanzando la excelencia académica en la UHU.*
