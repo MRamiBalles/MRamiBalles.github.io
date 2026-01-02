@@ -1,28 +1,35 @@
 # Robótica - Guía de Laboratorio (MATLAB)
 
-Esta guía explica el uso de los scripts de MATLAB organizados en las carpetas `Cinematica` y `Control`.
+En este documento se detalla el funcionamiento de los scripts de MATLAB desarrollados durante las prácticas. El código se ha organizado en dos carpetas principales: `Cinematica` y `Control`.
 
 ## 1. Cinemática (Cinematica/)
-Esta carpeta contiene funciones para calcular la posición y orientación del robot.
+Aquí se encuentran las funciones necesarias para resolver la geometría del movimiento del robot.
 
 ### Scripts Clave
-- **`Rotacionx.m`, `Rotaciony.m`, `Rotacionz.m`**: Generan las matrices de rotación básicas (3x3) dado un ángulo.
+- **Matrices de Rotación (`Rotacionx.m`, `Rotaciony.m`, `Rotacionz.m`)**:
+  Implementación directa de las matrices de rotación básicas (3x3). Por ejemplo, para una rotación en X:
   $$R_x(\alpha) = \begin{bmatrix} 1 & 0 & 0 \\ 0 & \cos\alpha & -\sin\alpha \\ 0 & \sin\alpha & \cos\alpha \end{bmatrix}$$
-- **`CinematicoDirecto.m`**: Calcula la posición del efector final ($x, y, z$) dados los ángulos de las articulaciones ($q_1, q_2, \dots$).
-- **`inv_kinema_ur3.p`**: Función (compilada) para la Cinemática Inversa del robot UR3. Calcula los ángulos necesarios para alcanzar una posición $(x, y, z)$.
-- **`pinta_robot_v3.m`**: Visualizador gráfico del robot en 3D. Útil para verificar visualmente las soluciones cinemáticas.
+
+- **`CinematicoDirecto.m`**:
+  Esta función recibe como entrada los ángulos de las articulaciones ($q_1, q_2, \dots$) y devuelve la posición $(x, y, z)$ del efector final. Es fundamental para saber dónde está el robot.
+
+- **`inv_kinema_ur3.p`**:
+  Función compilada para la **Cinemática Inversa** del robot colaborativo UR3. Hace lo contrario: le damos una posición destino $(x, y, z)$ y nos devuelve los ángulos necesarios para alcanzarla. *Nota: Recuerda que puede devolver múltiples soluciones (codo arriba/abajo).*
+
+- **`pinta_robot_v3.m`**:
+  Nuestra utilidad de visualización favorita. Pinta el esqueleto del robot en una figura 3D de MATLAB, lo cual es vital para debugear antes de probar en el robot real.
 
 ## 2. Control (Control/)
-Scripts para el control de movimiento y trayectorias.
+Scripts enfocados en el movimiento y seguimiento de trayectorias.
 
-- **`Controlador.m`**: Bucle principal de control. Probablemente implementa un control PID o P para mover las articulaciones a una referencia.
-- **`ControladorCabezaRobot.m`**: Script específico para mover una articulación "cabeza" o efector final.
+- **`Controlador.m`**: Contiene el bucle de control principal. Implementa un esquema clásico (probablemente P o PID) para minimizar el error entre la posición actual y la referencia.
+- **`ControladorCabezaRobot.m`**: Una variante específica para controlar la orientación del efector final.
 
 ## 3. Prácticas (Prac*.m)
-Corresponden a las sesiones de laboratorio:
-- **`Prac1.m`**: Introducción a Matrices de Transformación Homogénea (T).
-- **`Prac2.m`**: Cinemática Directa (DH).
+Corresponden a los ejercicios realizados sesión a sesión:
+- **`Prac1.m`**: Primera toma de contacto con las Matrices de Transformación Homogénea (T).
+- **`Prac2.m`**: Resolución completa de la Cinemática Directa usando parámetros DH.
 
 ---
 > [!TIP]
-> **Uso**: Para correr una simulación, abre `Prac1.m` o `Ejemplo.m` en MATLAB. Asegúrate de añadir la carpeta `Cinematica` al *Path* de MATLAB (`addpath('Cinematica')`) para que los scripts puedan llamar a las funciones de rotación y visualización.
+> **Consejo de Ejecución**: Si vas a correr `Prac1.m` o `Ejemplo.m`, asegúrate de que la carpeta `Cinematica` está en el *Path* de MATLAB (`addpath('Cinematica')`). Si no, MATLAB te dirá que no encuentra las funciones de rotación.
