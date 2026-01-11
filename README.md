@@ -19,7 +19,7 @@ Consolidación de la infraestructura de software y hardware.
 
 ### [Tercer Curso: Especialización y Menciones](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/3_Curso)
 Profundización en áreas específicas (Ingeniería de Software, Computación).
-- **Módulos**: Procesadores de Lenguajes, Sistemas de Tiempo Real, Inteligencia Artificial Avanzada.
+- **Módulos**: Procesadores de Lenguajes, Sistemas de , Inteligencia Artificial Avanzada.
 
 ### [Cuarto Curso: Proyecto Fin de Grado y Profesionalización](file:///c:/Users/Manu/Uni/MRamiBalles.github.io/Grado_Ingenieria_Informatica/4_Curso)
 Integración de competencias y desarrollo del Trabajo Fin de Grado.
